@@ -3,700 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Dish-AI | Luxury Augmented Reality Dining Solutions</title>
-    <!-- Google Fonts: Playfair Display for luxury serif headers, Inter for clean modern body text -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Premium Icons -->
+    <title>Live Dish-AI | The Pinnacle of Gastronomic Tech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #121212;
-            --bg-tertiary: #1a1a1a;
-            --accent-gold: #d4af37; /* Premium Luxury Gold */
-            --accent-gold-hover: #f3e5ab;
-            --text-light: #ffffff;
-            --text-muted: #a0a0a0;
-            --glass-bg: rgba(20, 20, 20, 0.75);
-            --glass-border: rgba(212, 175, 55, 0.15);
-            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --gold: #C5A059;
+            --dark: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --transition: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-light);
-            line-height: 1.6;
+            background: var(--dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
             overflow-x: hidden;
         }
 
-        /* --- Header & Navigation --- */
+        /* Premium Navbar */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 1.25rem 4%;
+            padding: 2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .logo-container img {
-            height: 50px; /* Elegant sizing for the premium logo */
-            width: auto;
-            object-fit: contain;
-        }
-
-        nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            margin-left: 2.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            transition: var(--transition-smooth);
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background-color: var(--accent-gold);
-            transition: var(--transition-smooth);
-        }
-
-        nav a:hover {
-            color: var(--accent-gold);
-        }
-
-        nav a:hover::after {
+            position: fixed;
             width: 100%;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
         }
 
-        /* --- Hero Section --- */
+        .logo { height: 40px; }
+
+        /* Hero with Parallax Feel */
         .hero {
-            min-height: 100vh;
+            height: 90vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 0 1rem;
-            background: radial-gradient(circle at center, #1f1a10 0%, #0a0a0a 70%);
-            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
         }
 
-        .hero-tagline {
-            font-size: 0.9rem;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            animation: fadeInDown 1s ease forwards;
-        }
+        h1 { font-family: 'Cinzel', serif; font-size: 5rem; letter-spacing: 0.2rem; }
 
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-            max-width: 900px;
-            letter-spacing: -0.01em;
-            animation: fadeIn 1.2s ease forwards;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--text-muted);
-            max-width: 650px;
-            margin-bottom: 3rem;
-            font-weight: 300;
-            animation: fadeInUp 1.4s ease forwards;
-        }
-
-        /* --- Global Buttons --- */
-        .btn-gold {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--bg-primary);
-            background-color: var(--accent-gold);
-            border: 1px solid var(--accent-gold);
-            text-decoration: none;
-            transition: var(--transition-smooth);
-            cursor: pointer;
-        }
-
-        .btn-gold:hover {
-            background-color: transparent;
-            color: var(--accent-gold);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
-        }
-
-        /* --- Premium Carousel Section --- */
-        .carousel-section {
-            padding: 8rem 4%;
-            background-color: var(--bg-secondary);
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-
-        .section-header span {
-            font-size: 0.85rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            display: block;
-            margin-bottom: 1rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 500;
-        }
-
-        .carousel-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            width: 100%;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .carousel-slide {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        .slide-image-wrapper {
-            position: relative;
-            height: 450px;
-            background: #1a1a1a;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Placeholders for beautiful dish/AR abstract visuals */
-        .slide-image-wrapper::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(0,0,0,0) 70%);
-            animation: rotateBg 20s linear infinite;
-        }
-
-        .slide-image-wrapper i {
-            font-size: 5rem;
-            color: rgba(212, 175, 55, 0.25);
-            z-index: 1;
-        }
-
-        .slide-content h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .slide-content p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .benefit-stat {
-            display: flex;
-            gap: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 2rem;
-        }
-
-        .stat-item h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-
-        .stat-item p {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0;
-        }
-
-        /* Carousel Navigation Controls */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-light);
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-smooth);
-            z-index: 10;
-        }
-
-        .carousel-btn:hover {
-            background: var(--accent-gold);
-            color: var(--bg-primary);
-            border-color: var(--accent-gold);
-        }
-
-        .carousel-btn.prev { left: -25px; }
-        .carousel-btn.next { right: -25px; }
-
-        @media (max-width: 1250px) {
-            .carousel-btn.prev { left: 10px; }
-            .carousel-btn.next { right: 10px; }
-        }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 3rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .dot.active {
-            background: var(--accent-gold);
-            width: 24px;
-            border-radius: 4px;
-        }
-
-        /* --- Signature Services Section --- */
-        .services-section {
-            padding: 8rem 4%;
-            background-color: var(--bg-primary);
-        }
-
+        /* Advanced Card Animation */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 5rem;
         }
 
-        @media (max-width: 992px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
+        .card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem;
+            transition: 0.6s var(--transition);
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        .service-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 3.5rem 2.5rem;
-            transition: var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+        .card:hover {
+            transform: translateY(-20px) rotateX(10deg);
+            border-color: var(--gold);
         }
 
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            transform: scaleX(0);
-            transition: var(--transition-smooth);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(212, 175, 55, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .service-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .service-icon {
-            font-size: 2.5rem;
-            color: var(--accent-gold);
-            margin-bottom: 2rem;
-        }
-
-        .service-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            margin-bottom: 1.25rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        .service-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .service-features-list {
-            list-style: none;
-            margin-bottom: 2.5rem;
-        }
-
-        .service-features-list li {
-            font-size: 0.85rem;
-            color: #d0d0d0;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .service-features-list li i {
-            color: var(--accent-gold);
+        /* Dashboard Simulation */
+        .dashboard-preview {
+            background: #111;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
             font-size: 0.8rem;
         }
 
-        .service-card .btn-gold {
-            width: 100%;
-            text-align: center;
-            padding: 0.85rem 1rem;
-            background-color: transparent;
-            color: var(--text-light);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .service-card:hover .btn-gold {
-            background-color: var(--accent-gold);
-            color: var(--bg-primary);
-            border-color: var(--accent-gold);
-        }
-
-        /* --- Luxury Footer --- */
-        footer {
-            background-color: #050505;
-            padding: 4rem 4% 2rem 4%;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .footer-logo {
-            height: 45px;
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
-        }
-
-        .footer-text {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-        }
-
-        /* --- Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes rotateBg {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .stat { color: var(--gold); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
-        <div class="logo-container">
-            <!-- Referencing your provided file name verbatim -->
-            <img src="livedishai logo.png" alt="Live Dish-AI Logo">
-        </div>
+        <img src="livedishai logo.png" class="logo" alt="Live Dish-AI Logo">
         <nav>
-            <a href="#benefits">The Vision</a>
-            <a href="#services">Bespoke Services</a>
-            <a href="#" class="reserve-link">Request Briefing</a>
+            <a href="#" style="color:white; text-decoration:none; letter-spacing:2px;">EXPERIENCE</a>
         </nav>
     </header>
 
-    <!-- Hero Showcase Section -->
     <section class="hero">
-        <span class="hero-tagline">The Future of Fine Dining</span>
-        <h1>Elevate the Culinary Senses via Augmented Reality</h1>
-        <p>Crafting hyper-realistic visual experiences curated for the world's most prestigious culinary institutions and luxury hotels.</p>
-        <a href="#services" class="btn-gold">Explore the Suite</a>
-    </section>
-
-    <!-- Interactive Carousel: AR Benefits -->
-    <section id="benefits" class="carousel-section">
-        <div class="section-header">
-            <span>Immersive Gastronomy</span>
-            <h2>Why Luxury Fine Dining Needs WebAR</h2>
-        </div>
-
-        <div class="carousel-container">
-            <button class="carousel-btn prev" aria-label="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="carousel-btn next" aria-label="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
-            
-            <div class="carousel-track">
-                <!-- Slide 1 -->
-                <div class="carousel-slide">
-                    <div class="slide-image-wrapper">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <div class="slide-content">
-                        <h3>Eliminate Uncertainty with Perfect Presentation</h3>
-                        <p>Allow distinguished patrons to visualize complex textures, artistic ingredient arrangements, and precise scale of legendary dishes right on their table before ordering.</p>
-                        <div class="benefit-stat">
-                            <div class="stat-item">
-                                <h4>+35%</h4>
-                                <p>Average Order Value</p>
-                            </div>
-                            <div class="stat-item">
-                                <h4>92%</h4>
-                                <p>Guest Satisfaction</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-slide">
-                    <div class="slide-image-wrapper">
-                        <i class="fa-solid fa-champagne-glasses"></i>
-                    </div>
-                    <div class="slide-content">
-                        <h3>A Bespoke Storytelling Canvas</h3>
-                        <p>Transform historical dining narratives. Share the curated origin stories of premium vintage selections, rare truffles, or artisanal spices using elegant architectural overlays.</p>
-                        <div class="benefit-stat">
-                            <div class="stat-item">
-                                <h4>4.8x</h4>
-                                <p>Social Media Shares</p>
-                            </div>
-                            <div class="stat-item">
-                                <h4>100%</h4>
-                                <p>Zero App Downloads</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="carousel-slide">
-                    <div class="slide-image-wrapper">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                    <div class="slide-content">
-                        <h3>Seamless Operational Harmony</h3>
-                        <p>Bridge the gap between exquisite culinary aesthetics and flawless data analytics. Drive higher turns, minimize table communication errors, and streamline smart inventory predictive choices.</p>
-                        <div class="benefit-stat">
-                            <div class="stat-item">
-                                <h4>-18%</h4>
-                                <p>Table Turn Times</p>
-                            </div>
-                            <div class="stat-item">
-                                <h4>Top Tier</h4>
-                                <p>Brand Prestige</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-dots">
-                <div class="dot active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
+        <div>
+            <h1>LIVE DISH-AI</h1>
+            <p>REDESIGNING THE LUXURY DINING NARRATIVE</p>
         </div>
     </section>
 
-    <!-- Three Tier Signature Services -->
-    <section id="services" class="services-section">
-        <div class="section-header">
-            <span>The Offerings</span>
-            <h2>Architectural Digital Ecosystem</h2>
+    <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="card">
+            <i class="fas fa-utensils" style="font-size: 2rem; color: var(--gold);"></i>
+            <h2>AR DISH ON TABLE</h2>
+            <p>Hyper-realistic holographic projection of fine cuisine.</p>
         </div>
 
-        <div class="services-grid">
-            <!-- Service 1 -->
-            <div class="service-card">
-                <div>
-                    <div class="service-icon"><i class="fa-solid fa-cube"></i></div>
-                    <h3>1) AR Dish on Table</h3>
-                    <p>Enchant physical environments. Impeccably detailed, 3D culinary visual models projected accurately in the real world directly onto the table surface.</p>
-                    <ul class="service-features-list">
-                        <li><i class="fa-solid fa-circle"></i> Pure WebAR — No Application Required</li>
-                        <li><i class="fa-solid fa-circle"></i> Dynamic Lighting & Real-Scale Accuracy</li>
-                        <li><i class="fa-solid fa-circle"></i> Interactive Texture and Ingredient Inspection</li>
-                    </ul>
-                </div>
-                <!-- Button ready for custom href attribute later -->
-                <a href="#" class="btn-gold">Deploy Experience</a>
-            </div>
+        <!-- Service 2 -->
+        <div class="card">
+            <i class="fas fa-crown" style="font-size: 2rem; color: var(--gold);"></i>
+            <h2>MARKETING AR CARDS</h2>
+            <p>Turn every invitation into a luxury brand activation.</p>
+        </div>
 
-            <!-- Service 2 -->
-            <div class="service-card">
-                <div>
-                    <div class="service-icon"><i class="fa-solid fa-address-card"></i></div>
-                    <h3>2) AR Dish Marketing Card</h3>
-                    <p>Extend hospitality beyond property walls. Immersive physical collateral, luxury VIP invitations, and premium gift tokens that trigger premium AR models.</p>
-                    <ul class="service-features-list">
-                        <li><i class="fa-solid fa-circle"></i> Custom Branded High-End Stationery Prints</li>
-                        <li><i class="fa-solid fa-circle"></i> Perfect for Royal Wedding / Corporate Galas</li>
-                        <li><i class="fa-solid fa-circle"></i> Exclusive VIP Preview Engagements</li>
-                    </ul>
-                </div>
-                <!-- Button ready for custom href attribute later -->
-                <a href="#" class="btn-gold">Inquire Suite</a>
-            </div>
-
-            <!-- Service 3 -->
-            <div class="service-card">
-                <div>
-                    <div class="service-icon"><i class="fa-solid fa-sliders"></i></div>
-                    <h3>3) AR Digital Platform</h3>
-                    <p>Complete luxury architectural environment. A beautiful customer portal featuring advanced checkout flows merged into enterprise hospitality intelligence dashboards.</p>
-                    <ul class="service-features-list">
-                        <li><i class="fa-solid fa-circle"></i> Bespoke Digital Concierge & Add-To-Cart</li>
-                        <li><i class="fa-solid fa-circle"></i> Real-time Table & Seat Occupancy Tracking</li>
-                        <li><i class="fa-solid fa-circle"></i> Analytics Engine: Sales, Bills, & Dish Trends</li>
-                    </ul>
-                </div>
-                <!-- Button ready for custom href attribute later -->
-                <a href="#" class="btn-gold">Launch Enterprise</a>
+        <!-- Service 3 (Advanced Dashboard) -->
+        <div class="card">
+            <i class="fas fa-chart-pie" style="font-size: 2rem; color: var(--gold);"></i>
+            <h2>ENTERPRISE DASHBOARD</h2>
+            <div class="dashboard-preview">
+                <div>Occupancy: <span class="stat">92%</span></div>
+                <div>Avg Bill: <span class="stat">₹12,400</span></div>
+                <div>Peak Dish: <span class="stat">Truffle Risotto</span></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Luxury Footer -->
-    <footer>
-        <img src="livedishai logo.png" alt="Live Dish-AI Logo" class="footer-logo">
-        <p class="footer-text">&copy; 2026 Live Dish-AI. Serving Iconic Luxury Standards.</p>
-    </footer>
-
-    <!-- Carousel Logic Script -->
     <script>
-        const track = document.querySelector('.carousel-track');
-        const slides = Array.from(track.children);
-        const nextButton = document.querySelector('.carousel-btn.next');
-        const prevButton = document.querySelector('.carousel-btn.prev');
-        const dotsContainer = document.querySelector('.carousel-dots');
-        const dots = Array.from(dotsContainer.children);
-
-        let currentIndex = 0;
-
-        function updateCarousel(index) {
-            track.style.transform = `translateX(-${index * 100}%)`;
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
-            currentIndex = index;
-        }
-
-        nextButton.addEventListener('click', () => {
-            let nextIndex = currentIndex + 1;
-            if (nextIndex >= slides.length) nextIndex = 0;
-            updateCarousel(nextIndex);
-        });
-
-        prevButton.addEventListener('click', () => {
-            let prevIndex = currentIndex - 1;
-            if (prevIndex < 0) prevIndex = slides.length - 1;
-            updateCarousel(prevIndex);
-        });
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                updateCarousel(index);
+        // Reveal Animation on Scroll
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.style.opacity = 1;
             });
         });
-
-        // Optional Auto-play to keep visuals lively
-        setInterval(() => {
-            let nextIndex = currentIndex + 1;
-            if (nextIndex >= slides.length) nextIndex = 0;
-            updateCarousel(nextIndex);
-        }, 8000);
+        cards.forEach(card => {
+            card.style.opacity = 0;
+            card.style.transition = "opacity 1s ease-in-out";
+            observer.observe(card);
+        });
     </script>
 </body>
 </html>
