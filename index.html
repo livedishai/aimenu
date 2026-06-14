@@ -1,990 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>HOMIGA — AR Menu</title>
-  <meta name="description" content="Interactive AR menu for HOMIGA — authentic korean cuisine with 3D dish previews." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Dish-AI | Luxury Augmented Reality Dining Solutions</title>
+    <!-- Google Fonts: Playfair Display for luxury serif headers, Inter for clean modern body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-tertiary: #1a1a1a;
+            --accent-gold: #d4af37; /* Premium Luxury Gold */
+            --accent-gold-hover: #f3e5ab;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+            --glass-bg: rgba(20, 20, 20, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.15);
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="dns-prefetch" href="https://unpkg.com" />
-  <link rel="dns-prefetch" href="https://docs.google.com" />
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <link rel="preload"
-        href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ96kFrQI4iBZw11-ICCLwI-4_By0eEE6pzi8EOCrI8EumjR5deqcdOo7u4ed7lMFuvE0TdvaYjv44k/pub?output=csv"
-        as="fetch" crossorigin="anonymous" />
+        html {
+            scroll-behavior: smooth;
+        }
 
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  </noscript>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* --- Header & Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    :root {
-      --font-serif:    'Playfair Display', 'Georgia', serif;
-      --font-sans:     'Inter', 'Helvetica Neue', sans-serif;
-      --font-display:  'Cinzel', serif;
-      --font-body:     'Cormorant Garamond', Georgia, serif;
+        .logo-container img {
+            height: 50px; /* Elegant sizing for the premium logo */
+            width: auto;
+            object-fit: contain;
+        }
 
-      --washi:         #efe2cf;
-      --washi-dark:    #e2d1b8;
-      --washi-deep:    #d4bea0;
-      --ink:           #2c120f;
-      --ink-mid:       #4e231b;
-      --ink-light:     #7b5647;
-      --ink-faint:     #a07d69;
-      --crimson:       #8d1d2d;
-      --crimson-mid:   #a32133;
-      --crimson-lt:    #c74456;
-      --gold:          #c39a5c;
-      --gold-lt:       #ddb777;
-      --gold-pale:     #f1d7a4;
-      --sage:          #567a47;
-      --sage-lt:       #dce9d0;
-      --shadow-ink:    rgba(44,18,15,0.14);
-      --shadow-deep:   rgba(44,18,15,0.24);
-    }
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
 
-    html { scroll-behavior: smooth; }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
 
-    body {
-      background: linear-gradient(180deg, #3f0d14 0%, #5b111b 30%, #701826 60%, #3a0d12 100%);
-      color: #f3e8d7;
-      min-height: 100vh;
-      font-family: var(--font-sans);
-    }
+        nav a:hover {
+            color: var(--accent-gold);
+        }
 
-    /* Subtle fine-line grid overlay to evoke a premium wine list / menu feel instead of wave rings */
-    .menu-texture-bg {
-      position: absolute; inset: 0; opacity: 0.03;
-      background-size: 20px 20px;
-      background-image: linear-gradient(to right, #8b1a1a 1px, transparent 1px), linear-gradient(to bottom, #8b1a1a 1px, transparent 1px);
-      pointer-events: none;
-    }
+        nav a:hover::after {
+            width: 100%;
+        }
 
-    .site-header {
-      position: relative; overflow: hidden;
-      background: linear-gradient(145deg, #3d0f13 0%, #5a1520 50%, #3d0f13 100%);
-      color: #f5ede0; text-align: center;
-      padding: max(env(safe-area-inset-top), 2.5rem) 1rem 2.5rem;
-    }
-    .site-header .menu-texture-bg { opacity: 0.04; }
-    .site-header::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(139,26,26,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(154,120,32,0.14) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .site-header::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--crimson-mid), var(--gold-lt), var(--crimson-mid), transparent);
-    }
-    .header-mon {
-      width: 52px; height: 52px; border: 1.5px solid rgba(196,160,48,0.5);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px; position: relative; animation: monSpin 20s linear infinite;
-    }
-    @keyframes monSpin { to { transform: rotate(360deg); } }
-    .header-brand {
-      font-family: var(--font-serif); font-size: clamp(11px,2.5vw,13px);
-      letter-spacing: 6px; color: rgba(245,237,224,0.4); margin-bottom: 10px; text-transform: uppercase;
-    }
-    .header-title {
-      font-family: var(--font-display); font-size: clamp(30px,6.5vw,54px);
-      font-weight: 600; letter-spacing: 0.08em; line-height: 1; margin-bottom: 6px;
-      background: linear-gradient(160deg, #f5ede0 30%, var(--gold-pale) 65%, #f5ede0 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .header-title-sub {
-      font-family: var(--font-serif); font-size: clamp(16px,4vw,24px);
-      font-weight: 300; color: rgba(245,237,224,0.6); letter-spacing: 0.2em;
-      margin-bottom: 14px; display: block; italic;
-    }
-    .header-sub {
-      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-      color: rgba(245,237,224,0.38); margin-bottom: 20px;
-    }
-    .brush-divider {
-      width: 120px; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--crimson-mid), transparent);
-      margin: 0 auto 18px; position: relative;
-    }
-    .brush-divider::before, .brush-divider::after {
-      content: '◆'; position: absolute; top: 50%; transform: translateY(-50%);
-      font-size: 6px; color: var(--gold-lt);
-    }
-    .brush-divider::before { left: 18px; }
-    .brush-divider::after  { right: 18px; }
-    .ar-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid rgba(196,160,48,0.3); border-radius: 2px;
-      padding: 7px 18px; font-size: 11px; letter-spacing: 2px;
-      color: rgba(245,237,224,0.55); font-family: var(--font-sans);
-      background: rgba(154,120,32,0.08);
-    }
-    .ar-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--crimson-mid);
-      flex-shrink: 0; animation: pulse 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
-    #language-picker { position: relative; z-index: 10; margin-bottom: 18px; }
-    #lang-select {
-      background: rgba(245,237,224,0.08); color: rgba(245,237,224,0.7);
-      border: 1px solid rgba(196,160,48,0.25); border-radius: 2px;
-      padding: 7px 12px; font-family: var(--font-sans);
-      font-size: 12px; cursor: pointer; outline: none; letter-spacing: 1px;
-    }
-    #lang-select option { background: #1c1108; color: #f5ede0; }
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            background: radial-gradient(circle at center, #1f1a10 0%, #0a0a0a 70%);
+            position: relative;
+        }
 
-    .tabs-wrap {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(243,232,215,0.97);
-      border-bottom: 1px solid rgba(139,26,26,0.2);
-      padding: 0 1rem;
-    }
-    .tabs-inner {
-      max-width: 740px; margin: 0 auto;
-      display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; padding: 10px 0;
-    }
-    .tabs-inner::-webkit-scrollbar { display: none; }
-    .tab-btn {
-      flex-shrink: 0; padding: 6px 18px; border: 1px solid rgba(139,26,26,0.18);
-      background: transparent; color: var(--ink-faint);
-      font-family: var(--font-sans); font-size: 12px; letter-spacing: 1px;
-      cursor: pointer; transition: all 0.2s ease; white-space: nowrap; border-radius: 1px;
-    }
-    .tab-btn:hover { border-color: var(--crimson); color: var(--crimson); background: rgba(139,26,26,0.04); }
-    .tab-btn.active { background: var(--crimson); color: var(--washi); border-color: var(--crimson); box-shadow: 0 2px 12px rgba(139,26,26,0.3); }
+        .hero-tagline {
+            font-size: 0.9rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            animation: fadeInDown 1s ease forwards;
+        }
 
-    .main { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            max-width: 900px;
+            letter-spacing: -0.01em;
+            animation: fadeIn 1.2s ease forwards;
+        }
 
-    .skeleton-grid { display: flex; flex-direction: column; gap: 10px; }
-    .skeleton-card {
-      background: rgba(243,232,215,0.5); border-radius: 1px;
-      padding: 1.1rem 1.25rem; border: 1px solid rgba(214,178,126,0.18);
-      border-left: 3px solid rgba(139,26,26,0.15);
-      animation: shimmer 1.4s ease-in-out infinite;
-    }
-    .skeleton-card .sk-row { display: flex; gap: 14px; }
-    .skeleton-card .sk-thumb { width: 68px; height: 68px; flex-shrink: 0; background: rgba(139,26,26,0.12); border-radius: 1px; }
-    .skeleton-card .sk-body { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
-    .skeleton-card .sk-line { height: 12px; background: rgba(139,26,26,0.1); border-radius: 2px; }
-    .skeleton-card .sk-line.wide { width: 65%; }
-    .skeleton-card .sk-line.full { width: 100%; }
-    .skeleton-card .sk-line.mid  { width: 45%; }
-    .skeleton-card .sk-line.short { width: 30%; }
-    @keyframes shimmer { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            animation: fadeInUp 1.4s ease forwards;
+        }
 
-    .state-box { text-align: center; padding: 4rem 1rem; color: var(--ink-faint); }
-    .state-box .spinner {
-      width: 36px; height: 36px; border: 2px solid rgba(139,26,26,0.15);
-      border-top-color: var(--crimson); border-radius: 50%;
-      animation: spin 0.9s linear infinite; margin: 0 auto 1rem; background: transparent;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .state-box p { font-size: 13px; font-family: var(--font-serif); letter-spacing: 2px; }
-     
-    .section-label {
-      display: flex; align-items: center; gap: 14px; margin: 2rem 0 1rem;
-      font-family: var(--font-serif); font-size: 11px; letter-spacing: 4px;
-      text-transform: uppercase; color: #f0d2a0;
-    }
-    .section-label span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,26,26,0.3), transparent); }
-    .section-label::before { content: '◈'; font-size: 10px; color: var(--gold); flex-shrink: 0; }
+        /* --- Global Buttons --- */
+        .btn-gold {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--bg-primary);
+            background-color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
 
-    .items-grid { display: flex; flex-direction: column; gap: 10px; }
-    .menu-card {
-      background: rgba(243,232,215,0.96); border: 1px solid rgba(214,178,126,0.18);
-      border-left: 3px solid transparent; border-radius: 1px; padding: 1.1rem 1.25rem;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
-      -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 100px;
-    }
-    .menu-card:hover {
-      border-left-color: var(--crimson); transform: translateX(3px);
-      box-shadow: -4px 0 0 var(--crimson), 3px 4px 18px var(--shadow-ink);
-      background: rgba(255,252,248,0.95);
-    }
-    .card-row { display: flex; gap: 14px; align-items: flex-start; }
-    .card-thumb {
-      width: 68px; height: 68px; flex-shrink: 0; border-radius: 1px;
-      background: linear-gradient(135deg, var(--washi-dark) 0%, var(--washi-deep) 100%);
-      border: 1px solid rgba(139,26,26,0.15); display: flex; align-items: center; justify-content: center;
-      font-size: 32px; position: relative; overflow: hidden;
-    }
-    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; decoding: async; }
-    .ar-pill {
-      position: absolute; bottom: 2px; right: 2px; background: var(--crimson);
-      color: var(--washi); font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
-      font-family: var(--font-display); line-height: 1.4;
-    }
-    .card-body { flex: 1; min-width: 0; }
-    .name-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
-    .dish-name { font-family: var(--font-body); font-size: 19px; font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
-    .dish-jp { font-family: var(--font-serif); font-size: 12px; font-weight: 300; color: var(--ink-faint); letter-spacing: 1px; }
-     
-    .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin: 5px 0 7px; }
-    .tag { font-size: 10px; padding: 2px 9px; font-family: var(--font-sans); font-weight: 500; letter-spacing: 0.5px; border-radius: 1px; }
-    .tag-veg  { background: var(--sage-lt); color: var(--sage); border: 1px solid rgba(74,103,65,0.2); }
-    .tag-new  { background: rgba(139,26,26,0.08); color: var(--crimson); border: 1px solid rgba(139,26,26,0.2); }
-    .tag-dotd { background: rgba(154,120,32,0.1); color: var(--gold); border: 1px solid rgba(154,120,32,0.25); }
-     
-    .dish-desc { font-size: 12.5px; color: var(--ink-light); line-height: 1.65; margin-bottom: 10px; font-family: var(--font-sans); }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; }
-    .dish-price { font-family: var(--font-body); font-size: 22px; font-weight: 600; color: var(--ink); }
-    .price-sym { font-family: var(--font-sans); font-size: 12px; color: var(--ink-faint); margin-right: 1px; }
-     
-    .ar-btn {
-      display: inline-flex; align-items: center; gap: 6px; background: var(--ink);
-      color: var(--washi); border: none; padding: 8px 16px;
-      font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px;
-      cursor: pointer; transition: background 0.18s, box-shadow 0.18s;
-      -webkit-tap-highlight-color: transparent; min-height: 44px; border-radius: 1px; position: relative;
-    }
-    .ar-btn::before { content: ''; position: absolute; inset: 0; background: var(--crimson); opacity: 0; transition: opacity 0.18s; }
-    .ar-btn:hover::before { opacity: 1; }
-    .ar-btn:hover { box-shadow: 0 4px 14px rgba(139,26,26,0.4); }
-    .ar-btn > * { position: relative; z-index: 1; }
-    .ar-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .btn-gold:hover {
+            background-color: transparent;
+            color: var(--accent-gold);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+        }
 
-    /* ── MODAL ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(10,6,2,0.88);
-      z-index: 9000; align-items: flex-end; justify-content: center;
-      padding: 0; backdrop-filter: blur(2px);
-    }
-    @media (min-width: 540px) { .modal-overlay { align-items: center; padding: 1.5rem; } }
-    .modal-overlay.open { display: flex; }
-    .modal-card {
-      background: #f3e8d7; border-top: 3px solid var(--crimson);
-      width: 100%; max-width: 520px; max-height: 92svh;
-      overflow-y: auto; overscroll-behavior: contain; position: relative;
-      animation: slideUp 0.28s cubic-bezier(0.22,1,0.36,1);
-    }
-    @media (min-width: 540px) {
-      .modal-card { border-top: none; border: 1px solid rgba(139,26,26,0.2); border-radius: 2px; animation: fadeIn 0.22s ease; }
-    }
-    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: none; opacity: 1; } }
-    @keyframes fadeIn  { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: none; } }
-     
-    .modal-viewer-wrap {
-      width: 100%; height: 300px;
-      background: linear-gradient(160deg, #120c05 0%, #1e1208 50%, #120c05 100%);
-      position: relative; overflow: hidden;
-    }
-    .modal-viewer-wrap::before {
-      content: ''; position: absolute; inset: 12px;
-      border: 1px solid rgba(196,160,48,0.18); pointer-events: none; z-index: 3;
-    }
+        /* --- Premium Carousel Section --- */
+        .carousel-section {
+            padding: 8rem 4%;
+            background-color: var(--bg-secondary);
+            position: relative;
+        }
 
-    #mv-wrapper { position: absolute; inset: 0; z-index: 2; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
-    #mv-wrapper.mv-visible { opacity: 1; pointer-events: auto; }
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
 
-    model-viewer {
-      display: block; width: 100%; height: 300px; background: transparent;
-      --progress-bar-color: #b8860b; --progress-mask: transparent;
-      touch-action: pan-y pinch-zoom; position: absolute; inset: 0;
-    }
-    model-viewer > [slot="ar-button"] { display: none !important; }
+        .section-header span {
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            display: block;
+            margin-bottom: 1rem;
+        }
 
-    .mv-ar-badge {
-      position: absolute; top: 10px; left: 50%; transform: translateX(-50%) translateY(-8px);
-      background: rgba(20,12,4,0.92); border: 1px solid var(--gold);
-      padding: 4px 14px; font-family: var(--font-display); font-size: 9px; letter-spacing: 2px;
-      color: var(--gold-pale); text-transform: uppercase; opacity: 0; transition: opacity 0.4s, transform 0.4s;
-      pointer-events: none; z-index: 4; white-space: nowrap;
-    }
-    .mv-ar-badge.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .scale-info {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      background: rgba(20,12,4,0.85); border: 1px solid rgba(196,160,48,0.2);
-      padding: 4px 14px; font-family: var(--font-sans); font-size: 9px; letter-spacing: 2px;
-      color: rgba(245,237,224,0.45); text-transform: uppercase; white-space: nowrap; z-index: 4; pointer-events: none;
-    }
-    .modal-close {
-      position: absolute; top: 12px; right: 12px; width: 36px; height: 36px;
-      background: rgba(10,6,2,0.6); border: 1px solid rgba(196,160,48,0.2);
-      color: rgba(245,237,224,0.7); font-size: 16px; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 10; transition: background 0.15s, border-color 0.15s; font-family: serif;
-    }
-    .modal-close:hover { background: var(--crimson); border-color: var(--crimson); color: var(--washi); }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+        }
 
-    .mv-loader {
-      position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-      background: linear-gradient(160deg, #120c05 0%, #1e1208 50%, #120c05 100%); transition: opacity 0.3s;
-    }
-    .mv-loader.hidden { opacity: 0; pointer-events: none; }
-    .mv-loader-ring { width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(196,160,48,0.15); border-top-color: var(--gold); animation: spin 0.8s linear infinite; }
-    .mv-loader-text { font-family: var(--font-display); font-size: 10px; letter-spacing: 3px; color: var(--gold-pale); opacity: 0.6; }
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
 
-    .modal-body { padding: 1.5rem 1.6rem 2rem; }
-    .modal-name { font-family: var(--font-display); font-size: 26px; font-weight: 600; letter-spacing: 0.05em; color: var(--ink); margin-bottom: 2px; }
-    .modal-jp { font-family: var(--font-serif); font-size: 14px; font-weight: 300; color: var(--ink-faint); letter-spacing: 3px; margin-bottom: 12px; }
-    .modal-desc { font-size: 13.5px; color: var(--ink-light); line-height: 1.75; padding: 12px 16px; border-left: 3px solid var(--crimson); background: rgba(139,26,26,0.04); margin-bottom: 18px; font-family: var(--font-sans); }
-    .modal-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(139,26,26,0.15); }
-    .modal-price { font-family: var(--font-body); font-size: 32px; font-weight: 600; color: var(--ink); }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+        }
 
-    .mv-ar-btn-wrap { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 6; display: none; gap: 10px; align-items: center; }
-    .modal-ar-launch-btn {
-      display: inline-flex; align-items: center; gap: 8px; background: var(--crimson); color: var(--washi);
-      border: none; padding: 11px 24px; font-family: var(--font-display); font-size: 12px; font-weight: 600;
-      letter-spacing: 2px; cursor: pointer; white-space: nowrap; min-height: 44px; box-shadow: 0 4px 18px rgba(139,26,26,0.45); transition: opacity 0.15s;
-    }
-    .modal-ar-launch-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .carousel-slide {
+            min-width: 100%;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
 
-    /* Adjusted color blend from beige to a rich transparent dark tint to match the wine aesthetic background */
-    .site-footer {
-      text-align: center; padding: 1.8rem 1rem; font-size: 11px; letter-spacing: 2px;
-      background: rgba(40, 10, 15, 0.6); color: #d8b98e; border-top: 1px solid rgba(139,26,26,0.15);
-      line-height: 2; font-family: var(--font-serif); position: relative;
-    }
-    .site-footer::before { content: '✿  ✿  ✿'; display: block; color: var(--crimson); opacity: 0.4; font-size: 14px; letter-spacing: 8px; margin-bottom: 8px; }
-    .menu-card.unavailable { opacity: 0.4; pointer-events: none; }
-     
-    .funzone-btn {
-      display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--crimson), var(--gold));
-      color: var(--washi); text-decoration: none; padding: 8px 16px; font-family: var(--font-sans); font-size: 11px; font-weight: 500;
-      letter-spacing: 1px; box-shadow: 0 4px 14px rgba(139,26,26,0.4); transition: opacity 0.15s;
-    }
-    .funzone-btn:hover { opacity: 0.85; }
+        @media (max-width: 768px) {
+            .carousel-slide {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
 
-    .ar-not-supported {
-      display: none; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 6;
-      background: rgba(20,12,4,0.92); border: 1px solid rgba(196,160,48,0.3); padding: 8px 18px; font-family: var(--font-sans);
-      font-size: 11px; color: rgba(245,237,224,0.6); letter-spacing: 1px; white-space: nowrap; text-align: center;
-    }
-  </style>
+        .slide-image-wrapper {
+            position: relative;
+            height: 450px;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Placeholders for beautiful dish/AR abstract visuals */
+        .slide-image-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(0,0,0,0) 70%);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        .slide-image-wrapper i {
+            font-size: 5rem;
+            color: rgba(212, 175, 55, 0.25);
+            z-index: 1;
+        }
+
+        .slide-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .slide-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .benefit-stat {
+            display: flex;
+            gap: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 2rem;
+        }
+
+        .stat-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .stat-item p {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0;
+        }
+
+        /* Carousel Navigation Controls */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border-color: var(--accent-gold);
+        }
+
+        .carousel-btn.prev { left: -25px; }
+        .carousel-btn.next { right: -25px; }
+
+        @media (max-width: 1250px) {
+            .carousel-btn.prev { left: 10px; }
+            .carousel-btn.next { right: 10px; }
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 3rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .dot.active {
+            background: var(--accent-gold);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* --- Signature Services Section --- */
+        .services-section {
+            padding: 8rem 4%;
+            background-color: var(--bg-primary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 992px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .service-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 3.5rem 2.5rem;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            transform: scaleX(0);
+            transition: var(--transition-smooth);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .service-features-list {
+            list-style: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .service-features-list li {
+            font-size: 0.85rem;
+            color: #d0d0d0;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .service-features-list li i {
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+        }
+
+        .service-card .btn-gold {
+            width: 100%;
+            text-align: center;
+            padding: 0.85rem 1rem;
+            background-color: transparent;
+            color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .service-card:hover .btn-gold {
+            background-color: var(--accent-gold);
+            color: var(--bg-primary);
+            border-color: var(--accent-gold);
+        }
+
+        /* --- Luxury Footer --- */
+        footer {
+            background-color: #050505;
+            padding: 4rem 4% 2rem 4%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="menu-texture-bg"></div>
-  <div style="position:absolute;top:max(env(safe-area-inset-top),1rem);right:1rem;z-index:20;">
-    <a href="FunZone.html" class="funzone-btn">🎮 FunZone</a>
-  </div>
-  <div id="language-picker">
-    <select id="lang-select">
-      <option value="en">English</option>
-      <option value="kr">한국어</option>
-      <option value="kn">ಕನ್ನಡ</option>
-      <option value="ta">தமிழ்</option>
-      <option value="ml">മലയാളം</option>
-      <option value="te">తెలుగు</option>
-    </select>
-  </div>
-  <div class="header-mon"></div>
-  <p class="header-brand">Korean Cuisine</p>
-  <h1 class="header-title">HOMIGA</h1>
-  <span class="header-title-sub">Hansik l Barbecue l Soju</span>
-  <div class="brush-divider"></div>
-  <p class="header-sub" id="ui-sub-tag">Authentic Korean Cuisine</p>
-  <span class="ar-badge">
-    <span class="ar-dot"></span>
-    <span id="ui-ar-badge">Interactive 3D &amp; AR Preview</span>
-  </span>
-</header>
-
-<nav class="tabs-wrap" aria-label="Menu categories">
-  <div class="tabs-inner" id="tabs-inner">
-    </div>
-</nav>
-
-<main class="main">
-  <div id="items-container">
-    <div class="skeleton-grid" id="skeleton-ui" aria-hidden="true">
-      <div class="skeleton-card"><div class="sk-row"><div class="sk-thumb"></div><div class="sk-body"><div class="sk-line wide"></div><div class="sk-line full"></div><div class="sk-line full"></div><div class="sk-line short"></div></div></div></div>
-      <div class="skeleton-card"><div class="sk-row"><div class="sk-thumb"></div><div class="sk-body"><div class="sk-line mid"></div><div class="sk-line full"></div><div class="sk-line full"></div><div class="sk-line short"></div></div></div></div>
-    </div>
-  </div>
-</main>
-
-<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="Dish detail">
-  <div class="modal-card">
-    <div class="modal-viewer-wrap" id="modal-viewer-wrap">
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-
-      <div class="mv-loader" id="mv-loader">
-        <div class="mv-loader-ring"></div>
-        <div class="mv-loader-text">LOADING MODEL</div>
-      </div>
-
-      <div id="modal-photo" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:1;"></div>
-      <div id="mv-wrapper"></div>
-
-      <div class="mv-ar-badge" id="mv-ar-badge">✦ AR Ready</div>
-      <div class="scale-info"  id="scale-info">Actual portion size</div>
-
-      <div class="mv-ar-btn-wrap" id="mv-ar-btn-wrap">
-        <button class="modal-ar-launch-btn" id="modal-ar-launch-btn">✦ View On Table</button>
-      </div>
-
-      <div class="ar-not-supported" id="ar-not-supported">
-        AR not supported on this device — rotate to view in 3D
-      </div>
-    </div>
-
-    <div class="modal-body">
-      <h2 class="modal-name" id="modal-name"></h2>
-      <p  class="modal-jp"   id="modal-jp"></p>
-      <div class="tags-row"  id="modal-tags"></div>
-      <p  class="modal-desc" id="modal-desc"></p>
-      <div class="modal-footer">
-        <div class="modal-price" id="modal-price"></div>
-        <div class="tags-row"    id="modal-tags2"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="site-footer">
-  Tap any dish to view in 3D &nbsp;·&nbsp; Prices in ₹ &nbsp;·&nbsp; 🌿 Vegetarian friendly<br>
-  <span style="opacity:0.5;font-size:10px;">AR requires a compatible mobile device · Model size reflects actual portion</span>
-</footer>
-
-<script>
-/* ─────────────────────────────────────────────────────────────────────
-   CONFIGURATION & MAPS
-   ───────────────────────────────────────────────────────────────────── */
-const ASSETS_BASE = '3d-model';
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ96kFrQI4iBZw11-ICCLwI-4_By0eEE6pzi8EOCrI8EumjR5deqcdOo7u4ed7lMFuvE0TdvaYjv44k/pub?output=csv';
-
-const LOCAL_ASSETS = {
-  'karamisoramen': { folder:'KaramisoRamen', file:'KaramisoRamen', scale:.35 },
-  'shioramen':     { folder:'ShioRamen',     file:'ShioRamen',     scale:.35 },
-  'shoyuramen':    { folder:'ShoyuRamen',    file:'ShoyuRamen',    scale:.35 },
-  'tantanmen':     { folder:'Tantanman',     file:'Tantanman',     scale:.35 } 
-};
-
-const EMOJI_MAP = {
-  'karamisoramen': '🍜',
-  'shioramen':     '🍜',
-  'shoyuramen':    '🍜',
-  'tantanmen':     '🍜',
-};
-
-const I18N = {
-en: { sub:'Authentic Korean Cuisine',badge:'Interactive 3D & AR Preview',veg:'veg',loading:'Loading...',all:'All',starter:'Starters',main:'Main Course',dessert:'Desserts'}, 
-kr: { sub:'정통 한국 요리', badge:'인터랙티브 3D 및 AR 미리보기', veg:'채식', loading:'로딩 중...', all:'전체', starter:'애피타이저', main:'메인 코스', dessert:'디저트' },
-kn: { sub:'ಪ್ರಾಮಾಣಿಕ ಕೊರಿಯನ್ ಆಹಾರ', badge:'3D ಮತ್ತು AR ಮುನ್ನೋಟ', veg:'ಸಸ್ಯಾಹಾರಿ', loading:'ಲೋಡ್ ಆಗುತ್ತಿದೆ...', all:'ಎಲ್ಲಾ', starter:'ಸ್ಟಾರ್ಟರ್', main:'ಮುಖ್ಯ ಕೋರ್ಸ್', dessert:'ಡೆಸರ್ಟ್' },
-ta: { sub:'உண்மையான கொரிய உணவு', badge:'3D மற்றும் AR மாதிரிக்காட்சி', veg:'சைவம்', loading:'ஏற்றப்படுகிறது...', all:'அனைத்தும்', starter:'தொடக்க உணவு', main:'முக்கிய உணவு', dessert:'இனிப்பு' },
-ml: { sub:'ആധികാരിക കൊറിയൻ വിഭവങ്ങൾ', badge:'3D & AR പ്രിവ്യൂ', veg:'വെജ്', loading:'ലോഡ് ചെയ്യുന്നു...', all:'എല്ലാം', starter:'സ്റ്റാർട്ടർ', main:'പ്രധാന വിഭവം', dessert:'ഡെസേർട്ട്' },
-te: { sub:'ప్రామాణిక కొరియన్ వంటకాలు', badge:'3D & AR ప్రివ్యూ', veg:'శాఖాహారం', loading:'లోడ్ అవుతోంది...', all:'అన్నీ', starter:'స్టార్టర్', main:'ప్రధాన వంటకం', dessert:'డెజర్ట్' },
-};
-const CAT_LABELS = {
-  all: {
-    en:'All',
-    kr:'전체',
-    kn:'ಎಲ್ಲಾ',
-    ta:'அனைத்தும்',
-    ml:'எല്ലാം',
-    te:'అన్నీ'
-  },
-
-  starter: {
-    en:'Starters',
-    kr:'애피타이저',
-    kn:'ಸ್ಟಾರ್ಟರ್',
-    ta:'தொடக்க உணவு',
-    ml:'ஸ்டാർட்டர்',
-    te:'స్టార్టర్'
-  },
-
-  'main-course': {
-    en:'Main Course',
-    kr:'메인 코스',
-    kn:'ಮುಖ್ಯ ಕೋರ್ಸ್',
-    ta:'முக்கிய உணவு',
-    ml:'പ്രധാന വിഭവം',
-    te:'ప్రధాన వంటకం'
-  },
-
-  dessert: {
-    en:'Desserts',
-    kr:'디저트',
-    kn:'ಡೆಸರ್ಟ್',
-    ta:'இனிப்பு',
-    ml:'ഡെസೇர்ട്ട്',
-    te:'డెజర్ట్'
-  }
-};
-
-
-/* ─────────────────────────────────────────────
-   SESSION CACHING PROMISE
-───────────────────────────────────────────── */
-const CACHE_KEY = 'menu_csv_v1';
-const CACHE_TTL = 15 * 60 * 1000;
-
-function getCachedCSV() {
-  try {
-    const raw = sessionStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const { ts, text } = JSON.parse(raw);
-    if (Date.now() - ts > CACHE_TTL) { sessionStorage.removeItem(CACHE_KEY); return null; }
-    return text;
-  } catch { return null; }
-}
-function setCachedCSV(text) {
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), text })); } catch {}
-}
-
-const csvPromise = (async () => {
-  const cached = getCachedCSV();
-  if (cached) return cached;
-  const res = await fetch(CSV_URL);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const text = await res.text();
-  setCachedCSV(text);
-  return text;
-})();
-
-let mvModulePromise = null;
-let mvModuleReady = false;
-
-function ensureModelViewerLoaded() {
-  if (!mvModulePromise) {
-    mvModulePromise = import('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js')
-      .then(() => { mvModuleReady = true; });
-  }
-  return mvModulePromise;
-}
-
-const glbPrefetched = new Set();
-function prefetchGlb(glbPath) {
-  if (!glbPath || glbPrefetched.has(glbPath)) return;
-  glbPrefetched.add(glbPath);
-  const link = document.createElement('link');
-  link.rel = 'prefetch'; link.href = glbPath;
-  link.as = 'fetch'; link.crossOrigin = 'anonymous';
-  document.head.appendChild(link);
-}
-
-function preloadAboveFoldPosters(dishes, count = 4) {
-  const idle = window.requestIdleCallback || (cb => setTimeout(cb, 200));
-  idle(() => {
-    dishes.slice(0, count).forEach(d => {
-      if (!d.posterPath) return;
-      const link = document.createElement('link');
-      link.rel = 'preload'; link.as = 'image'; link.href = d.posterPath;
-      document.head.appendChild(link);
-    });
-  });
-}
-
-/* ─────────────────────────────────────────────
-   UTILITY PARSERS
-───────────────────────────────────────────── */
-function normalizeKey(str) { return (str||'').toLowerCase().replace(/\s+/g,'-').trim(); }
-
-function getLocalAssets(dishName) {
-  const key = normalizeKey(dishName);
-  const entry = LOCAL_ASSETS[key];
-  if (!entry) return { posterPath:'', glbPath:'', usdzPath:'', scale:0.05, orbit:'0deg 75deg 105%' };
-  const base = `${ASSETS_BASE}/${entry.folder}/${entry.file}`;
-  return {
-    posterPath: `${ASSETS_BASE}/${entry.folder}/${entry.file.toLowerCase()}.png`,
-    glbPath:    `${base}.glb`,
-    usdzPath:   `${base}.usdz`,
-    scale:      entry.scale,
-    orbit:      entry.orbit ?? '0deg 75deg 105%'
-  };
-}
-
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  if (lines.length < 2) return [];
-  const headers = splitLine(lines[0]).map(h => h.trim().toLowerCase());
-  return lines.slice(1).map(line => {
-    const vals = splitLine(line), obj = {};
-    headers.forEach((h, i) => { obj[h] = (vals[i]||'').trim(); });
-    return obj;
-  });
-}
-
-function splitLine(line) {
-  const result=[]; let cur='', inQ=false;
-  for (let i=0; i<line.length; i++) {
-    const ch=line[i];
-    if(ch==='"'&&!inQ){inQ=true;continue;}
-    if(ch==='"'&&inQ){if(line[i+1]==='"'){cur+='"';i++;}else{inQ=false;}continue;}
-    if(ch===','&&!inQ){result.push(cur);cur='';continue;}
-    cur+=ch;
-  }
-  result.push(cur); return result;
-}
-
-/* ─────────────────────────────────────────────
-   STATE VARIABLES
-───────────────────────────────────────────── */
-let allDishes=[], rawRows=[], activeCategory='all', currentLang='en';
-const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || 
-              (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1);
-
-function rowToDish(row) {
-  const truthy = v => ['true','yes','1'].includes((v||'').toLowerCase());
-  const sfx = {it:'_it',kn:'_kn',ta:'_ta',ml:'_ml',te:'_te'}[currentLang]||'';
-  const desc = row[`description${sfx}`] || row['description'] || '';
-  const name = row[`name${sfx}`]        || row['name']        || '';
-  const local = getLocalAssets(row['name']);
-  return {
-    id: row['id']||'', name,
-    category: (row['category']||'other').toLowerCase(),
-    desc, price: parseInt(row['price']||'0',10),
-    veg: truthy(row['veg']), available: truthy(row['available']),
-    glbPath: local.glbPath, usdzPath: local.usdzPath,
-    posterPath: local.posterPath, scale: local.scale,
-    orbit: local.orbit,
-    emoji: EMOJI_MAP[normalizeKey(row['name'])]||'🍽️'
-  };
-}
-
-/* ─────────────────────────────────────────────
-   RENDERING LAYOUT WORKFLOWS
-───────────────────────────────────────────── */
-function tagHTML(d) {
-  const t = I18N[currentLang]||I18N.en;
-  return [
-    d.veg   ? `<span class="tag tag-veg">🌿 ${t.veg}</span>` : '',
-    d.isNew ? `<span class="tag tag-new">✨ New</span>` : '',
-    d.dotd  ? `<span class="tag tag-dotd">★ chef's pick</span>` : ''
-  ].join('');
-}
-
-function catLabel(cat) {
-  const langPack = I18N[currentLang] || I18N.en;
-  return langPack[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
-}
-
-function renderTabs() {
-  const cats = ['all','starter','main-course','dessert'];
-  const wrap = document.getElementById('tabs-inner');
-  wrap.innerHTML = cats.map(c =>
-    `<button class="tab-btn${c===activeCategory?' active':''}" data-cat="${c}">${catLabel(c)}</button>`
-  ).join('');
-  wrap.querySelectorAll('.tab-btn').forEach(btn =>
-    btn.addEventListener('click', ()=>{ activeCategory=btn.dataset.cat; renderTabs(); renderItems(); })
-  );
-}
-
-const SVG_CUBE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
-
-function cardHTML(d, isAboveFold) {
-  const imgLoading = isAboveFold ? 'eager' : 'lazy';
-  const fetchPriority = isAboveFold ? 'fetchpriority="high"' : '';
-  const thumb = d.posterPath
-    ? `<img src="${d.posterPath}" alt="${d.name}" loading="${imgLoading}" decoding="async" ${fetchPriority}
-         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-       <span style="display:none;font-size:32px;width:100%;height:100%;align-items:center;justify-content:center;">${d.emoji}</span>`
-    : `<span style="font-size:32px;">${d.emoji}</span>`;
-  return `
-    <div class="menu-card${d.available?'':' unavailable'}" data-id="${d.id}" role="button" tabindex="0" aria-label="View ${d.name}">
-      <div class="card-row">
-        <div class="card-thumb">
-          ${thumb}
-          ${d.glbPath?'<span class="ar-pill">AR</span>':''}
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-container">
+            <!-- Referencing your provided file name verbatim -->
+            <img src="livedishai logo.png" alt="Live Dish-AI Logo">
         </div>
-        <div class="card-body">
-          <div class="name-row">
-            <span class="dish-name">${d.name}</span>
-          </div>
-          <div class="tags-row">${tagHTML(d)}</div>
-          <p class="dish-desc">${d.desc}</p>
-          <div class="card-footer">
-            <div class="dish-price"><span class="price-sym">₹</span>${d.price.toLocaleString('en-IN')}</div>
-            ${d.glbPath?`<button class="ar-btn" data-id="${d.id}">${SVG_CUBE} View in AR</button>`:''}
-          </div>
+        <nav>
+            <a href="#benefits">The Vision</a>
+            <a href="#services">Bespoke Services</a>
+            <a href="#" class="reserve-link">Request Briefing</a>
+        </nav>
+    </header>
+
+    <!-- Hero Showcase Section -->
+    <section class="hero">
+        <span class="hero-tagline">The Future of Fine Dining</span>
+        <h1>Elevate the Culinary Senses via Augmented Reality</h1>
+        <p>Crafting hyper-realistic visual experiences curated for the world's most prestigious culinary institutions and luxury hotels.</p>
+        <a href="#services" class="btn-gold">Explore the Suite</a>
+    </section>
+
+    <!-- Interactive Carousel: AR Benefits -->
+    <section id="benefits" class="carousel-section">
+        <div class="section-header">
+            <span>Immersive Gastronomy</span>
+            <h2>Why Luxury Fine Dining Needs WebAR</h2>
         </div>
-      </div>
-    </div>`;
-}
 
-function renderItems() {
-  const filtered = activeCategory==='all' ? allDishes : allDishes.filter(d=>d.category===activeCategory);
-  const container = document.getElementById('items-container');
+        <div class="carousel-container">
+            <button class="carousel-btn prev" aria-label="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="carousel-btn next" aria-label="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
+            
+            <div class="carousel-track">
+                <!-- Slide 1 -->
+                <div class="carousel-slide">
+                    <div class="slide-image-wrapper">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="slide-content">
+                        <h3>Eliminate Uncertainty with Perfect Presentation</h3>
+                        <p>Allow distinguished patrons to visualize complex textures, artistic ingredient arrangements, and precise scale of legendary dishes right on their table before ordering.</p>
+                        <div class="benefit-stat">
+                            <div class="stat-item">
+                                <h4>+35%</h4>
+                                <p>Average Order Value</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>92%</h4>
+                                <p>Guest Satisfaction</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  let html = '';
-  if (activeCategory==='all') {
-    const grouped={};
-    filtered.forEach(d=>{ (grouped[d.category]=grouped[d.category]||[]).push(d); });
-    let cardIndex = 0;
-    html = Object.entries(grouped).map(([cat,items])=>
-      `<div class="section-label"><span></span>${catLabel(cat)}<span></span></div>
-       <div class="items-grid">${items.map(d => cardHTML(d, cardIndex++ < 4)).join('')}</div>`
-    ).join('');
-  } else {
-    html = `<div class="items-grid">${filtered.map((d,i) => cardHTML(d, i < 4)).join('')}</div>`;
-  }
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <div class="slide-image-wrapper">
+                        <i class="fa-solid fa-champagne-glasses"></i>
+                    </div>
+                    <div class="slide-content">
+                        <h3>A Bespoke Storytelling Canvas</h3>
+                        <p>Transform historical dining narratives. Share the curated origin stories of premium vintage selections, rare truffles, or artisanal spices using elegant architectural overlays.</p>
+                        <div class="benefit-stat">
+                            <div class="stat-item">
+                                <h4>4.8x</h4>
+                                <p>Social Media Shares</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>100%</h4>
+                                <p>Zero App Downloads</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  container.innerHTML = html;
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <div class="slide-image-wrapper">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div class="slide-content">
+                        <h3>Seamless Operational Harmony</h3>
+                        <p>Bridge the gap between exquisite culinary aesthetics and flawless data analytics. Drive higher turns, minimize table communication errors, and streamline smart inventory predictive choices.</p>
+                        <div class="benefit-stat">
+                            <div class="stat-item">
+                                <h4>-18%</h4>
+                                <p>Table Turn Times</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>Top Tier</h4>
+                                <p>Brand Prestige</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  requestAnimationFrame(() => {
-    container.querySelectorAll('.menu-card').forEach(card => {
-      const d = allDishes.find(x=>x.id===card.dataset.id);
-      if (!d) return;
-      const doPrefetch = () => { prefetchGlb(d.glbPath); ensureModelViewerLoaded(); };
-      card.addEventListener('mouseenter', doPrefetch, { once:true, passive:true });
-      card.addEventListener('touchstart',  doPrefetch, { once:true, passive:true });
-      card.addEventListener('click', ()=>openModal(card.dataset.id));
-      card.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') openModal(card.dataset.id); });
-    });
-    container.querySelectorAll('.ar-btn').forEach(btn =>
-      btn.addEventListener('click', e=>{ e.stopPropagation(); openModal(btn.dataset.id); })
-    );
-  });
-}
+            <div class="carousel-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </section>
 
-/* ─────────────────────────────────────────────
-   MODEL INTERACTION & AR COMPLIANCE HOOKS
-───────────────────────────────────────────── */
-const elMvWrapper    = document.getElementById('mv-wrapper');
-const elMvLoader      = document.getElementById('mv-loader');
-const elPhoto         = document.getElementById('modal-photo');
-const elArBadge       = document.getElementById('mv-ar-badge');
-const elScaleInfo     = document.getElementById('scale-info');
-const elArBtnWrap     = document.getElementById('mv-ar-btn-wrap');
-const elArLaunch      = document.getElementById('modal-ar-launch-btn');
-const elArNotSupported= document.getElementById('ar-not-supported');
+    <!-- Three Tier Signature Services -->
+    <section id="services" class="services-section">
+        <div class="section-header">
+            <span>The Offerings</span>
+            <h2>Architectural Digital Ecosystem</h2>
+        </div>
 
-let currentDish = null;
-let elMV = null; 
+        <div class="services-grid">
+            <!-- Service 1 -->
+            <div class="service-card">
+                <div>
+                    <div class="service-icon"><i class="fa-solid fa-cube"></i></div>
+                    <h3>1) AR Dish on Table</h3>
+                    <p>Enchant physical environments. Impeccably detailed, 3D culinary visual models projected accurately in the real world directly onto the table surface.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fa-solid fa-circle"></i> Pure WebAR — No Application Required</li>
+                        <li><i class="fa-solid fa-circle"></i> Dynamic Lighting & Real-Scale Accuracy</li>
+                        <li><i class="fa-solid fa-circle"></i> Interactive Texture and Ingredient Inspection</li>
+                    </ul>
+                </div>
+                <!-- Button ready for custom href attribute later -->
+                <a href="#" class="btn-gold">Deploy Experience</a>
+            </div>
 
-function showLoader() { elMvLoader.classList.remove('hidden'); }
-function hideLoader() { elMvLoader.classList.add('hidden'); }
-function showMV()      { elMvWrapper.classList.add('mv-visible'); }
-function hideMV()      { elMvWrapper.classList.remove('mv-visible'); }
+            <!-- Service 2 -->
+            <div class="service-card">
+                <div>
+                    <div class="service-icon"><i class="fa-solid fa-address-card"></i></div>
+                    <h3>2) AR Dish Marketing Card</h3>
+                    <p>Extend hospitality beyond property walls. Immersive physical collateral, luxury VIP invitations, and premium gift tokens that trigger premium AR models.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fa-solid fa-circle"></i> Custom Branded High-End Stationery Prints</li>
+                        <li><i class="fa-solid fa-circle"></i> Perfect for Royal Wedding / Corporate Galas</li>
+                        <li><i class="fa-solid fa-circle"></i> Exclusive VIP Preview Engagements</li>
+                    </ul>
+                </div>
+                <!-- Button ready for custom href attribute later -->
+                <a href="#" class="btn-gold">Inquire Suite</a>
+            </div>
 
-function setPhoto(d) {
-  if (d.posterPath) {
-    elPhoto.innerHTML = `
-      <img src="${d.posterPath}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover;" loading="eager" decoding="async"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <span style="display:none;font-size:80px;align-items:center;justify-content:center;width:100%;height:100%;">${d.emoji}</span>`;
-  } else {
-    elPhoto.innerHTML = `<span style="font-size:80px;">${d.emoji}</span>`;
-  }
-  elPhoto.style.display = 'flex';
-}
+            <!-- Service 3 -->
+            <div class="service-card">
+                <div>
+                    <div class="service-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <h3>3) AR Digital Platform</h3>
+                    <p>Complete luxury architectural environment. A beautiful customer portal featuring advanced checkout flows merged into enterprise hospitality intelligence dashboards.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fa-solid fa-circle"></i> Bespoke Digital Concierge & Add-To-Cart</li>
+                        <li><i class="fa-solid fa-circle"></i> Real-time Table & Seat Occupancy Tracking</li>
+                        <li><i class="fa-solid fa-circle"></i> Analytics Engine: Sales, Bills, & Dish Trends</li>
+                    </ul>
+                </div>
+                <!-- Button ready for custom href attribute later -->
+                <a href="#" class="btn-gold">Launch Enterprise</a>
+            </div>
+        </div>
+    </section>
 
-function updateARButtonVisibility() {
-  if (!elMV) return;
-  const canAR = elMV.canActivateAR;
-  elArBtnWrap.style.display      = canAR ? 'flex' : 'none';
-  elArNotSupported.style.display = canAR ? 'none' : 'block';
-}
+    <!-- Luxury Footer -->
+    <footer>
+        <img src="livedishai logo.png" alt="Live Dish-AI Logo" class="footer-logo">
+        <p class="footer-text">&copy; 2026 Live Dish-AI. Serving Iconic Luxury Standards.</p>
+    </footer>
 
-function openModal(id) {
-  const d = allDishes.find(x=>x.id===id);
-  if (!d) return;
-  currentDish = d;
+    <!-- Carousel Logic Script -->
+    <script>
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.carousel-btn.next');
+        const prevButton = document.querySelector('.carousel-btn.prev');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        const dots = Array.from(dotsContainer.children);
 
-  document.getElementById('modal-name').textContent = d.name;
-  document.getElementById('modal-desc').textContent = d.desc;
-  document.getElementById('modal-price').innerHTML  = `<span style="font-family:var(--font-sans);font-size:14px;color:var(--ink-faint)">₹</span>${d.price.toLocaleString('en-IN')}`;
-  document.getElementById('modal-tags').innerHTML   = tagHTML(d);
-  document.getElementById('modal-tags2').innerHTML  = tagHTML(d);
+        let currentIndex = 0;
 
-  hideMV();
-  elArBadge.classList.remove('visible');
-  elScaleInfo.textContent = '';
-  elArBtnWrap.style.display = 'none';
-  elArNotSupported.style.display = 'none';
-  elArLaunch.disabled = false;
-  elArLaunch.textContent = '✦ View On Table';
-
-  setPhoto(d);
-  showLoader();
-  elMvWrapper.innerHTML = '';
-
-  if (d.glbPath) {
-    prefetchGlb(d.glbPath);
-
-    ensureModelViewerLoaded().then(() => {
-      if (currentDish?.id !== d.id) return; 
-
-      const s = (d.scale ?? 1).toFixed(6);
-      const scaleString = `${s} ${s} ${s}`;
-
-      elMV = document.createElement('model-viewer');
-      elMV.id = 'main-mv';
-      elMV.setAttribute('ar', '');
-      elMV.setAttribute('ar-modes', 'webxr');
-      elMV.setAttribute('ar-placement', 'floor');
-      elMV.setAttribute('ar-scale', 'fixed');
-      elMV.setAttribute('xr-environment', '');
-      elMV.setAttribute('camera-controls', '');
-      elMV.setAttribute('touch-action', 'pan-y');
-      elMV.setAttribute('shadow-intensity', '1');
-      elMV.setAttribute('shadow-softness', '0.8');
-      elMV.setAttribute('environment-image', 'neutral');
-      elMV.setAttribute('exposure', '1');
-      elMV.setAttribute('min-camera-orbit', 'auto auto 60%');
-      elMV.setAttribute('max-camera-orbit', 'auto auto 140%');
-      elMV.setAttribute('interaction-prompt', 'none');
-      elMV.setAttribute('loading', 'eager');
-      elMV.setAttribute('reveal', 'manual');
-      elMV.setAttribute('scale', scaleString);
-      elMV.style.setProperty('--ar-scale', s);
-      elMV.setAttribute('camera-orbit', d.orbit ?? '0deg 75deg 105%');
-
-      if (isIOS && d.usdzPath) { elMV.setAttribute('ios-src', d.usdzPath); }
-
-      const slotBtn = document.createElement('button');
-      slotBtn.setAttribute('slot', 'ar-button');
-      slotBtn.id = 'mv-ar-slot-btn';
-      slotBtn.setAttribute('aria-hidden', 'true');
-      slotBtn.style.display = 'none';
-      elMV.appendChild(slotBtn);
-
-      elMV.addEventListener('load', () => { if (currentDish?.id === d.id) onMVLoaded(d); });
-      elMV.addEventListener('error', () => {
-        hideLoader();
-        if (currentDish) setPhoto(currentDish);
-        elArLaunch.disabled = false;
-        elArLaunch.textContent = '⚠ Retry';
-      });
-
-      elMV.addEventListener('ar-status', e => {
-        const status = e.detail.status;
-        if (status === 'failed' || status === 'not-presenting') {
-          elArLaunch.disabled = false;
-          elArLaunch.textContent = '✶ View in AR';
+        function updateCarousel(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            currentIndex = index;
         }
-        if (status === 'session-started') {
-          elArLaunch.disabled = false;
-          elArLaunch.textContent = '✦ AR Active';
-        }
-      });
 
-      elMvWrapper.appendChild(elMV);
-      elMV.setAttribute('src', d.glbPath);
-    });
-  } else {
-    hideLoader();
-  }
+        nextButton.addEventListener('click', () => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= slides.length) nextIndex = 0;
+            updateCarousel(nextIndex);
+        });
 
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+        prevButton.addEventListener('click', () => {
+            let prevIndex = currentIndex - 1;
+            if (prevIndex < 0) prevIndex = slides.length - 1;
+            updateCarousel(prevIndex);
+        });
 
-function onMVLoaded(d) {
-  if (currentDish?.id !== d.id || !elMV) return;
-  const s = (d.scale ?? 1).toFixed(6);
-  elMV.setAttribute('scale', `${s} ${s} ${s}`);
-  elMV.style.setProperty('--ar-scale', s);
-  elMV.dismissPoster();        
-  hideLoader();
-  elPhoto.style.display = 'none';
-  showMV();
-  elArBadge.classList.add('visible');
-  elScaleInfo.textContent = 'Actual portion size';
-  updateARButtonVisibility();
-}
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateCarousel(index);
+            });
+        });
 
-elArLaunch.addEventListener('click', () => {
-  if (elArLaunch.disabled || !currentDish || !elMV) return;
-  const d = currentDish;
-
-  ensureModelViewerLoaded().then(() => {
-    if (currentDish?.id !== d.id) return;
-    if (!elMV.canActivateAR) {
-      elArNotSupported.style.display = 'block';
-      elArBtnWrap.style.display = 'none';
-      return;
-    }
-    const launch = () => {
-      if (currentDish?.id !== d.id) return;
-      try { elMV.activateAR(); } catch(e) { console.warn('activateAR:', e); }
-    };
-
-    if (elMvWrapper.classList.contains('mv-visible')) {
-      launch();
-    } else {
-      elArLaunch.disabled = true;
-      elArLaunch.textContent = '⏳ Loading…';
-      elMV.addEventListener('load', () => {
-        elArLaunch.disabled = false;
-        elArLaunch.textContent = '✦ View On Table';
-        launch();
-      }, { once: true });
-    }
-  });
-});
-
-function safePause() { if (mvModuleReady && elMV && typeof elMV.pause === 'function') elMV.pause(); }
-function safePlay()  { if (mvModuleReady && elMV && typeof elMV.play  === 'function') elMV.play();  }
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-  currentDish = null;
-  safePause();
-  if (elMvWrapper) elMvWrapper.innerHTML = '';
-  elMV = null;
-}
-
-document.getElementById('modal-overlay').addEventListener('transitionend', () => {
-  if (document.getElementById('modal-overlay').classList.contains('open')) safePlay();
-});
-
-document.addEventListener('visibilitychange', () => { document.hidden ? safePause() : safePlay(); });
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
-
-document.getElementById('lang-select').addEventListener('change', e => {
-  currentLang = e.target.value;
-  const t = I18N[currentLang]||I18N.en;
-  document.getElementById('ui-sub-tag').textContent  = t.sub;
-  document.getElementById('ui-ar-badge').textContent = t.badge;
-  allDishes = rawRows.map(rowToDish).filter(d=>d.name);
-  renderTabs(); renderItems();
-});
-
-/* ─────────────────────────────────────────────
-   INITIALIZATION CORE ENTRY
-───────────────────────────────────────────── */
-async function init() {
-  const container = document.getElementById('items-container');
-  try {
-    const text = await csvPromise;
-    rawRows    = parseCSV(text);
-    allDishes  = rawRows.map(rowToDish).filter(d=>d.name);
-    if (!allDishes.length) throw new Error('No dishes found.');
-
-    preloadAboveFoldPosters(allDishes);
-    renderTabs();
-    renderItems();
-  } catch(err) {
-    console.error('Menu load error:', err);
-    container.innerHTML = `
-      <div class="state-box">
-        <p style="color:var(--crimson);font-family:var(--font-display);letter-spacing:2px;margin-bottom:10px">Could not load menu</p>
-        <p style="font-size:13px;line-height:1.8;color:var(--ink-light)">
-          Make sure your sheet is published:<br>
-          <strong>File → Share → Publish to web → CSV</strong><br><br>
-          Google Sheet Connection Error
-        </p>
-      </div>`;
-  }
-}
-
-/* ===========================
-       DISABLE RIGHT CLICK & DEV TOOLS
-    ============================ */
-    document.addEventListener('contextmenu', (e) => e.preventDefault());
-    document.onkeydown = function(e) {
-      if (e.keyCode === 123) return false; // F12
-      if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67 || e.keyCode === 75)) return false;
-      if (e.ctrlKey && e.keyCode === 85) return false; // Ctrl+U
-    };
-
-init();
-</script>
+        // Optional Auto-play to keep visuals lively
+        setInterval(() => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= slides.length) nextIndex = 0;
+            updateCarousel(nextIndex);
+        }, 8000);
+    </script>
 </body>
 </html>
