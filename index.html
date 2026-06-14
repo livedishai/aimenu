@@ -3,149 +3,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Dish-AI | The Pinnacle of Gastronomic Tech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <title>Live Dish-AI | Ultra-Luxury Hospitality Interface</title>
+    <!-- Premium Google Fonts: Cinzel for Royal Serif Headers, Montserrat for Modern Data Layouts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Icons for Dashboard Simulation -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --gold: #C5A059;
-            --dark: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
-            --transition: cubic-bezier(0.23, 1, 0.32, 1);
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --gold-bright: #D4AF37;
+            --dark-obsidian: #050608;
+            --card-overlay: rgba(5, 6, 8, 0.7);
+            --transition-fluid: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--dark);
-            color: white;
+            background-color: var(--dark-obsidian);
+            color: #ffffff;
             font-family: 'Montserrat', sans-serif;
-            margin: 0;
             overflow-x: hidden;
+            background: radial-gradient(circle at 50% 30%, #11141a 0%, #050608 80%);
         }
 
-        /* Premium Navbar */
+        /* --- Luxury Global Header --- */
         header {
-            padding: 2rem 5%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            background: rgba(5, 5, 5, 0.8);
+            z-index: 1000;
+            background: rgba(5, 6, 8, 0.85);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .logo { height: 40px; }
+        .brand-logo {
+            height: 48px;
+            object-fit: contain;
+        }
 
-        /* Hero with Parallax Feel */
-        .hero {
-            height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-login {
+            border: 1px solid var(--gold-bright);
+            padding: 0.6rem 2rem;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            border-radius: 30px;
+            transition: var(--transition-fluid);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .btn-login:hover {
+            background: var(--gold-bright);
+            color: var(--dark-obsidian);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        /* --- Hero Presentation Context --- */
+        .hero-showcase {
+            padding-top: 10rem;
+            padding-bottom: 3rem;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&q=80&w=2070');
+            position: relative;
+        }
+
+        .hero-showcase h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            letter-spacing: 0.25em;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 4rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        /* --- Premium Service Button Grid Architecture --- */
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 4% 5rem 4%;
+        }
+
+        .services-action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .services-action-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Deep Custom Interactive Button Cards */
+        .service-action-card {
+            position: relative;
+            height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             background-size: cover;
             background-position: center;
+            cursor: pointer;
+            transition: var(--transition-fluid);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            text-decoration: none;
         }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 5rem; letter-spacing: 0.2rem; }
+        /* Dynamic Visual Background References */
+        .card-table {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(5,6,8,0.95)), 
+                              url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1000');
+        }
 
-        /* Advanced Card Animation */
-        .services-grid {
+        .card-card {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(5,6,8,0.95)), 
+                              url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1000');
+        }
+
+        .card-dashboard {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(5,6,8,0.95)), 
+                              url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000');
+        }
+
+        /* Premium Micro-Interactions on Hover */
+        .service-action-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px var(--gold-bright);
+            opacity: 0;
+            transition: var(--transition-fluid);
+            pointer-events: none;
+        }
+
+        .service-action-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px var(--gold-glow);
+            border-color: var(--gold-bright);
+        }
+
+        .service-action-card:hover::after {
+            opacity: 1;
+        }
+
+        .card-label-wrapper {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(to top, rgba(5,6,8,1) 70%, rgba(5,6,8,0));
+            z-index: 2;
+        }
+
+        .card-label-wrapper h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: var(--transition-fluid);
+        }
+
+        .service-action-card:hover .card-label-wrapper h2 {
+            color: var(--gold-bright);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .card-label-wrapper p {
+            font-size: 0.8rem;
+            color: #a0a5b0;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* --- Live Animated Content & Telemetry Section --- */
+        .telemetry-animation-suite {
+            background: radial-gradient(circle at 50% 100%, #0c0f14 0%, #050608 100%);
+            padding: 6rem 4%;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .telemetry-grid {
+            max-width: 1300px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            padding: 5rem;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
         }
 
-        .card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 3rem;
-            transition: 0.6s var(--transition);
-            transform-style: preserve-3d;
-            perspective: 1000px;
+        @media (max-width: 992px) {
+            .telemetry-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
         }
 
-        .card:hover {
-            transform: translateY(-20px) rotateX(10deg);
-            border-color: var(--gold);
-        }
-
-        /* Dashboard Simulation */
-        .dashboard-preview {
-            background: #111;
+        /* Seat Occupancy Mapping Space */
+        .occupancy-map-panel {
+            position: relative;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 16px;
             padding: 2rem;
-            border-radius: 10px;
-            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .occupancy-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .occupancy-header i {
+            color: var(--gold-bright);
+            font-size: 1.2rem;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        .occupancy-header h3 {
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #e0e0e0;
+        }
+
+        #occupancyCanvas {
+            width: 100%;
+            height: 320px;
+            background: #080a0e;
+            border-radius: 8px;
+            border: 1px solid rgba(212,175,55,0.05);
+        }
+
+        /* Analytics Rolling Intelligence Panel */
+        .analytics-data-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .analytics-title-block {
+            margin-bottom: 1rem;
+        }
+
+        .analytics-title-block span {
+            font-size: 0.75rem;
+            color: var(--gold-bright);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .analytics-title-block h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .metrics-hardware-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            font-size: 0.8rem;
+            gap: 1.5rem;
         }
 
-        .stat { color: var(--gold); font-weight: bold; }
+        .metric-telemetry-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-telemetry-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            height: 50%;
+            width: 2px;
+            background: var(--gold-bright);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #8a909d;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .metric-change {
+            font-size: 0.75rem;
+            color: #50b83c;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Luxury Ambient Animations */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px var(--gold-glow); }
+        }
+
+        /* --- Footer Context --- */
+        footer {
+            padding: 4rem 4% 2rem 4%;
+            text-align: center;
+            background: #030405;
+            border-top: 1px solid rgba(255,255,255,0.01);
+        }
+
+        .footer-brand {
+            height: 40px;
+            opacity: 0.6;
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            font-size: 0.75rem;
+            color: #555860;
+            letter-spacing: 0.1em;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Header Architecture -->
     <header>
-        <img src="livedishai logo.png" class="logo" alt="Live Dish-AI Logo">
-        <nav>
-            <a href="#" style="color:white; text-decoration:none; letter-spacing:2px;">EXPERIENCE</a>
-        </nav>
+        <img src="livedishai logo.png" alt="Live Dish-AI Logo" class="brand-logo">
+        <a href="#" class="btn-login">Log In</a>
     </header>
 
-    <section class="hero">
-        <div>
-            <h1>LIVE DISH-AI</h1>
-            <p>REDESIGNING THE LUXURY DINING NARRATIVE</p>
-        </div>
-    </section>
+    <!-- Core Interactive Hero Layout -->
+    <main>
+        <section class="hero-showcase">
+            <h1>AR DISH-AI: THE PREMIUM EXPERIENCE</h1>
+            
+            <!-- Premium Image-Driven Navigation Grid Components -->
+            <div class="services-container">
+                <div class="services-action-grid">
+                    
+                    <!-- 1) AR DISH ON TABLE (REAL WORLD) BUTTON CARD -->
+                    <a href="#" class="service-action-card card-table">
+                        <div class="card-label-wrapper">
+                            <h2>1) AR DISH ON TABLE</h2>
+                            <p>Real-World Immersive Projection</p>
+                        </div>
+                    </a>
 
-    <div class="services-grid">
-        <!-- Service 1 -->
-        <div class="card">
-            <i class="fas fa-utensils" style="font-size: 2rem; color: var(--gold);"></i>
-            <h2>AR DISH ON TABLE</h2>
-            <p>Hyper-realistic holographic projection of fine cuisine.</p>
-        </div>
+                    <!-- 2) AR DISH ON MARKETING CARD BUTTON CARD -->
+                    <a href="#" class="service-action-card card-card">
+                        <div class="card-label-wrapper">
+                            <h2>2) AR DISH ON MARKETING CARD</h2>
+                            <p>Bespoke Brand Offline Activation</p>
+                        </div>
+                    </a>
 
-        <!-- Service 2 -->
-        <div class="card">
-            <i class="fas fa-crown" style="font-size: 2rem; color: var(--gold);"></i>
-            <h2>MARKETING AR CARDS</h2>
-            <p>Turn every invitation into a luxury brand activation.</p>
-        </div>
+                    <!-- 3) AR DISH WEBSITE WITH FULL ACCESS BUTTON CARD -->
+                    <a href="#" class="service-action-card card-dashboard">
+                        <div class="card-label-wrapper">
+                            <h2>3) AR DISH WEBSITE WITH FULL ACCESS</h2>
+                            <p>Enterprise Management Suite</p>
+                        </div>
+                    </a>
 
-        <!-- Service 3 (Advanced Dashboard) -->
-        <div class="card">
-            <i class="fas fa-chart-pie" style="font-size: 2rem; color: var(--gold);"></i>
-            <h2>ENTERPRISE DASHBOARD</h2>
-            <div class="dashboard-preview">
-                <div>Occupancy: <span class="stat">92%</span></div>
-                <div>Avg Bill: <span class="stat">₹12,400</span></div>
-                <div>Peak Dish: <span class="stat">Truffle Risotto</span></div>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
 
+        <!-- Live Animated Telemetry Content Below -->
+        <section class="telemetry-animation-suite">
+            <div class="telemetry-grid">
+                
+                <!-- Live Node Occupancy Visualizer (Canvas Driven) -->
+                <div class="occupancy-map-panel">
+                    <div class="occupancy-header">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <h3>Live Tracking of Seat Occupancy</h3>
+                    </div>
+                    <canvas id="occupancyCanvas"></canvas>
+                </div>
+
+                <!-- Live Data Simulation Metrics Layout -->
+                <div class="analytics-data-panel">
+                    <div class="analytics-title-block">
+                        <span>Intelligence Engine</span>
+                        <h2>Analysis of Bills, Sales & Dishes</h2>
+                    </div>
+
+                    <div class="metrics-hardware-layout">
+                        <!-- Metric Box 1 -->
+                        <div class="metric-telemetry-card">
+                            <div class="metric-label"><i class="fa-solid fa-chart-line"></i> Gross Sales Volume</div>
+                            <div class="metric-value" id="salesMetric">₹0</div>
+                            <div class="metric-change"><i class="fa-solid fa-caret-up"></i> +14.2% today</div>
+                        </div>
+
+                        <!-- Metric Box 2 -->
+                        <div class="metric-telemetry-card">
+                            <div class="metric-label"><i class="fa-solid fa-receipt"></i> Average Ticket Value</div>
+                            <div class="metric-value" id="billMetric">₹0</div>
+                            <div class="metric-change"><i class="fa-solid fa-caret-up"></i> Premium Tier Constant</div>
+                        </div>
+
+                        <!-- Metric Box 3 -->
+                        <div class="metric-telemetry-card">
+                            <div class="metric-label"><i class="fa-solid fa-utensils"></i> Active AR Menu Views</div>
+                            <div class="metric-value" id="dishMetric">0</div>
+                            <div class="metric-change" style="color: var(--gold-bright);"><i class="fa-solid fa-bolt"></i> Live Interactions</div>
+                        </div>
+
+                        <!-- Metric Box 4 -->
+                        <div class="metric-telemetry-card">
+                            <div class="metric-label"><i class="fa-solid fa-couch"></i> Floor Occupancy Rate</div>
+                            <div class="metric-value" id="occupancyMetric">0%</div>
+                            <div class="metric-change"><i class="fa-solid fa-circle" style="font-size:0.5rem; color:#50b83c;"></i> Peak Dinner Sync</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Luxury Minimalist Footer -->
+    <footer>
+        <img src="livedishai logo.png" alt="Live Dish-AI Logo" class="footer-brand">
+        <p>&copy; 2026 Live Dish-AI. Engineered For Ultra-Luxury Hospitality Ecosystems.</p>
+    </footer>
+
+    <!-- Interactive Floor Mapping & Analytics Engine Script -->
     <script>
-        // Reveal Animation on Scroll
-        const cards = document.querySelectorAll('.card');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.style.opacity = 1;
+        // --- HTML5 Canvas Node Connectivity Matrix Animation ---
+        const canvas = document.getElementById('occupancyCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Dynamically resize canvas context buffer width internally
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Generate simulated restaurant floor nodes
+        const nodes = [];
+        const totalNodes = 18;
+
+        for (let i = 0; i < totalNodes; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 2,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                isActive: Math.random() > 0.4 // Simulates occupied seats (True/False)
             });
-        });
-        cards.forEach(card => {
-            card.style.opacity = 0;
-            card.style.transition = "opacity 1s ease-in-out";
-            observer.observe(card);
-        });
+        }
+
+        function drawNodes() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw visual grid data background lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+            ctx.lineWidth = 1;
+            for(let i=0; i<canvas.width; i+=40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for(let j=0; j<canvas.height; j+=40) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+            }
+
+            // Draw system network link paths
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                    if (dist < 110) {
+                        ctx.strokeStyle = nodes[i].isActive && nodes[j].isActive 
+                            ? 'rgba(212, 175, 55, 0.15)' 
+                            : 'rgba(255, 255, 255, 0.03)';
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw tracking node positions
+            nodes.forEach(node => {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                // Wall collision handling bouncing vector
+                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fillStyle = node.isActive ? '#D4AF37' : 'rgba(255,255,255,0.15)';
+                ctx.fill();
+
+                if (node.isActive) {
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius + 5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(212, 175, 55, 0.04)';
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(drawNodes);
+        }
+        drawNodes();
+
+        // --- Rolling Live Metric Counter Engine ---
+        function animateValue(id, start, end, duration, suffix = "") {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                
+                if(suffix === "₹") {
+                    obj.innerHTML = "<span>₹</span>" + currentVal.toLocaleString('en-IN');
+                } else {
+                    obj.innerHTML = currentVal + suffix;
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Initialize incremental numeric tickers once the browser parses script targets
+        setTimeout(() => {
+            animateValue("salesMetric", 120000, 485750, 2500, "₹");
+            animateValue("billMetric", 4000, 14250, 2000, "₹");
+            animateValue("dishMetric", 10, 1482, 1800, "");
+            animateValue("occupancyMetric", 0, 88, 1500, "%");
+        }, 300);
+
+        // Slow interval fluctuate values to simulate ongoing reality transactions
+        setInterval(() => {
+            const baseSales = 485750 + Math.floor(Math.random() * 1500);
+            document.getElementById("salesMetric").innerHTML = "<span>₹</span>" + baseSales.toLocaleString('en-IN');
+            
+            const liveViews = 1482 + Math.floor(Math.random() * 8);
+            document.getElementById("dishMetric").innerHTML = liveViews;
+        }, 4000);
     </script>
 </body>
 </html>
