@@ -1,0 +1,1070 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@200;300;400;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .ld-wrap {
+    background: #080808;
+    color: #f0ece4;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .ld-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    border-bottom: 0.5px solid rgba(197,160,89,0.2);
+    background: rgba(8,8,8,0.95);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .ld-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #C5A059, #8B6914);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #C5A059;
+  }
+
+  .logo-tagline {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba(197,160,89,0.6);
+    margin-top: 1px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: rgba(240,236,228,0.7);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    font-weight: 400;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: #C5A059; }
+
+  .nav-cta {
+    border: 0.5px solid #C5A059;
+    color: #C5A059 !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-size: 10px !important;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s !important;
+  }
+
+  .nav-cta:hover {
+    background: #C5A059 !important;
+    color: #080808 !important;
+  }
+
+  /* HERO */
+  .ld-hero {
+    position: relative;
+    height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(197,160,89,0.08) 0%, transparent 70%),
+                linear-gradient(180deg, #080808 0%, #0f0a05 50%, #080808 100%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(197,160,89,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(197,160,89,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridFade 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes gridFade {
+    from { opacity: 0.3; }
+    to { opacity: 0.8; }
+  }
+
+  .hero-orbs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: orbFloat 8s ease-in-out infinite;
+  }
+
+  .orb-1 { width: 300px; height: 300px; background: rgba(197,160,89,0.06); top: -50px; left: 10%; animation-delay: 0s; }
+  .orb-2 { width: 200px; height: 200px; background: rgba(197,120,50,0.05); top: 40%; right: 5%; animation-delay: -3s; }
+  .orb-3 { width: 150px; height: 150px; background: rgba(197,160,89,0.04); bottom: 10%; left: 30%; animation-delay: -5s; }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-30px) scale(1.1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    animation: heroReveal 1.2s cubic-bezier(0.23,1,0.32,1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #C5A059;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .eyebrow-line {
+    width: 40px;
+    height: 0.5px;
+    background: #C5A059;
+    opacity: 0.6;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title span {
+    background: linear-gradient(135deg, #C5A059, #F0D080, #C5A059);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(240,236,228,0.5);
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: #C5A059;
+    color: #080808;
+    border: none;
+    padding: 0.85rem 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .btn-primary:hover {
+    background: #F0D080;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(197,160,89,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: rgba(240,236,228,0.8);
+    border: 0.5px solid rgba(240,236,228,0.3);
+    padding: 0.85rem 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.4s;
+  }
+
+  .btn-secondary:hover {
+    border-color: #C5A059;
+    color: #C5A059;
+  }
+
+  /* MARQUEE */
+  .ld-marquee {
+    border-top: 0.5px solid rgba(197,160,89,0.15);
+    border-bottom: 0.5px solid rgba(197,160,89,0.15);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    background: rgba(197,160,89,0.02);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marqueeScroll 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: rgba(197,160,89,0.5);
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .marquee-dot { width: 4px; height: 4px; background: rgba(197,160,89,0.4); border-radius: 50%; flex-shrink: 0; }
+
+  /* SECTION */
+  .ld-section { padding: 4rem 2rem; }
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: #C5A059;
+    text-align: center;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(240,236,228,0.45);
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 3rem;
+  }
+
+  /* SERVICE CARDS */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(197,160,89,0.1);
+    border: 0.5px solid rgba(197,160,89,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .svc-card {
+    background: #0c0c0c;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.5s;
+  }
+
+  .svc-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(197,160,89,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .svc-card:hover::before { opacity: 1; }
+  .svc-card:hover { background: #111; }
+
+  .svc-num {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: rgba(197,160,89,0.06);
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .svc-icon {
+    width: 48px;
+    height: 48px;
+    border: 0.5px solid rgba(197,160,89,0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 20px;
+    transition: border-color 0.4s, background 0.4s;
+  }
+
+  .svc-card:hover .svc-icon {
+    border-color: #C5A059;
+    background: rgba(197,160,89,0.08);
+  }
+
+  .svc-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.8rem;
+    color: #f0ece4;
+  }
+
+  .svc-desc {
+    font-size: 12px;
+    color: rgba(240,236,228,0.5);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .svc-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 0.5px solid rgba(197,160,89,0.25);
+    border-radius: 2px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(197,160,89,0.7);
+  }
+
+  /* DASHBOARD SECTION */
+  .dash-section {
+    padding: 4rem 2rem;
+    background: #060606;
+    border-top: 0.5px solid rgba(197,160,89,0.1);
+    border-bottom: 0.5px solid rgba(197,160,89,0.1);
+  }
+
+  .dash-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .dash-left { }
+
+  .dash-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(197,160,89,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .dash-stat {
+    background: #0e0e0e;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dash-stat-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(240,236,228,0.4);
+    margin-bottom: 0.4rem;
+  }
+
+  .dash-stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #C5A059;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .dash-stat-meta {
+    font-size: 10px;
+    color: rgba(240,236,228,0.3);
+    font-weight: 300;
+  }
+
+  .dash-stat-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: rgba(197,160,89,0.4);
+    animation: barGrow 2s ease-out forwards;
+  }
+
+  @keyframes barGrow {
+    from { width: 0; }
+  }
+
+  .bar-92 { animation-name: bar92; }
+  @keyframes bar92 { to { width: 92%; } }
+  .bar-78 { animation-name: bar78; }
+  @keyframes bar78 { to { width: 78%; } }
+  .bar-65 { animation-name: bar65; }
+  @keyframes bar65 { to { width: 65%; } }
+  .bar-88 { animation-name: bar88; }
+  @keyframes bar88 { to { width: 88%; } }
+
+  .dash-insight {
+    background: #0e0e0e;
+    border: 0.5px solid rgba(197,160,89,0.12);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .insight-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #C5A059;
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .insight-text {
+    font-size: 11px;
+    color: rgba(240,236,228,0.5);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .insight-text strong {
+    color: #C5A059;
+    font-weight: 400;
+  }
+
+  /* Chart area */
+  .dash-chart {
+    background: #0e0e0e;
+    border: 0.5px solid rgba(197,160,89,0.1);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .chart-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgba(240,236,228,0.8);
+  }
+
+  .chart-badge {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #C5A059;
+    border: 0.5px solid rgba(197,160,89,0.3);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 100px;
+    margin-bottom: 0.5rem;
+  }
+
+  .chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .chart-bar {
+    width: 100%;
+    border-radius: 2px 2px 0 0;
+    transition: opacity 0.3s;
+    animation: barRise 1.5s cubic-bezier(0.23,1,0.32,1) forwards;
+    transform-origin: bottom;
+  }
+
+  @keyframes barRise {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  .chart-label { font-size: 9px; color: rgba(240,236,228,0.35); letter-spacing: 0.05em; }
+
+  .floor-plan-container {
+    margin-top: 1.5rem;
+    background: #0e0e0e;
+    border: 0.5px solid rgba(197,160,89,0.1);
+    border-radius: 4px;
+    padding: 1.2rem;
+  }
+
+  .floor-title {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(197,160,89,0.5);
+    margin-bottom: 1rem;
+  }
+
+  .floor-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .table-spot {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    transition: transform 0.3s;
+    cursor: default;
+  }
+
+  .table-spot:hover { transform: scale(1.15); }
+  .t-occupied { background: rgba(197,160,89,0.25); color: #C5A059; border: 0.5px solid rgba(197,160,89,0.4); }
+  .t-empty { background: rgba(240,236,228,0.04); color: rgba(240,236,228,0.2); border: 0.5px solid rgba(240,236,228,0.08); }
+  .t-reserved { background: rgba(197,100,50,0.15); color: rgba(197,100,50,0.7); border: 0.5px solid rgba(197,100,50,0.3); }
+
+  /* CLIENTS */
+  .clients-section { padding: 3rem 2rem; text-align: center; }
+
+  .clients-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(240,236,228,0.3);
+    margin-bottom: 2rem;
+  }
+
+  .clients-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .client-tag {
+    padding: 1rem 2rem;
+    border: 0.5px solid rgba(197,160,89,0.08);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: rgba(240,236,228,0.25);
+    transition: all 0.4s;
+    cursor: default;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .client-tag::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0.5px;
+    background: #C5A059;
+    transition: width 0.4s;
+  }
+
+  .client-tag:hover {
+    color: rgba(197,160,89,0.8);
+    border-color: rgba(197,160,89,0.2);
+  }
+
+  .client-tag:hover::after { width: 100%; }
+
+  /* AR FEATURES */
+  .ar-section { padding: 4rem 2rem; }
+
+  .ar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .ar-card {
+    background: #0c0c0c;
+    border: 0.5px solid rgba(197,160,89,0.1);
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s, transform 0.4s;
+    cursor: pointer;
+  }
+
+  .ar-card:hover {
+    border-color: rgba(197,160,89,0.4);
+    transform: translateY(-4px);
+  }
+
+  .ar-card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C5A059, transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .ar-card:hover .ar-card-accent { opacity: 1; }
+
+  .ar-card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .ar-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #f0ece4;
+    margin-bottom: 0.6rem;
+  }
+
+  .ar-card-desc {
+    font-size: 11px;
+    color: rgba(240,236,228,0.45);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* FOOTER */
+  .ld-footer {
+    padding: 2.5rem 2rem;
+    border-top: 0.5px solid rgba(197,160,89,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(240,236,228,0.2);
+    font-weight: 300;
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(197,160,89,0.4);
+    font-weight: 300;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+
+<div class="ld-wrap" role="main">
+  <h2 class="sr-only" style="position:absolute;left:-9999px">Live Dish AI — Premium AR dining experience platform for luxury hospitality brands</h2>
+
+  <!-- NAV -->
+  <nav class="ld-nav">
+    <div class="ld-logo">
+      <div class="logo-icon">🍽</div>
+      <div>
+        <div class="logo-text">LIVE DISH AI</div>
+        <div class="logo-tagline">SEE IT. LOVE IT. ORDER IT.</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#">EXPERIENCE</a>
+      <a href="#">SOLUTIONS</a>
+      <a href="#">CLIENTS</a>
+      <a href="#" class="nav-cta">REQUEST DEMO</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="ld-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="hero-content" style="max-width: 600px; padding: 0 1rem;">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        THE FUTURE OF FINE DINING
+        <span class="eyebrow-line"></span>
+      </div>
+      <h1 class="hero-title">
+        AR DISH‑AI:<br>
+        <span>THE PREMIUM</span><br>
+        EXPERIENCE
+      </h1>
+      <p class="hero-sub">Redefining the luxury gastronomy narrative</p>
+      <div class="hero-cta-group">
+        <button class="btn-primary" onclick="sendPrompt('Tell me more about Live Dish AI AR technology for luxury hotels')">EXPLORE EXPERIENCE ↗</button>
+        <button class="btn-secondary">VIEW PORTFOLIO</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="ld-marquee">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-dot"></span>AR DISH ON TABLE</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>MARKETING ACTIVATION</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>ENTERPRISE DASHBOARD</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SEAT OCCUPANCY TRACKING</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>AI-POWERED ANALYTICS</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>LUXURY HOSPITALITY</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>AR DISH ON TABLE</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>MARKETING ACTIVATION</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>ENTERPRISE DASHBOARD</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>SEAT OCCUPANCY TRACKING</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>AI-POWERED ANALYTICS</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>LUXURY HOSPITALITY</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="ld-section reveal">
+    <div class="section-label"><span class="eyebrow-line"></span>OUR OFFERINGS<span class="eyebrow-line"></span></div>
+    <h2 class="section-title">Three Pillars of Excellence</h2>
+    <p class="section-desc">Engineered for the world's most discerning establishments</p>
+    <div class="services-grid">
+      <div class="svc-card reveal reveal-delay-1">
+        <div class="svc-num">01</div>
+        <div class="svc-icon">📱</div>
+        <div class="svc-title">AR Dish on Table</div>
+        <p class="svc-desc">Guests scan the menu and see hyper-realistic holographic representations of every dish materialize directly on their table. A transformative moment that converts curiosity into conviction.</p>
+        <span class="svc-tag">REAL-WORLD AR</span>
+      </div>
+      <div class="svc-card reveal reveal-delay-2">
+        <div class="svc-num">02</div>
+        <div class="svc-icon">✉️</div>
+        <div class="svc-title">AR Marketing Cards</div>
+        <p class="svc-desc">Transform every invitation, table card, and marketing collateral into an immersive brand experience. Scan to reveal animated dishes, chef stories, and curated pairings.</p>
+        <span class="svc-tag">LUXURY ACTIVATION</span>
+      </div>
+      <div class="svc-card reveal reveal-delay-3">
+        <div class="svc-num">03</div>
+        <div class="svc-icon">📊</div>
+        <div class="svc-title">AR Dish Website</div>
+        <p class="svc-desc">A full-access digital presence where patrons explore your menu in three-dimensional splendor before they arrive — building anticipation, reducing decision fatigue, and elevating the first impression.</p>
+        <span class="svc-tag">FULL ACCESS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD SECTION -->
+  <section class="dash-section reveal">
+    <div class="section-label"><span class="eyebrow-line"></span>INTELLIGENCE SUITE<span class="eyebrow-line"></span></div>
+    <h2 class="section-title">Enterprise Dashboard</h2>
+    <p class="section-desc">Real-time intelligence for peak operational mastery</p>
+    <div class="dash-layout">
+      <div class="dash-left">
+        <div class="dash-stat-grid">
+          <div class="dash-stat">
+            <div class="dash-stat-label">OCCUPANCY</div>
+            <div class="dash-stat-value">92%</div>
+            <div class="dash-stat-meta">Peak coverage</div>
+            <div class="dash-stat-bar bar-92"></div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">AVG COVER</div>
+            <div class="dash-stat-value">₹12.4K</div>
+            <div class="dash-stat-meta">Per guest tonight</div>
+            <div class="dash-stat-bar bar-78"></div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">AR SCANS</div>
+            <div class="dash-stat-value">43,750</div>
+            <div class="dash-stat-meta">This month</div>
+            <div class="dash-stat-bar bar-65"></div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">CONVERSION</div>
+            <div class="dash-stat-value">88%</div>
+            <div class="dash-stat-meta">Scan → order rate</div>
+            <div class="dash-stat-bar bar-88"></div>
+          </div>
+        </div>
+        <div class="dash-insight">
+          <div class="insight-dot"></div>
+          <div class="insight-text">
+            <strong>Truffle Risotto</strong> is tonight's top performer — ordered by 34% of tables after AR scan. <strong>+₹7,076</strong> over baseline.
+          </div>
+        </div>
+        <div class="floor-plan-container" style="margin-top: 1rem;">
+          <div class="floor-title">LIVE SEAT OCCUPANCY</div>
+          <div class="floor-grid" id="floorGrid"></div>
+        </div>
+      </div>
+      <div class="dash-chart">
+        <div class="chart-header">
+          <span class="chart-title">Revenue by Dish Category</span>
+          <span class="chart-badge">LIVE</span>
+        </div>
+        <div class="chart-bars" id="chartBars"></div>
+        <div style="display:flex; gap:8px; flex-wrap: wrap; margin-top: 0.8rem;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,236,228,0.35);letter-spacing:0.1em">
+            <span style="width:8px;height:8px;background:rgba(197,160,89,0.8);border-radius:1px;display:inline-block"></span>MAINS
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,236,228,0.35);letter-spacing:0.1em">
+            <span style="width:8px;height:8px;background:rgba(197,160,89,0.45);border-radius:1px;display:inline-block"></span>DESSERTS
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(240,236,228,0.35);letter-spacing:0.1em">
+            <span style="width:8px;height:8px;background:rgba(197,160,89,0.25);border-radius:1px;display:inline-block"></span>STARTERS
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;border-top:0.5px solid rgba(197,160,89,0.08);padding-top:1.2rem;">
+          <div class="floor-title" style="margin-bottom:0.8rem">TOP DISHES — TONIGHT</div>
+          <div id="topDishes"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AR FEATURES -->
+  <section class="ar-section reveal">
+    <div class="section-label"><span class="eyebrow-line"></span>CAPABILITIES<span class="eyebrow-line"></span></div>
+    <h2 class="section-title">Engineered for Prestige</h2>
+    <p class="section-desc">Purpose-built for The Leela, Taj, ITC, Oberoi & the world's finest</p>
+    <div class="ar-grid">
+      <div class="ar-card reveal reveal-delay-1">
+        <div class="ar-card-accent"></div>
+        <span class="ar-card-icon">🥩</span>
+        <div class="ar-card-title">Photorealistic 3D Dishes</div>
+        <p class="ar-card-desc">Every dish rendered in studio-quality 3D — lighting, texture, garnish, steam. Guests see exactly what arrives, eliminating disappointment and elevating trust.</p>
+      </div>
+      <div class="ar-card reveal reveal-delay-2">
+        <div class="ar-card-accent"></div>
+        <span class="ar-card-icon">🌐</span>
+        <div class="ar-card-title">No App Required</div>
+        <p class="ar-card-desc">Instant web-based AR that launches from any QR code scan. Zero friction for guests — no downloads, no accounts, pure immersion in seconds.</p>
+      </div>
+      <div class="ar-card reveal reveal-delay-1">
+        <div class="ar-card-accent"></div>
+        <span class="ar-card-icon">📍</span>
+        <div class="ar-card-title">Live Occupancy Mapping</div>
+        <p class="ar-card-desc">Real-time floor plan intelligence showing seat status, reservation timing, and turnover predictions. Optimize service before the evening begins.</p>
+      </div>
+      <div class="ar-card reveal reveal-delay-2">
+        <div class="ar-card-accent"></div>
+        <span class="ar-card-icon">💎</span>
+        <div class="ar-card-title">White-Label Luxury</div>
+        <p class="ar-card-desc">Fully branded to your aesthetic — typography, palette, voice. Indistinguishable from a bespoke in-house technology investment worth crores.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section class="clients-section reveal">
+    <div class="clients-label">TRUSTED BY INDIA'S FINEST ESTABLISHMENTS</div>
+    <div class="clients-row">
+      <div class="client-tag">THE LEELA PALACE</div>
+      <div class="client-tag">TAJ HOTELS</div>
+      <div class="client-tag">ITC HOTELS</div>
+      <div class="client-tag">OBEROI</div>
+      <div class="client-tag">HYATT REGENCY</div>
+      <div class="client-tag">FOUR SEASONS</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="ld-footer">
+    <div class="footer-copy">© 2025 LIVE DISH AI · ALL RIGHTS RESERVED</div>
+    <div class="footer-tagline">Where technology meets the art of hospitality</div>
+  </footer>
+</div>
+
+<script>
+  // Floor grid
+  const fg = document.getElementById('floorGrid');
+  const states = ['t-occupied','t-occupied','t-occupied','t-empty','t-occupied','t-occupied','t-reserved','t-occupied','t-empty','t-occupied',
+                  't-occupied','t-reserved','t-occupied','t-occupied','t-empty','t-empty','t-occupied','t-occupied','t-occupied','t-reserved'];
+  states.forEach((s,i) => {
+    const d = document.createElement('div');
+    d.className = 'table-spot ' + s;
+    d.textContent = 'T' + (i+1);
+    fg.appendChild(d);
+  });
+
+  // Chart bars
+  const bars = document.getElementById('chartBars');
+  const data = [
+    {l:'Mon', v:65, c:'rgba(197,160,89,0.8)'},
+    {l:'Tue', v:80, c:'rgba(197,160,89,0.8)'},
+    {l:'Wed', v:55, c:'rgba(197,160,89,0.45)'},
+    {l:'Thu', v:90, c:'rgba(197,160,89,0.8)'},
+    {l:'Fri', v:100, c:'rgba(197,160,89,0.8)'},
+    {l:'Sat', v:85, c:'rgba(197,160,89,0.45)'},
+    {l:'Sun', v:70, c:'rgba(197,160,89,0.25)'},
+  ];
+  data.forEach((d,i) => {
+    const col = document.createElement('div');
+    col.className = 'chart-col';
+    col.innerHTML = `<div class="chart-bar" style="height:${d.v}%;background:${d.c};animation-delay:${i*0.1}s"></div><div class="chart-label">${d.l}</div>`;
+    bars.appendChild(col);
+  });
+
+  // Top dishes
+  const td = document.getElementById('topDishes');
+  const dishes = [
+    {name: 'Truffle Risotto', orders: 34, rev: '₹7,076'},
+    {name: 'Wagyu Striploin', orders: 28, rev: '₹12,400'},
+    {name: 'Burrata & Caviar', orders: 19, rev: '₹4,200'},
+  ];
+  dishes.forEach((d,i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:0.5px solid rgba(197,160,89,0.06)';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.8rem">
+        <span style="font-family:Cinzel,serif;font-size:10px;color:rgba(197,160,89,0.4);min-width:16px">${String(i+1).padStart(2,'0')}</span>
+        <span style="font-size:12px;color:rgba(240,236,228,0.7);font-weight:300">${d.name}</span>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;color:#C5A059;font-family:Cinzel,serif">${d.rev}</div>
+        <div style="font-size:9px;color:rgba(240,236,228,0.3)">${d.orders} orders</div>
+      </div>
+    `;
+    td.appendChild(row);
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Auto-animate hero
+  setTimeout(() => {
+    const hc = document.querySelector('.hero-content');
+    if (hc) hc.style.animation = 'heroReveal 1.2s cubic-bezier(0.23,1,0.32,1) forwards';
+  }, 100);
+</script>
