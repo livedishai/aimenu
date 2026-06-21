@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>liveDish — Country-Themed AR Menus</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Shippori+Mincho:wght@400;600;700&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Serif+JP:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: #0c0c0e;
+      color: #f0e8d8;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════ */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(201,162,39,0.15);
+      background: rgba(12,12,14,0.97);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid #c9a227;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-dot::before {
+      content: ''; width: 12px; height: 12px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e8c764, #c9a227);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.6;transform:scale(.85)} 50%{opacity:1;transform:scale(1)} }
+    .brand-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 18px; color: #f0e8d8; }
+    .brand-name em { color: #c9a227; font-style: normal; }
+    .brand-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(240,232,216,0.4); display: block; margin-top: 2px; }
+
+    /* ══════════════════════════════════════
+       CUISINE SELECTOR GATE
+    ══════════════════════════════════════ */
+    .gate {
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,162,39,0.08) 0%, transparent 65%);
+    }
+    .gate-eyebrow { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: #c9a227; margin-bottom: 10px; }
+    .gate-title { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(26px,5vw,40px); color: #f0e8d8; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .gate-title strong { font-weight: 600; }
+    .gate-desc { font-size: 13px; color: rgba(240,232,216,0.5); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.7; }
+
+    .cuisine-tabs {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .cuisine-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 1.4rem 1.8rem; border-radius: 12px; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      transition: all 0.3s cubic-bezier(.22,1,.36,1);
+      min-width: 140px; -webkit-tap-highlight-color: transparent;
+      animation: rise .6s cubic-bezier(.22,1,.36,1) backwards;
+    }
+    .cuisine-tab:nth-child(1){ animation-delay:.05s }
+    .cuisine-tab:nth-child(2){ animation-delay:.15s }
+    .cuisine-tab:nth-child(3){ animation-delay:.25s }
+    @keyframes rise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+    .cuisine-tab:hover { transform: translateY(-4px); }
+    .cuisine-tab.active-it { background: rgba(141,35,35,0.18); border-color: rgba(196,68,86,0.5); box-shadow: 0 12px 28px rgba(141,35,35,0.25); }
+    .cuisine-tab.active-jp { background: rgba(188,0,45,0.12); border-color: rgba(232,180,188,0.5); box-shadow: 0 12px 28px rgba(26,0,12,0.4); }
+    .cuisine-tab.active-kr { background: rgba(46,89,68,0.18); border-color: rgba(201,162,39,0.5); box-shadow: 0 12px 28px rgba(31,77,61,0.35); }
+
+    .tab-flag { width: 56px; height: 56px; display: block; flex-shrink: 0; }
+    .tab-name { font-size: 13px; font-weight: 600; letter-spacing: .05em; color: #f0e8d8; }
+    .tab-status { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; }
+    .tab-status.live { color: #c9a227; }
+    .tab-status.soon { color: rgba(240,232,216,0.35); }
+
+    /* ══════════════════════════════════════
+       PANELS
+    ══════════════════════════════════════ */
+    .panel { display: none; }
+    .panel.visible { display: block; }
+
+    .panel-back {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 1.4rem; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; border: none; width: 100%; text-align: left; position: sticky; top: 57px; z-index: 90;
+    }
+    .panel-back svg { width: 13px; height: 13px; }
+
+    /* ══════════════════════════════════════
+       ITALIAN — Florentine Renaissance
+       Tricolore stripe, crimson + gold
+       Font: IM Fell English + Cinzel Decorative
+    ══════════════════════════════════════ */
+    .panel-italian {
+      background:
+        repeating-linear-gradient(45deg, rgba(139,60,22,0.025) 0px, rgba(139,60,22,0.025) 1px, transparent 1px, transparent 18px),
+        repeating-linear-gradient(-45deg, rgba(139,60,22,0.025) 0px, rgba(139,60,22,0.025) 1px, transparent 1px, transparent 18px),
+        linear-gradient(180deg, #3b0d0f 0%, #521319 35%, #6b1a23 65%, #3b0d0f 100%);
+      color: #f5e8d0;
+    }
+    .panel-italian .panel-back {
+      background: rgba(44,10,12,0.92);
+      color: rgba(245,232,208,0.6);
+      border-bottom: 1px solid rgba(201,162,39,0.2);
+    }
+    .panel-italian .panel-back:hover { color: #c9a227; }
+
+    .it-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
+    /* Tricolore stripe top — mirrors KR dancheong / JP seigaiha */
+    .it-header::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background: repeating-linear-gradient(90deg,
+        #009246 0px, #009246 33.33%,
+        #f4f5f0 33.33%, #f4f5f0 66.66%,
+        #ce2b37 66.66%, #ce2b37 100%
+      );
+    }
+
+    /* Ghost large script — mirrors jp-kanji / kr-hangul */
+    .it-ghost {
+      font-family: 'Cinzel Decorative', serif; font-size: clamp(38px, 9vw, 68px);
+      color: rgba(196,68,86,0.1); letter-spacing: 0.08em; line-height: 1;
+      margin-bottom: -8px; display: block;
+    }
+    .it-eyebrow {
+      font-family: 'IM Fell English', serif; font-size: 10px; letter-spacing: 4px;
+      color: rgba(201,162,39,0.55); margin-bottom: 12px; font-style: italic;
+    }
+
+    /* Circular stemma — mirrors jp-mon / kr-emblem */
+    .it-stemma {
+      width: 76px; height: 76px; margin: 0 auto 1.2rem;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+
+    .it-title {
+      font-family: 'Cinzel Decorative', serif; font-size: clamp(26px, 6vw, 48px);
+      font-weight: 400; letter-spacing: 0.06em; color: #f5e8d0;
+      text-shadow: 0 1px 10px rgba(44,10,12,0.5); margin-bottom: 6px;
+    }
+    .it-subtitle {
+      font-family: 'IM Fell English', serif; font-size: 13px; font-style: italic;
+      color: rgba(245,232,208,0.42); letter-spacing: 3px; margin-bottom: 1.8rem; display: block;
+    }
+    .it-divider {
+      display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .it-divider::before, .it-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4));
+    }
+    .it-divider::after { transform: scaleX(-1); }
+    .it-divider-glyph { color: #c9a227; font-size: 10px; letter-spacing: 3px; }
+
+    .it-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px;
+      color: rgba(245,232,208,0.5);
+    }
+    .it-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #8d1d2d; animation: pdot 1.8s ease-in-out infinite; }
+    @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.65)} }
+
+    /* Tabs — pill style matching JP */
+    .it-tabs {
+      background: rgba(243,232,208,0.97); border-bottom: 1px solid rgba(139,26,26,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+    }
+    .it-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 2px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
+    .it-tabs-inner::-webkit-scrollbar { display: none; }
+    .it-tab {
+      flex-shrink: 0; padding: 6px 20px; font-family: 'Inter', sans-serif;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      border: 1px solid rgba(139,26,26,0.15); color: rgba(44,18,15,0.45); cursor: pointer;
+      background: transparent; transition: all .2s; border-radius: 999px;
+    }
+    .it-tab:hover { border-color: #8d1d2d; color: #8d1d2d; }
+    .it-tab.active { background: #8d1d2d; color: #f5e8d0; border-color: #8d1d2d; }
+
+    /* Cards — round thumb + Italian subtitle row, matching JP/KR structure */
+    .it-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
+    .it-section-head {
+      display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
+      font-family: 'IM Fell English', serif; font-style: italic; font-size: 11px;
+      letter-spacing: 3px; color: rgba(201,162,39,0.6);
+    }
+    .it-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,26,26,0.18), transparent); }
+
+    .it-card {
+      display: flex; gap: 14px;
+      background: rgba(243,232,208,0.96); border: 1px solid rgba(139,26,26,0.1);
+      border-left: 3px solid transparent; border-radius: 2px; padding: 1.1rem 1.3rem;
+      margin-bottom: 10px; cursor: pointer;
+      transition: border-left-color .2s, transform .2s, box-shadow .2s;
+    }
+    .it-card:hover { border-left-color: #8d1d2d; transform: translateX(3px); box-shadow: -4px 0 0 #8d1d2d, 4px 4px 18px rgba(44,10,12,0.15); }
+    .it-thumb {
+      width: 68px; height: 68px; flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg, #f0e4cc 0%, #e2d1b0 100%);
+      border: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
+    .it-thumb img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
+    .it-ar-pill {
+      position: absolute; bottom: 1px; right: 1px;
+      background: #8d1d2d; color: #f5e8d0; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
+      border-radius: 999px;
+    }
+    .it-body { flex: 1; min-width: 0; }
+    .it-name { font-family: 'IM Fell English', serif; font-size: 18px; color: #2c120f; margin-bottom: 2px; }
+    .it-name-it { font-family: 'IM Fell English', serif; font-size: 11px; font-style: italic; color: rgba(44,18,15,0.4); letter-spacing: 2px; margin-bottom: 5px; }
+    .it-desc { font-size: 12px; color: rgba(44,18,15,0.55); line-height: 1.7; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .it-footer { display: flex; align-items: center; justify-content: space-between; }
+    .it-price { font-family: 'IM Fell English', serif; font-size: 20px; color: #2c120f; }
+    .it-price-sym { font-size: 11px; color: rgba(44,18,15,0.4); margin-right: 2px; }
+    .it-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #2c120f; color: #f5e8d0; border: none; padding: 7px 14px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
+    }
+    .it-ar-btn:hover { background: #8d1d2d; }
+    .it-veg { font-size: 9px; padding: 2px 10px; background: rgba(74,103,65,0.1); color: #567a47; border: 1px solid rgba(74,103,65,0.22); border-radius: 999px; font-family: 'Inter', sans-serif; }
+
+    .it-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(40,10,12,0.7); border-top: 1px solid rgba(139,26,26,0.15);
+      font-family: 'IM Fell English', serif; font-style: italic; font-size: 12px;
+      color: rgba(201,162,39,0.45); letter-spacing: 1px; line-height: 2.2;
+    }
+
+    /* ══════════════════════════════════════
+       JAPANESE — Ukiyo-e Woodblock Print
+       Indigo + vermillion + ivory
+       Font: Shippori Mincho + Noto Serif JP
+    ══════════════════════════════════════ */
+    .panel-japanese {
+      background:
+        /* Washi paper grain: fine horizontal lines */
+        repeating-linear-gradient(0deg, rgba(232,220,200,0.018) 0px, rgba(232,220,200,0.018) 1px, transparent 1px, transparent 4px),
+        linear-gradient(180deg, #0f1525 0%, #192038 40%, #0f1525 100%);
+      color: #f0e8dc;
+    }
+    .panel-japanese .panel-back {
+      background: rgba(12,16,30,0.92);
+      color: rgba(240,232,220,0.6);
+      border-bottom: 1px solid rgba(232,180,188,0.15);
+    }
+    .panel-japanese .panel-back:hover { color: #e8b4bc; }
+
+    /* Japanese header */
+    .jp-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
+    /* Seigaiha wave pattern accent (top border) */
+    .jp-header::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg,
+        #bc002d 0px, #bc002d 6px,
+        #f5f1ea 6px, #f5f1ea 7px,
+        transparent 7px, transparent 18px);
+    }
+
+    .jp-kanji {
+      font-family: 'Noto Serif JP', serif; font-size: clamp(42px, 9vw, 72px);
+      color: rgba(232,180,188,0.12); letter-spacing: -0.02em; line-height: 1;
+      margin-bottom: -12px; display: block;
+    }
+    .jp-eyebrow {
+      font-family: 'Noto Serif JP', serif; font-size: 10px; letter-spacing: 4px;
+      color: rgba(232,180,188,0.55); margin-bottom: 10px;
+    }
+    .jp-title {
+      font-family: 'Shippori Mincho', serif; font-size: clamp(26px, 6vw, 48px);
+      font-weight: 600; letter-spacing: 0.04em;
+      color: #f0e8dc; margin-bottom: 6px;
+      text-shadow: 0 1px 10px rgba(12,16,30,0.5);
+    }
+    .jp-subtitle {
+      font-family: 'Noto Serif JP', serif; font-size: 13px; font-weight: 300;
+      color: rgba(240,232,220,0.45); letter-spacing: 3px; margin-bottom: 1.8rem;
+    }
+
+    /* Mon (family crest) circle */
+    .jp-mon {
+      width: 70px; height: 70px; border-radius: 50%;
+      border: 1.5px solid rgba(232,180,188,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.4rem; position: relative;
+    }
+    .jp-mon::before {
+      content: ''; position: absolute; inset: 8px; border-radius: 50%;
+      border: 1px solid rgba(232,180,188,0.2);
+    }
+    .jp-mon-koi { font-family: 'Noto Serif JP', serif; font-size: 26px; color: #e8b4bc; }
+
+    /* Sashiko divider */
+    .jp-divider {
+      display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .jp-divider::before, .jp-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,180,188,0.4));
+    }
+    .jp-divider::after { transform: scaleX(-1); }
+    .jp-divider-mark { color: #bc002d; font-size: 10px; letter-spacing: 3px; }
+
+    .jp-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(232,180,188,0.22); padding: 6px 18px; border-radius: 999px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px;
+      color: rgba(240,232,220,0.5);
+    }
+    .jp-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #bc002d; animation: pdot 1.8s ease-in-out infinite; }
+
+    /* Japanese tabs — indigo ink style */
+    .jp-tabs {
+      background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(25,32,56,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+    }
+    .jp-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 2px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
+    .jp-tabs-inner::-webkit-scrollbar { display: none; }
+    .jp-tab {
+      flex-shrink: 0; padding: 6px 20px; font-family: 'Inter', sans-serif;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      border: 1px solid rgba(25,32,56,0.12); color: rgba(25,32,56,0.45); cursor: pointer;
+      background: transparent; transition: all .2s;
+      border-radius: 999px;
+    }
+    .jp-tab:hover { border-color: #192038; color: #192038; }
+    .jp-tab.active { background: #192038; color: #f0e8dc; border-color: #192038; }
+
+    /* Japanese menu cards — ink on washi */
+    .jp-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
+    .jp-section-head {
+      display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
+      font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 3px;
+      color: rgba(232,180,188,0.6);
+    }
+    .jp-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,180,188,0.18), transparent); }
+
+    .jp-card {
+      display: flex; gap: 14px;
+      background: rgba(245,241,234,0.96); border: 1px solid rgba(25,32,56,0.1);
+      border-right: 3px solid transparent; border-radius: 2px; padding: 1.1rem 1.3rem;
+      margin-bottom: 10px; cursor: pointer;
+      transition: border-right-color .2s, transform .2s, box-shadow .2s;
+    }
+    .jp-card:hover { border-right-color: #bc002d; transform: translateX(-3px); box-shadow: 4px 0 0 #bc002d, -3px 4px 18px rgba(12,16,30,0.15); }
+    .jp-thumb {
+      width: 68px; height: 68px; flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg, #f0e8dc 0%, #e0d4c0 100%);
+      border: 1px solid rgba(25,32,56,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
+    .jp-thumb img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
+    .jp-ar-pill {
+      position: absolute; bottom: 1px; right: 1px;
+      background: #bc002d; color: #f5f1ea; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
+      border-radius: 999px;
+    }
+    .jp-body { flex: 1; min-width: 0; }
+    .jp-name { font-family: 'Shippori Mincho', serif; font-size: 18px; font-weight: 600; color: #192038; margin-bottom: 2px; }
+    .jp-name-jp { font-family: 'Noto Serif JP', serif; font-size: 11px; font-weight: 300; color: rgba(25,32,56,0.4); letter-spacing: 2px; margin-bottom: 5px; }
+    .jp-desc { font-size: 12px; color: rgba(25,32,56,0.55); line-height: 1.7; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .jp-footer { display: flex; align-items: center; justify-content: space-between; }
+    .jp-price { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #192038; }
+    .jp-price-sym { font-size: 11px; color: rgba(25,32,56,0.4); margin-right: 2px; }
+    .jp-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #192038; color: #f0e8dc; border: none; padding: 7px 14px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
+    }
+    .jp-ar-btn:hover { background: #bc002d; }
+    .jp-veg { font-size: 9px; padding: 2px 10px; background: rgba(25,93,56,0.08); color: #1d5937; border: 1px solid rgba(25,93,56,0.2); border-radius: 999px; font-family: 'Inter', sans-serif; }
+
+    .jp-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(12,16,30,0.7); border-top: 1px solid rgba(232,180,188,0.1);
+      font-family: 'Noto Serif JP', serif; font-size: 12px; font-weight: 300;
+      color: rgba(232,180,188,0.45); letter-spacing: 2px; line-height: 2.2;
+    }
+
+    /* ══════════════════════════════════════
+       KOREAN — Joseon Court Ceremonial
+       Dancheong colors: teal, red, gold, black
+       Font: Nanum Myeongjo + Noto Serif KR
+    ══════════════════════════════════════ */
+    .panel-korean {
+      background:
+        /* Dancheong geometric: repeating rhombus pattern */
+        repeating-linear-gradient(60deg, rgba(46,89,68,0.04) 0px, rgba(46,89,68,0.04) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(-60deg, rgba(201,162,39,0.03) 0px, rgba(201,162,39,0.03) 1px, transparent 1px, transparent 16px),
+        linear-gradient(180deg, #081511 0%, #102319 45%, #081511 100%);
+      color: #ecf3ee;
+    }
+    .panel-korean .panel-back {
+      background: rgba(8,21,17,0.93);
+      color: rgba(236,243,238,0.6);
+      border-bottom: 1px solid rgba(201,162,39,0.15);
+    }
+    .panel-korean .panel-back:hover { color: #c9a227; }
+
+    /* Korean header */
+    .kr-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
+    /* Dancheong stripe top border */
+    .kr-header::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(90deg,
+        #cd2e3a 0px, #cd2e3a 10px,
+        #2e5944 10px, #2e5944 20px,
+        #c9a227 20px, #c9a227 26px,
+        #2e5944 26px, #2e5944 36px,
+        #0047a0 36px, #0047a0 46px,
+        #2e5944 46px, #2e5944 56px,
+        #c9a227 56px, #c9a227 62px,
+        #2e5944 62px, #2e5944 72px,
+        #cd2e3a 72px, #cd2e3a 82px
+      );
+    }
+
+    .kr-hangul {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(38px, 9vw, 68px);
+      color: rgba(201,162,39,0.1); letter-spacing: 0.1em; line-height: 1;
+      margin-bottom: -8px; display: block;
+    }
+    .kr-eyebrow {
+      font-family: 'Noto Serif KR', serif; font-size: 10px; letter-spacing: 4px;
+      color: rgba(201,162,39,0.55); margin-bottom: 12px;
+    }
+
+    /* Dancheong circular emblem */
+    .kr-emblem {
+      width: 76px; height: 76px; margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      border: 2px solid rgba(201,162,39,0.3);
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .kr-emblem::before {
+      content: ''; position: absolute; inset: 6px; border-radius: 50%;
+      border: 1px solid rgba(201,162,39,0.15);
+    }
+    .kr-emblem::after {
+      content: ''; position: absolute; inset: 12px; border-radius: 50%;
+      background:
+        conic-gradient(#cd2e3a 0deg 120deg, #0047a0 120deg 240deg, transparent 240deg 360deg);
+      opacity: 0.7;
+    }
+    .kr-emblem-inner {
+      position: relative; z-index: 2; font-family: 'Noto Serif KR', serif;
+      font-size: 22px; color: #ecf3ee;
+    }
+
+    .kr-title {
+      font-family: 'Nanum Myeongjo', serif; font-size: clamp(26px, 6vw, 48px);
+      font-weight: 700; letter-spacing: 0.05em; color: #ecf3ee;
+      text-shadow: 0 1px 10px rgba(8,21,17,0.5); margin-bottom: 6px;
+    }
+    .kr-subtitle {
+      font-family: 'Noto Serif KR', serif; font-size: 13px; font-weight: 300;
+      color: rgba(236,243,238,0.42); letter-spacing: 3px; margin-bottom: 1.8rem;
+    }
+
+    .kr-divider {
+      display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .kr-divider::before, .kr-divider::after {
+      content: ''; flex: 1; max-width: 70px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4));
+    }
+    .kr-divider::after { transform: scaleX(-1); }
+    .kr-divider-mark { color: #c9a227; font-size: 8px; letter-spacing: 4px; }
+
+    .kr-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px; color: rgba(236,243,238,0.48);
+    }
+    .kr-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9a227; animation: pdot 1.8s ease-in-out infinite; }
+
+    /* Korean tabs — dancheong colors */
+    .kr-tabs {
+      background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(46,89,68,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+    }
+    .kr-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
+    .kr-tabs-inner::-webkit-scrollbar { display: none; }
+    .kr-tab {
+      flex-shrink: 0; padding: 6px 18px; font-family: 'Inter', sans-serif;
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      border: 1px solid rgba(46,89,68,0.2); color: rgba(46,89,68,0.5); cursor: pointer;
+      background: transparent; transition: all .2s;
+      border-radius: 4px;
+    }
+    .kr-tab:hover { border-color: #2e5944; color: #2e5944; background: rgba(46,89,68,0.06); }
+    .kr-tab.active { background: #2e5944; color: #ecf3ee; border-color: #2e5944; }
+    .kr-tab.active.red { background: #cd2e3a; border-color: #cd2e3a; }
+
+    /* Korean menu cards — royal parchment */
+    .kr-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
+    .kr-section-head {
+      display: flex; align-items: center; gap: 12px; margin: 2rem 0 1rem;
+      font-family: 'Noto Serif KR', serif; font-size: 11px; letter-spacing: 4px; color: rgba(201,162,39,0.6);
+    }
+    .kr-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.2), transparent); }
+    .kr-section-head::before { content: '◈'; color: #c9a227; font-size: 10px; flex-shrink: 0; }
+
+    .kr-card {
+      display: flex; gap: 14px;
+      background: rgba(245,241,234,0.96); border-top: 2px solid transparent; border: 1px solid rgba(46,89,68,0.1);
+      border-radius: 4px; padding: 1.1rem 1.3rem;
+      margin-bottom: 10px; cursor: pointer; position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+    }
+    .kr-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #cd2e3a, #2e5944, #c9a227, #0047a0);
+      opacity: 0; transition: opacity .2s;
+    }
+    .kr-card:hover::before { opacity: 1; }
+    .kr-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8,21,17,0.2); }
+    .kr-thumb {
+      width: 68px; height: 68px; flex-shrink: 0; border-radius: 4px;
+      background: linear-gradient(135deg, #e8f0ec 0%, #dce9d8 100%);
+      border: 1px solid rgba(46,89,68,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
+    .kr-thumb img { width:100%;height:100%;object-fit:cover;border-radius:4px; }
+    .kr-ar-pill {
+      position: absolute; bottom: 2px; right: 2px;
+      background: #c9a227; color: #081511; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
+      border-radius: 2px; font-weight: 600;
+    }
+    .kr-body { flex: 1; min-width: 0; }
+    .kr-name { font-family: 'Nanum Myeongjo', serif; font-size: 18px; font-weight: 700; color: #102319; margin-bottom: 2px; }
+    .kr-name-kr { font-family: 'Noto Serif KR', serif; font-size: 11px; font-weight: 300; color: rgba(16,35,25,0.4); letter-spacing: 2px; margin-bottom: 5px; }
+    .kr-desc { font-size: 12px; color: rgba(16,35,25,0.55); line-height: 1.7; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .kr-footer { display: flex; align-items: center; justify-content: space-between; }
+    .kr-price { font-family: 'Nanum Myeongjo', serif; font-size: 20px; font-weight: 700; color: #102319; }
+    .kr-price-sym { font-size: 11px; color: rgba(16,35,25,0.4); margin-right: 2px; }
+    .kr-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #2e5944; color: #ecf3ee; border: none; padding: 7px 14px;
+      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 4px; min-height: 36px;
+    }
+    .kr-ar-btn:hover { background: #cd2e3a; }
+    .kr-veg { font-size: 9px; padding: 2px 10px; background: rgba(46,89,68,0.1); color: #2e5944; border: 1px solid rgba(46,89,68,0.25); border-radius: 4px; font-family: 'Inter', sans-serif; }
+
+    .kr-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(8,21,17,0.8); border-top: 1px solid rgba(201,162,39,0.12);
+      font-family: 'Noto Serif KR', serif; font-size: 11px; font-weight: 300;
+      color: rgba(201,162,39,0.45); letter-spacing: 2px; line-height: 2.2;
+    }
+    .kr-footer-bar::before { content: '— '; }
+    .kr-footer-bar::after { content: ' —'; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 520px) {
+      .cuisine-tabs { gap: 8px; }
+      .cuisine-tab { min-width: 100px; padding: 1.1rem 1rem; }
+      .it-card, .jp-card, .kr-card { flex-direction: column; }
+      .it-thumb, .jp-thumb, .kr-thumb { width: 100%; height: 140px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ TOPBAR ════ -->
+<header class="topbar">
+  <a href="#" class="brand">
+    <div class="brand-dot"></div>
+    <div>
+      <span class="brand-name">live<em>Dish</em></span>
+      <span class="brand-sub">AI Menus · In AR</span>
+    </div>
+  </a>
+  <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(240,232,216,0.35);">Theme Preview</span>
+</header>
+
+<!-- ════ GATE ════ -->
+<section class="gate" id="gate-section">
+  <p class="gate-eyebrow">Choose an experience</p>
+  <h1 class="gate-title"><strong>One Platform.</strong> Every Cuisine.</h1>
+  <p class="gate-desc">Each cuisine has its own visual identity drawn from the authentic design tradition of that country — tap to explore.</p>
+
+  <div class="cuisine-tabs">
+    <button class="cuisine-tab active-it" data-cuisine="italian">
+      <svg class="tab-flag" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <clipPath id="clip-it"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-it" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#c74456" stroke-width="1.2" opacity="0.45"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ddb777" stroke-width="0.7" opacity="0.5" stroke-dasharray="2 4"/>
+        <g clip-path="url(#clip-it)">
+          <rect x="6" y="6" width="29.4" height="88" fill="#009246"/>
+          <rect x="35.4" y="6" width="29.2" height="88" fill="#f4f5f0"/>
+          <rect x="64.6" y="6" width="29.4" height="88" fill="#ce2b37"/>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-it)"/>
+        </g>
+      </svg>
+      <span class="tab-name">Italian</span>
+      <span class="tab-status live">Live demo</span>
+    </button>
+    <button class="cuisine-tab" data-cuisine="japanese">
+      <svg class="tab-flag" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <clipPath id="clip-jp"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-jp" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#e8b4bc" stroke-width="1.2" opacity="0.4"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
+        <g clip-path="url(#clip-jp)">
+          <rect x="6" y="6" width="88" height="88" fill="#f5f1ea"/>
+          <circle cx="50" cy="50" r="18" fill="#bc002d"/>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-jp)"/>
+        </g>
+      </svg>
+      <span class="tab-name">Japanese</span>
+      <span class="tab-status soon">Coming soon</span>
+    </button>
+    <button class="cuisine-tab" data-cuisine="korean">
+      <svg class="tab-flag" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <clipPath id="clip-kr"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-kr" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#c9a227" stroke-width="1.2" opacity="0.4"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#b3293e" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
+        <g clip-path="url(#clip-kr)">
+          <rect x="6" y="6" width="88" height="88" fill="#f5f1ea"/>
+          <path d="M50 30 A20 20 0 0 1 50 70 A10 10 0 0 1 50 50 A10 10 0 0 0 50 30Z" fill="#cd2e3a"/>
+          <path d="M50 30 A20 20 0 0 0 50 70 A10 10 0 0 0 50 50 A10 10 0 0 1 50 30Z" fill="#0047a0"/>
+          <g stroke="#21201d" stroke-width="2.1" stroke-linecap="butt">
+            <line x1="19" y1="20" x2="31" y2="20"/><line x1="19" y1="24.4" x2="31" y2="24.4"/><line x1="19" y1="28.8" x2="31" y2="28.8"/>
+            <line x1="69" y1="20" x2="74.5" y2="20"/><line x1="75.5" y1="20" x2="81" y2="20"/>
+            <line x1="69" y1="24.4" x2="81" y2="24.4"/>
+            <line x1="69" y1="28.8" x2="74.5" y2="28.8"/><line x1="75.5" y1="28.8" x2="81" y2="28.8"/>
+            <line x1="19" y1="71.2" x2="31" y2="71.2"/>
+            <line x1="19" y1="75.6" x2="24.5" y2="75.6"/><line x1="25.5" y1="75.6" x2="31" y2="75.6"/>
+            <line x1="19" y1="80" x2="31" y2="80"/>
+            <line x1="69" y1="71.2" x2="74.5" y2="71.2"/><line x1="75.5" y1="71.2" x2="81" y2="71.2"/>
+            <line x1="69" y1="75.6" x2="74.5" y2="75.6"/><line x1="75.5" y1="75.6" x2="81" y2="75.6"/>
+            <line x1="69" y1="80" x2="74.5" y2="80"/><line x1="75.5" y1="80" x2="81" y2="80"/>
+          </g>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-kr)"/>
+        </g>
+      </svg>
+      <span class="tab-name">Korean</span>
+      <span class="tab-status soon">Coming soon</span>
+    </button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     ITALIAN PANEL
+     Theme: Florentine Renaissance
+     — tricolore stripe, circular stemma,
+       deep crimson ground, IM Fell type
+════════════════════════════════ -->
+<section class="panel panel-italian visible" id="panel-italian">
+
+  <button class="panel-back" onclick="backToGate()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    Choose a different cuisine
+  </button>
+
+  <header class="it-header">
+    <!-- Ghost script text like JP 和食 / KR 한식 -->
+    <span class="it-ghost">Cucina</span>
+    <p class="it-eyebrow">Cucina Italiana · Italian Cuisine</p>
+
+    <!-- Circular stemma emblem — mirrors jp-mon / kr-emblem structure -->
+    <div class="it-stemma">
+      <svg viewBox="0 0 100 100" width="76" height="76" aria-hidden="true">
+        <defs>
+          <clipPath id="stemma-clip"><circle cx="50" cy="50" r="36"/></clipPath>
+        </defs>
+        <!-- outer ring -->
+        <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(201,162,39,0.35)" stroke-width="1"/>
+        <!-- inner dashed ring -->
+        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(196,68,86,0.3)" stroke-width="0.7" stroke-dasharray="2 4"/>
+        <!-- tricolore inside circle -->
+        <g clip-path="url(#stemma-clip)">
+          <rect x="14" y="14" width="24" height="72" fill="#009246"/>
+          <rect x="38" y="14" width="24" height="72" fill="#f4f5f0"/>
+          <rect x="62" y="14" width="24" height="72" fill="#ce2b37"/>
+        </g>
+        <!-- centre coat of arms suggestion: 5-pointed star -->
+        <circle cx="50" cy="50" r="10" fill="rgba(12,8,4,0.55)"/>
+        <polygon points="50,43 51.8,48.2 57.4,48.2 52.8,51.5 54.6,56.7 50,53.4 45.4,56.7 47.2,51.5 42.6,48.2 48.2,48.2" fill="#c9a227" opacity="0.9"/>
+      </svg>
+    </div>
+
+    <h1 class="it-title">Pinocchio</h1>
+    <span class="it-subtitle">by Chef Giuseppe · dal 1987</span>
+    <div class="it-divider"><span class="it-divider-glyph">✦ ✦ ✦</span></div>
+    <span class="it-badge">
+      <span class="it-badge-dot"></span>
+      Interactive 3D &amp; AR Preview
+    </span>
+  </header>
+
+  <nav class="it-tabs">
+    <div class="it-tabs-inner" id="it-tabs">
+      <button class="it-tab active">All · Tutto</button>
+      <button class="it-tab">Starters · Antipasti</button>
+      <button class="it-tab">Mains · Secondi</button>
+      <button class="it-tab">Dessert · Dolci</button>
+    </div>
+  </nav>
+
+  <main class="it-main" id="it-main">
+    <div class="it-section-head"><span></span>Antipasti · Starters<span></span></div>
+    <div class="it-card">
+      <div class="it-thumb">🦑<span class="it-ar-pill">AR</span></div>
+      <div class="it-body">
+        <div class="it-name">Fried Calamari</div>
+        <div class="it-name-it">Calamari Fritti</div>
+        <p class="it-desc">Crispy golden rings of fresh squid, lightly seasoned with sea salt and lemon zest, served with aioli.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>680</div>
+          <button class="it-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="it-card">
+      <div class="it-thumb">🍅</div>
+      <div class="it-body">
+        <div class="it-name">Bruschetta al Pomodoro</div>
+        <div class="it-name-it">Pane Abbrustolito</div>
+        <p class="it-desc">Grilled sourdough topped with vine tomatoes, fresh basil, and aged balsamic glaze.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>420</div>
+          <span class="it-veg">🌿 veg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="it-section-head"><span></span>Secondi · Mains<span></span></div>
+    <div class="it-card">
+      <div class="it-thumb">🧀<span class="it-ar-pill">AR</span></div>
+      <div class="it-body">
+        <div class="it-name">Cheesy Green Lasagne</div>
+        <div class="it-name-it">Lasagne Verdi al Forno</div>
+        <p class="it-desc">Handmade spinach pasta layered with béchamel, ricotta, and aged Parmigiano-Reggiano.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>1,180</div>
+          <button class="it-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="it-card">
+      <div class="it-thumb">🍝</div>
+      <div class="it-body">
+        <div class="it-name">Spaghetti alla Carbonara</div>
+        <div class="it-name-it">Ricetta Romana Classica</div>
+        <p class="it-desc">Roman classic: guanciale, Pecorino Romano, egg yolk and coarsely ground black pepper.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>1,050</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="it-section-head"><span></span>Dolci · Desserts<span></span></div>
+    <div class="it-card">
+      <div class="it-thumb">🍰<span class="it-ar-pill">AR</span></div>
+      <div class="it-body">
+        <div class="it-name">Pinocchio Tiramisù</div>
+        <div class="it-name-it">Specialità della Casa</div>
+        <p class="it-desc">House signature: espresso-soaked ladyfingers, mascarpone, and dusted with Valrhona cocoa.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>560</div>
+          <button class="it-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="it-card">
+      <div class="it-thumb">🍮<span class="it-ar-pill">AR</span></div>
+      <div class="it-body">
+        <div class="it-name">Pistachio Bignè with Ricotta</div>
+        <div class="it-name-it">Bignè al Pistacchio di Sicilia</div>
+        <p class="it-desc">Cream puffs filled with Sicilian pistachio cream and fresh ricotta, glazed in dark chocolate.</p>
+        <div class="it-footer">
+          <div class="it-price"><span class="it-price-sym">₹</span>480</div>
+          <button class="it-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="it-footer-bar">
+    Tap any dish to view in 3D · Prices in ₹ · 🌿 Vegetarian friendly<br>
+    <span style="font-size:10px;opacity:.6">AR requires a compatible mobile device · Powered by liveDish AI</span>
+  </footer>
+</section>
+
+
+<!-- ════════════════════════════════
+     JAPANESE PANEL
+     Theme: Ukiyo-e Woodblock Print
+     — indigo ground, vermillion accents,
+       seigaiha wave borders, circular mon
+════════════════════════════════ -->
+<section class="panel panel-japanese" id="panel-japanese">
+
+  <button class="panel-back" onclick="backToGate()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    Choose a different cuisine
+  </button>
+
+  <header class="jp-header">
+    <span class="jp-kanji">和食</span>
+    <p class="jp-eyebrow">Washoku · 和食</p>
+    <div class="jp-mon"><span class="jp-mon-koi">⊕</span></div>
+    <h1 class="jp-title">Sakura Kaiseki</h1>
+    <span class="jp-subtitle">Chef Tanaka · 田中料理長</span>
+    <div class="jp-divider"><span class="jp-divider-mark">— — —</span></div>
+    <span class="jp-badge">
+      <span class="jp-badge-dot"></span>
+      Interactive 3D &amp; AR Preview · AR体験
+    </span>
+  </header>
+
+  <nav class="jp-tabs">
+    <div class="jp-tabs-inner" id="jp-tabs">
+      <button class="jp-tab active">All · 全て</button>
+      <button class="jp-tab">Starters · 前菜</button>
+      <button class="jp-tab">Mains · 主菜</button>
+      <button class="jp-tab">Dessert · 甘味</button>
+    </div>
+  </nav>
+
+  <main class="jp-main">
+    <div class="jp-section-head"><span></span>前菜 · Starters<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🐟<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Bluefin Sashimi</div>
+        <div class="jp-name-jp">本鮪の刺身</div>
+        <p class="jp-desc">Five cuts of premium maguro, served on shiso leaf with ponzu and freshly grated wasabi.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>1,480</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍢</div>
+      <div class="jp-body">
+        <div class="jp-name">Agedashi Tofu</div>
+        <div class="jp-name-jp">揚げ出し豆腐</div>
+        <p class="jp-desc">Silken tofu lightly dusted in potato starch, deep fried and served in dashi broth with grated daikon.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>560</div>
+          <span class="jp-veg">🌿 veg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="jp-section-head"><span></span>主菜 · Mains<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍜<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Tonkotsu Ramen</div>
+        <div class="jp-name-jp">豚骨ラーメン</div>
+        <p class="jp-desc">18-hour pork bone broth, hand-pulled noodles, chashu pork, soft-boiled marinated egg and nori.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>980</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍱</div>
+      <div class="jp-body">
+        <div class="jp-name">Bento Kaiseki</div>
+        <div class="jp-name-jp">会席弁当</div>
+        <p class="jp-desc">Seasonal chef's selection — rice, seasonal pickles, grilled fish, tempura and miso.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>1,750</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="jp-section-head"><span></span>甘味 · Desserts<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍡<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Matcha Parfait</div>
+        <div class="jp-name-jp">抹茶パフェ</div>
+        <p class="jp-desc">Ceremonial-grade matcha ice cream, azuki red bean, shiratama mochi and kuromitsu.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>620</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="jp-footer-bar">
+    Tap any dish to view in 3D · Prices in ₹<br>
+    <span style="font-size:10px;opacity:.7">AR requires a compatible mobile device · Powered by liveDish AI · liveDishが提供</span>
+  </footer>
+</section>
+
+
+<!-- ════════════════════════════════
+     KOREAN PANEL
+     Theme: Joseon Court Ceremonial
+     — Dancheong stripe, taegeuk emblem,
+       teal + red + gold palette
+════════════════════════════════ -->
+<section class="panel panel-korean" id="panel-korean">
+
+  <button class="panel-back" onclick="backToGate()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    Choose a different cuisine
+  </button>
+
+  <header class="kr-header">
+    <span class="kr-hangul">한식</span>
+    <p class="kr-eyebrow">Hansik · 한식</p>
+    <div class="kr-emblem"><span class="kr-emblem-inner">⊙</span></div>
+    <h1 class="kr-title">Jeonju Royal</h1>
+    <span class="kr-subtitle">Chef Park · 박 셰프</span>
+    <div class="kr-divider"><span class="kr-divider-mark">◈ ◈ ◈</span></div>
+    <span class="kr-badge">
+      <span class="kr-badge-dot"></span>
+      Interactive 3D &amp; AR Preview · AR체험
+    </span>
+  </header>
+
+  <nav class="kr-tabs">
+    <div class="kr-tabs-inner" id="kr-tabs">
+      <button class="kr-tab active">All · 전체</button>
+      <button class="kr-tab">Starters · 전채</button>
+      <button class="kr-tab active red" style="display:none"></button>
+      <button class="kr-tab">Mains · 주요리</button>
+      <button class="kr-tab">Dessert · 후식</button>
+    </div>
+  </nav>
+
+  <main class="kr-main">
+    <div class="kr-section-head"><span></span>전채 · Starters<span></span></div>
+    <div class="kr-card">
+      <div class="kr-thumb">🥬<span class="kr-ar-pill">AR</span></div>
+      <div class="kr-body">
+        <div class="kr-name">Kimchi Jeon</div>
+        <div class="kr-name-kr">김치전</div>
+        <p class="kr-desc">Crispy fermented kimchi pancake, pan-fried golden, served with sesame soy dipping sauce.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>480</div>
+          <button class="kr-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="kr-card">
+      <div class="kr-thumb">🥚</div>
+      <div class="kr-body">
+        <div class="kr-name">Gyeran Jjim</div>
+        <div class="kr-name-kr">계란찜</div>
+        <p class="kr-desc">Silky steamed egg custard, light and souffle-like, finished with sesame oil and green onion.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>320</div>
+          <span class="kr-veg">🌿 veg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-section-head"><span></span>주요리 · Mains<span></span></div>
+    <div class="kr-card">
+      <div class="kr-thumb">🍲<span class="kr-ar-pill">AR</span></div>
+      <div class="kr-body">
+        <div class="kr-name">Royal Bibimbap</div>
+        <div class="kr-name-kr">궁중 비빔밥</div>
+        <p class="kr-desc">Jeonju-style: warm rice, nine seasonal vegetables, beef tartare, fried egg and gochujang sauce in stone bowl.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>1,080</div>
+          <button class="kr-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="kr-card">
+      <div class="kr-thumb">🔥</div>
+      <div class="kr-body">
+        <div class="kr-name">Samgyeopsal BBQ</div>
+        <div class="kr-name-kr">삼겹살</div>
+        <p class="kr-desc">Tableside grilled pork belly, with ssamjang, perilla leaves, garlic, and kimchi accompaniments.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>1,480</div>
+        </div>
+      </div>
+    </div>
+    <div class="kr-card">
+      <div class="kr-thumb">🍵</div>
+      <div class="kr-body">
+        <div class="kr-name">Sundubu Jjigae</div>
+        <div class="kr-name-kr">순두부찌개</div>
+        <p class="kr-desc">Spicy soft tofu stew with seafood, mushrooms, and egg in an earthen pot — arrives bubbling.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>780</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-section-head"><span></span>후식 · Desserts<span></span></div>
+    <div class="kr-card">
+      <div class="kr-thumb">🍡<span class="kr-ar-pill">AR</span></div>
+      <div class="kr-body">
+        <div class="kr-name">Bingsu</div>
+        <div class="kr-name-kr">팥빙수</div>
+        <p class="kr-desc">Shaved milk ice with sweetened azuki red beans, mochi, condensed milk and seasonal fruit.</p>
+        <div class="kr-footer">
+          <div class="kr-price"><span class="kr-price-sym">₹</span>520</div>
+          <span class="kr-veg">🌿 veg</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="kr-footer-bar">
+    Tap any dish to view in 3D · Prices in ₹ · 궁중 전통 요리<br>
+    <span style="font-size:10px;opacity:.7">AR requires a compatible mobile device · Powered by liveDish AI</span>
+  </footer>
+</section>
+
+<script>
+const cuisineCards = document.querySelectorAll('.cuisine-tab');
+const panels = {
+  italian:  document.getElementById('panel-italian'),
+  japanese: document.getElementById('panel-japanese'),
+  korean:   document.getElementById('panel-korean')
+};
+
+function showCuisine(key) {
+  cuisineCards.forEach(c => {
+    c.classList.remove('active-it','active-jp','active-kr');
+    if (c.dataset.cuisine === key) {
+      c.classList.add('active-' + key.slice(0,2));
+    }
+  });
+  Object.entries(panels).forEach(([k,el]) => {
+    el.classList.toggle('visible', k === key);
+  });
+  if (key !== 'gate') {
+    panels[key].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+cuisineCards.forEach(card => {
+  card.addEventListener('click', () => showCuisine(card.dataset.cuisine));
+});
+
+function backToGate() {
+  Object.values(panels).forEach(el => el.classList.remove('visible'));
+  document.getElementById('gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* Tab click handling per panel */
+['it','jp','kr'].forEach(prefix => {
+  const container = document.getElementById(prefix + '-tabs');
+  if (!container) return;
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      container.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
