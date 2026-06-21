@@ -449,19 +449,19 @@
     <button class="cuisine-card active" data-cuisine="italian" aria-pressed="true">
       <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
         <defs>
-          <radialGradient id="g-wolf" cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stop-color="#e2949f"/><stop offset="60%" stop-color="#a32133"/><stop offset="100%" stop-color="#5c0f1a"/>
+          <clipPath id="clip-it"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-it" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
           </radialGradient>
         </defs>
         <circle cx="50" cy="50" r="46" fill="none" stroke="#c74456" stroke-width="1.2" opacity="0.45"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#ddb777" stroke-width="0.7" opacity="0.5" stroke-dasharray="2 4"/>
-        <path d="M50 22 L30 36 Q22 50 28 64 Q34 76 50 80 Q66 76 72 64 Q78 50 70 36 Z" fill="url(#g-wolf)" opacity="0.92"/>
-        <path d="M33 36 L24 18 L38 32 Z" fill="url(#g-wolf)"/>
-        <path d="M67 36 L76 18 L62 32 Z" fill="url(#g-wolf)"/>
-        <path d="M50 46 L42 60 L50 56 L58 60 Z" fill="#2c0a10"/>
-        <circle cx="40" cy="44" r="2.4" fill="#1a0509"/>
-        <circle cx="60" cy="44" r="2.4" fill="#1a0509"/>
-        <path d="M44 68 Q50 73 56 68" stroke="#2c0a10" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <g clip-path="url(#clip-it)">
+          <rect x="6" y="6" width="29.4" height="88" fill="#009246"/>
+          <rect x="35.4" y="6" width="29.2" height="88" fill="#f4f5f0"/>
+          <rect x="64.6" y="6" width="29.4" height="88" fill="#ce2b37"/>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-it)"/>
+        </g>
       </svg>
       <span class="crest-name">Italian</span>
       <span class="crest-status live">Live demo</span>
@@ -470,17 +470,18 @@
     <button class="cuisine-card" data-cuisine="japanese" aria-pressed="false">
       <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
         <defs>
-          <radialGradient id="g-koi" cx="35%" cy="25%" r="80%">
-            <stop offset="0%" stop-color="#fbdfe3"/><stop offset="55%" stop-color="#e8b4bc"/><stop offset="100%" stop-color="#9c5a63"/>
+          <clipPath id="clip-jp"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-jp" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
           </radialGradient>
         </defs>
         <circle cx="50" cy="50" r="46" fill="none" stroke="#e8b4bc" stroke-width="1.2" opacity="0.4"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
-        <path d="M28 50 Q30 34 50 32 Q70 30 76 44 Q66 42 60 46 Q70 50 66 58 Q60 54 54 56 Q62 64 50 68 Q34 70 28 50Z" fill="url(#g-koi)"/>
-        <path d="M76 44 L88 36 L86 50 L88 60 L76 52Z" fill="url(#g-koi)" opacity="0.85"/>
-        <circle cx="40" cy="44" r="2" fill="#3a1418"/>
-        <path d="M30 50 Q40 56 48 52" stroke="#9c5a63" stroke-width="1" fill="none" opacity="0.6"/>
-        <path d="M34 58 Q44 62 52 58" stroke="#9c5a63" stroke-width="1" fill="none" opacity="0.5"/>
+        <g clip-path="url(#clip-jp)">
+          <rect x="6" y="6" width="88" height="88" fill="#f5f1ea"/>
+          <circle cx="50" cy="50" r="18" fill="#bc002d"/>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-jp)"/>
+        </g>
       </svg>
       <span class="crest-name">Japanese</span>
       <span class="crest-status soon">Coming soon</span>
@@ -489,23 +490,31 @@
     <button class="cuisine-card" data-cuisine="korean" aria-pressed="false">
       <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
         <defs>
-          <radialGradient id="g-tiger" cx="35%" cy="25%" r="80%">
-            <stop offset="0%" stop-color="#f0d27e"/><stop offset="55%" stop-color="#c9a227"/><stop offset="100%" stop-color="#7a5a14"/>
+          <clipPath id="clip-kr"><circle cx="50" cy="50" r="44"/></clipPath>
+          <radialGradient id="sheen-kr" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
           </radialGradient>
         </defs>
         <circle cx="50" cy="50" r="46" fill="none" stroke="#c9a227" stroke-width="1.2" opacity="0.4"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#b3293e" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
-        <path d="M50 24 Q30 26 27 44 Q25 62 38 72 Q50 80 62 72 Q75 62 73 44 Q70 26 50 24Z" fill="url(#g-tiger)"/>
-        <path d="M31 34 L20 22 L34 30Z" fill="url(#g-tiger)"/>
-        <path d="M69 34 L80 22 L66 30Z" fill="url(#g-tiger)"/>
-        <path d="M38 46 Q34 40 28 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M62 46 Q66 40 72 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <circle cx="41" cy="48" r="2.2" fill="#241405"/>
-        <circle cx="59" cy="48" r="2.2" fill="#241405"/>
-        <path d="M50 52 L46 60 L54 60Z" fill="#241405"/>
-        <path d="M40 66 Q50 72 60 66" stroke="#241405" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M44 62 Q38 64 32 62" stroke="#7a1c2b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-        <path d="M56 62 Q62 64 68 62" stroke="#7a1c2b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <g clip-path="url(#clip-kr)">
+          <rect x="6" y="6" width="88" height="88" fill="#f5f1ea"/>
+          <path d="M50 30 A20 20 0 0 1 50 70 A10 10 0 0 1 50 50 A10 10 0 0 0 50 30Z" fill="#cd2e3a"/>
+          <path d="M50 30 A20 20 0 0 0 50 70 A10 10 0 0 0 50 50 A10 10 0 0 1 50 30Z" fill="#0047a0"/>
+          <g stroke="#21201d" stroke-width="2.1" stroke-linecap="butt">
+            <line x1="19" y1="20" x2="31" y2="20"/><line x1="19" y1="24.4" x2="31" y2="24.4"/><line x1="19" y1="28.8" x2="31" y2="28.8"/>
+            <line x1="69" y1="20" x2="74.5" y2="20"/><line x1="75.5" y1="20" x2="81" y2="20"/>
+            <line x1="69" y1="24.4" x2="81" y2="24.4"/>
+            <line x1="69" y1="28.8" x2="74.5" y2="28.8"/><line x1="75.5" y1="28.8" x2="81" y2="28.8"/>
+            <line x1="19" y1="71.2" x2="31" y2="71.2"/>
+            <line x1="19" y1="75.6" x2="24.5" y2="75.6"/><line x1="25.5" y1="75.6" x2="31" y2="75.6"/>
+            <line x1="19" y1="80" x2="31" y2="80"/>
+            <line x1="69" y1="71.2" x2="74.5" y2="71.2"/><line x1="75.5" y1="71.2" x2="81" y2="71.2"/>
+            <line x1="69" y1="75.6" x2="74.5" y2="75.6"/><line x1="75.5" y1="75.6" x2="81" y2="75.6"/>
+            <line x1="69" y1="80" x2="74.5" y2="80"/><line x1="75.5" y1="80" x2="81" y2="80"/>
+          </g>
+          <circle cx="50" cy="50" r="44" fill="url(#sheen-kr)"/>
+        </g>
       </svg>
       <span class="crest-name">Korean</span>
       <span class="crest-status soon">Coming soon</span>
