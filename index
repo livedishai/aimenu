@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>liveDish — Premium AR Menus, Every Cuisine</title>
+  <meta name="description" content="liveDish AI — interactive AR menus with 3D dish previews. Italian, Japanese & Korean cuisine experiences." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+  <link rel="dns-prefetch" href="https://docs.google.com" />
+
+  <link rel="preload"
+        href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTEkmIGoRgD1rQNmDgmY3lvB7WBOg86iOHHrS0MJ6qQiReuDHsUyX3YV7KoWXxTbefyBUWPTHpvUOt3/pub?output=csv"
+        as="fetch" crossorigin="anonymous" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" />
+  </noscript>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-serif:   'Playfair Display', 'Georgia', serif;
+      --font-sans:    'Inter', 'Helvetica Neue', sans-serif;
+      --font-display: 'Cinzel', serif;
+      --font-body:    'Cormorant Garamond', Georgia, serif;
+      --font-brand:   'Outfit', 'Inter', sans-serif;
+
+      /* brand chrome */
+      --brand-ink:    #0c0c0e;
+      --brand-ink-2:  #16151a;
+      --brand-paper:  #f6f2ea;
+      --brand-gold:   #c9a227;
+      --brand-gold-lt:#e8c764;
+      --brand-mute:   rgba(246,242,234,0.55);
+
+      --shadow-ink:   rgba(0,0,0,0.35);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--brand-ink);
+      color: var(--brand-paper);
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+    .hidden { display: none !important; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+    /* ════════════════════════════════════════════
+       BRAND TOPBAR
+       ════════════════════════════════════════════ */
+    .brand-topbar {
+      position: relative; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: max(env(safe-area-inset-top),1.1rem) 1.4rem 1.1rem;
+      background: linear-gradient(180deg, rgba(12,12,14,1) 0%, rgba(12,12,14,0.96) 100%);
+      border-bottom: 1px solid rgba(201,162,39,0.18);
+    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-glyph {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1.5px solid var(--brand-gold);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; flex-shrink: 0;
+    }
+    .brand-glyph::before {
+      content: ''; position: absolute; inset: 5px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, var(--brand-gold-lt), var(--brand-gold) 60%, transparent 100%);
+      animation: brandPulse 3.2s ease-in-out infinite;
+    }
+    @keyframes brandPulse { 0%,100%{opacity:0.65;transform:scale(0.85)} 50%{opacity:1;transform:scale(1)} }
+    .brand-name {
+      font-family: var(--font-brand); font-weight: 700; font-size: 19px; letter-spacing: 0.01em;
+      color: var(--brand-paper); line-height: 1;
+    }
+    .brand-name span { color: var(--brand-gold); font-weight: 500; }
+    .brand-tag {
+      display: block; font-family: var(--font-sans); font-weight: 400; font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase; color: var(--brand-mute); margin-top: 3px;
+    }
+    .brand-url {
+      font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.5px;
+      color: var(--brand-mute); text-decoration: none; border: 1px solid rgba(201,162,39,0.3);
+      padding: 7px 14px; border-radius: 999px; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .brand-url:hover { color: var(--brand-ink); background: var(--brand-gold); border-color: var(--brand-gold); }
+    .brand-url strong { font-weight: 600; }
+
+    /* ════════════════════════════════════════════
+       CUISINE GATE
+       ════════════════════════════════════════════ */
+    .cuisine-gate {
+      position: relative; z-index: 10; text-align: center;
+      padding: 3rem 1.2rem 2.6rem;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,162,39,0.10) 0%, transparent 65%),
+        var(--brand-ink);
+    }
+    .gate-eyebrow {
+      font-family: var(--font-sans); font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--brand-gold); margin-bottom: 12px;
+    }
+    .gate-title {
+      font-family: var(--font-brand); font-weight: 600; font-size: clamp(24px,5vw,38px);
+      color: var(--brand-paper); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .gate-sub {
+      font-family: var(--font-sans); font-weight: 300; font-size: 14px; color: var(--brand-mute);
+      max-width: 460px; margin: 0 auto 2.4rem; line-height: 1.7;
+    }
+    .cuisine-cards {
+      display: grid; grid-template-columns: repeat(3, minmax(150px,220px));
+      gap: 16px; justify-content: center; max-width: 760px; margin: 0 auto;
+    }
+    @media (max-width: 620px) { .cuisine-cards { grid-template-columns: 1fr; max-width: 280px; } }
+
+    .cuisine-card {
+      position: relative; cursor: pointer; border-radius: 14px; padding: 1.6rem 1rem 1.3rem;
+      background: linear-gradient(160deg, var(--c-bg1) 0%, var(--c-bg2) 100%);
+      border: 1px solid var(--c-border); overflow: hidden;
+      transition: transform 0.32s cubic-bezier(0.22,1,0.36,1), box-shadow 0.32s ease, border-color 0.32s ease;
+      font-family: var(--font-sans); color: var(--brand-paper); -webkit-tap-highlight-color: transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      animation: cardRise 0.7s cubic-bezier(0.22,1,0.36,1) backwards;
+    }
+    .cuisine-card:nth-child(1){ animation-delay: 0.05s; }
+    .cuisine-card:nth-child(2){ animation-delay: 0.16s; }
+    .cuisine-card:nth-child(3){ animation-delay: 0.27s; }
+    @keyframes cardRise { from { opacity:0; transform: translateY(22px); } to { opacity:1; transform:none; } }
+
+    .cuisine-card::before {
+      content: ''; position: absolute; inset: 0; opacity: 0;
+      background: radial-gradient(circle at 50% 0%, var(--c-glow) 0%, transparent 70%);
+      transition: opacity 0.35s ease; pointer-events: none;
+    }
+    .cuisine-card:hover, .cuisine-card.active { transform: translateY(-5px); border-color: var(--c-border-hov); box-shadow: 0 14px 32px var(--c-shadow); }
+    .cuisine-card:hover::before, .cuisine-card.active::before { opacity: 1; }
+    .cuisine-card.active { box-shadow: 0 0 0 1.5px var(--c-accent), 0 14px 32px var(--c-shadow); }
+
+    .crest { width: 64px; height: 64px; position: relative; z-index: 1; }
+    .cuisine-card .crest-name {
+      font-family: var(--font-brand); font-weight: 600; font-size: 14.5px; letter-spacing: 0.02em; z-index: 1;
+    }
+    .cuisine-card .crest-status {
+      font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; z-index: 1;
+      color: var(--c-accent); font-weight: 500;
+    }
+    .crest-status.live::before { content: '● '; }
+    .crest-status.soon { color: var(--brand-mute); }
+
+    /* per-cuisine card tokens */
+    .cuisine-card[data-cuisine="italian"] {
+      --c-bg1:#2a0a0e; --c-bg2:#170609; --c-border:rgba(196,68,86,0.22); --c-border-hov:rgba(196,68,86,0.55);
+      --c-glow: rgba(196,68,86,0.28); --c-shadow: rgba(141,29,45,0.35); --c-accent:#d96b7c;
+    }
+    .cuisine-card[data-cuisine="japanese"] {
+      --c-bg1:#161a2e; --c-bg2:#0c0e1a; --c-border:rgba(232,180,188,0.18); --c-border-hov:rgba(232,180,188,0.5);
+      --c-glow: rgba(232,180,188,0.22); --c-shadow: rgba(26,34,56,0.5); --c-accent:#e8b4bc;
+    }
+    .cuisine-card[data-cuisine="korean"] {
+      --c-bg1:#0e211a; --c-bg2:#081511; --c-border:rgba(201,162,39,0.22); --c-border-hov:rgba(179,41,62,0.5);
+      --c-glow: rgba(46,89,68,0.35); --c-shadow: rgba(31,77,61,0.4); --c-accent:#c9a227;
+    }
+
+    /* ════════════════════════════════════════════
+       SHARED PANEL CHROME
+       ════════════════════════════════════════════ */
+    .cuisine-panel { position: relative; }
+    .panel-back {
+      position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 8px;
+      padding: 10px 1.2rem; font-family: var(--font-sans); font-size: 12px; letter-spacing: 1px;
+      cursor: pointer; border: none; width: 100%; text-align: left; backdrop-filter: blur(6px);
+    }
+    .panel-back svg { width: 13px; height: 13px; }
+
+    /* ═══════════════ ITALIAN THEME (mostly original Pinocchio styling) ═══════════════ */
+    .theme-italian {
+      --washi:        #efe2cf; --washi-dark: #e2d1b8; --washi-deep:#d4bea0;
+      --ink:          #2c120f; --ink-mid: #4e231b; --ink-light:#7b5647; --ink-faint:#a07d69;
+      --crimson:      #8d1d2d; --crimson-mid:#a32133; --crimson-lt:#c74456;
+      --gold:         #c39a5c; --gold-lt:#ddb777; --gold-pale:#f1d7a4;
+      --sage:         #567a47; --sage-lt:#dce9d0;
+      --shadow-ink:   rgba(44,18,15,0.14); --shadow-deep: rgba(44,18,15,0.24);
+      background: linear-gradient(180deg, #3f0d14 0%, #5b111b 30%, #701826 60%, #3a0d12 100%);
+      color: #f3e8d7;
+    }
+    .theme-italian .panel-back { background: rgba(61,15,19,0.9); color: rgba(245,237,224,0.75); border-bottom: 1px solid rgba(196,160,48,0.15); }
+    .theme-italian .panel-back:hover { color: var(--gold-lt); }
+
+    .theme-italian .menu-texture-bg {
+      position: absolute; inset: 0; opacity: 0.03;
+      background-size: 20px 20px;
+      background-image: linear-gradient(to right, #8b1a1a 1px, transparent 1px), linear-gradient(to bottom, #8b1a1a 1px, transparent 1px);
+      pointer-events: none;
+    }
+    .theme-italian .site-header {
+      position: relative; overflow: hidden;
+      background: linear-gradient(145deg, #3d0f13 0%, #5a1520 50%, #3d0f13 100%);
+      color: #f5ede0; text-align: center; padding: 2.4rem 1rem 2.4rem;
+    }
+    .theme-italian .site-header::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(139,26,26,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(154,120,32,0.14) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .theme-italian .site-header::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--crimson-mid), var(--gold-lt), var(--crimson-mid), transparent);
+    }
+    .theme-italian .header-mon {
+      width: 52px; height: 52px; border: 1.5px solid rgba(196,160,48,0.5);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; position: relative; animation: monSpin 20s linear infinite;
+    }
+    @keyframes monSpin { to { transform: rotate(360deg); } }
+    .theme-italian .header-brand {
+      font-family: var(--font-serif); font-size: clamp(11px,2.5vw,13px);
+      letter-spacing: 6px; color: rgba(245,237,224,0.4); margin-bottom: 10px; text-transform: uppercase;
+    }
+    .theme-italian .header-title {
+      font-family: var(--font-display); font-size: clamp(30px,6.5vw,54px);
+      font-weight: 600; letter-spacing: 0.08em; line-height: 1; margin-bottom: 6px;
+      background: linear-gradient(160deg, #f5ede0 30%, var(--gold-pale) 65%, #f5ede0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .theme-italian .header-title-sub {
+      font-family: var(--font-serif); font-size: clamp(16px,4vw,24px); font-style: italic;
+      font-weight: 300; color: rgba(245,237,224,0.6); letter-spacing: 0.2em; margin-bottom: 14px; display: block;
+    }
+    .theme-italian .header-sub {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(245,237,224,0.38); margin-bottom: 20px;
+    }
+    .theme-italian .brush-divider {
+      width: 120px; height: 2px; background: linear-gradient(90deg, transparent, var(--crimson-mid), transparent);
+      margin: 0 auto 18px; position: relative;
+    }
+    .theme-italian .brush-divider::before, .theme-italian .brush-divider::after {
+      content: '◆'; position: absolute; top: 50%; transform: translateY(-50%); font-size: 6px; color: var(--gold-lt);
+    }
+    .theme-italian .brush-divider::before { left: 18px; }
+    .theme-italian .brush-divider::after  { right: 18px; }
+    .theme-italian .ar-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(196,160,48,0.3); border-radius: 2px; padding: 7px 18px; font-size: 11px;
+      letter-spacing: 2px; color: rgba(245,237,224,0.55); font-family: var(--font-sans); background: rgba(154,120,32,0.08);
+    }
+    .theme-italian .ar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--crimson-mid); flex-shrink: 0; animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+    .theme-italian #language-picker { position: relative; z-index: 10; margin-bottom: 18px; }
+    .theme-italian #lang-select {
+      background: rgba(245,237,224,0.08); color: rgba(245,237,224,0.7);
+      border: 1px solid rgba(196,160,48,0.25); border-radius: 2px; padding: 7px 12px;
+      font-family: var(--font-sans); font-size: 12px; cursor: pointer; outline: none; letter-spacing: 1px;
+    }
+    .theme-italian #lang-select option { background: #1c1108; color: #f5ede0; }
+
+    .theme-italian .tabs-wrap { position: sticky; top: 0; z-index: 80; background: rgba(243,232,215,0.97); border-bottom: 1px solid rgba(139,26,26,0.2); padding: 0 1rem; }
+    .theme-italian .tabs-inner { max-width: 740px; margin: 0 auto; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
+    .theme-italian .tabs-inner::-webkit-scrollbar { display: none; }
+    .theme-italian .tab-btn {
+      flex-shrink: 0; padding: 6px 18px; border: 1px solid rgba(139,26,26,0.18); background: transparent; color: var(--ink-faint);
+      font-family: var(--font-sans); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; border-radius: 1px;
+    }
+    .theme-italian .tab-btn:hover { border-color: var(--crimson); color: var(--crimson); background: rgba(139,26,26,0.04); }
+    .theme-italian .tab-btn.active { background: var(--crimson); color: var(--washi); border-color: var(--crimson); box-shadow: 0 2px 12px rgba(139,26,26,0.3); }
+
+    .theme-italian .main { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+
+    .theme-italian .skeleton-grid { display: flex; flex-direction: column; gap: 10px; }
+    .theme-italian .skeleton-card { background: rgba(243,232,215,0.5); border-radius: 1px; padding: 1.1rem 1.25rem; border: 1px solid rgba(214,178,126,0.18); border-left: 3px solid rgba(139,26,26,0.15); animation: shimmer 1.4s ease-in-out infinite; }
+    .theme-italian .skeleton-card .sk-row { display: flex; gap: 14px; }
+    .theme-italian .skeleton-card .sk-thumb { width: 68px; height: 68px; flex-shrink: 0; background: rgba(139,26,26,0.12); border-radius: 1px; }
+    .theme-italian .skeleton-card .sk-body { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+    .theme-italian .skeleton-card .sk-line { height: 12px; background: rgba(139,26,26,0.1); border-radius: 2px; }
+    .theme-italian .skeleton-card .sk-line.wide { width: 65%; }
+    .theme-italian .skeleton-card .sk-line.full { width: 100%; }
+    .theme-italian .skeleton-card .sk-line.mid  { width: 45%; }
+    .theme-italian .skeleton-card .sk-line.short { width: 30%; }
+    @keyframes shimmer { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+    .theme-italian .state-box { text-align: center; padding: 4rem 1rem; color: var(--ink-faint); }
+    .theme-italian .state-box .spinner { width: 36px; height: 36px; border: 2px solid rgba(139,26,26,0.15); border-top-color: var(--crimson); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 1rem; background: transparent; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .theme-italian .state-box p { font-size: 13px; font-family: var(--font-serif); letter-spacing: 2px; }
+
+    .theme-italian .section-label { display: flex; align-items: center; gap: 14px; margin: 2rem 0 1rem; font-family: var(--font-serif); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #f0d2a0; }
+    .theme-italian .section-label span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,26,26,0.3), transparent); }
+    .theme-italian .section-label::before { content: '◈'; font-size: 10px; color: var(--gold); flex-shrink: 0; }
+
+    .theme-italian .items-grid { display: flex; flex-direction: column; gap: 10px; }
+    .theme-italian .menu-card { background: rgba(243,232,215,0.96); border: 1px solid rgba(214,178,126,0.18); border-left: 3px solid transparent; border-radius: 1px; padding: 1.1rem 1.25rem; cursor: pointer; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; content-visibility: auto; contain-intrinsic-size: auto 100px; }
+    .theme-italian .menu-card:hover { border-left-color: var(--crimson); transform: translateX(3px); box-shadow: -4px 0 0 var(--crimson), 3px 4px 18px var(--shadow-ink); background: rgba(255,252,248,0.95); }
+    .theme-italian .card-row { display: flex; gap: 14px; align-items: flex-start; }
+    .theme-italian .card-thumb { width: 68px; height: 68px; flex-shrink: 0; border-radius: 1px; background: linear-gradient(135deg, var(--washi-dark) 0%, var(--washi-deep) 100%); border: 1px solid rgba(139,26,26,0.15); display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; overflow: hidden; }
+    .theme-italian .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; decoding: async; }
+    .theme-italian .ar-pill { position: absolute; bottom: 2px; right: 2px; background: var(--crimson); color: var(--washi); font-size: 7px; letter-spacing: 1px; padding: 2px 5px; font-family: var(--font-display); line-height: 1.4; }
+    .theme-italian .card-body { flex: 1; min-width: 0; }
+    .theme-italian .name-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+    .theme-italian .dish-name { font-family: var(--font-body); font-size: 19px; font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
+    .theme-italian .dish-jp { font-family: var(--font-serif); font-size: 12px; font-weight: 300; color: var(--ink-faint); letter-spacing: 1px; }
+
+    .theme-italian .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin: 5px 0 7px; }
+    .theme-italian .tag { font-size: 10px; padding: 2px 9px; font-family: var(--font-sans); font-weight: 500; letter-spacing: 0.5px; border-radius: 1px; }
+    .theme-italian .tag-veg  { background: var(--sage-lt); color: var(--sage); border: 1px solid rgba(74,103,65,0.2); }
+    .theme-italian .tag-new  { background: rgba(139,26,26,0.08); color: var(--crimson); border: 1px solid rgba(139,26,26,0.2); }
+    .theme-italian .tag-dotd { background: rgba(154,120,32,0.1); color: var(--gold); border: 1px solid rgba(154,120,32,0.25); }
+
+    .theme-italian .dish-desc { font-size: 12.5px; color: var(--ink-light); line-height: 1.65; margin-bottom: 10px; font-family: var(--font-sans); }
+    .theme-italian .card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .theme-italian .dish-price { font-family: var(--font-body); font-size: 22px; font-weight: 600; color: var(--ink); }
+    .theme-italian .price-sym { font-family: var(--font-sans); font-size: 12px; color: var(--ink-faint); margin-right: 1px; }
+
+    .theme-italian .ar-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--ink); color: var(--washi); border: none; padding: 8px 16px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: background 0.18s, box-shadow 0.18s; -webkit-tap-highlight-color: transparent; min-height: 44px; border-radius: 1px; position: relative; }
+    .theme-italian .ar-btn::before { content: ''; position: absolute; inset: 0; background: var(--crimson); opacity: 0; transition: opacity 0.18s; }
+    .theme-italian .ar-btn:hover::before { opacity: 1; }
+    .theme-italian .ar-btn:hover { box-shadow: 0 4px 14px rgba(139,26,26,0.4); }
+    .theme-italian .ar-btn > * { position: relative; z-index: 1; }
+    .theme-italian .ar-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .theme-italian .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,6,2,0.88); z-index: 9000; align-items: flex-end; justify-content: center; padding: 0; backdrop-filter: blur(2px); }
+    @media (min-width: 540px) { .theme-italian .modal-overlay { align-items: center; padding: 1.5rem; } }
+    .theme-italian .modal-overlay.open { display: flex; }
+    .theme-italian .modal-card { background: #f3e8d7; border-top: 3px solid var(--crimson); width: 100%; max-width: 520px; max-height: 92svh; overflow-y: auto; overscroll-behavior: contain; position: relative; animation: slideUp 0.28s cubic-bezier(0.22,1,0.36,1); }
+    @media (min-width: 540px) { .theme-italian .modal-card { border-top: none; border: 1px solid rgba(139,26,26,0.2); border-radius: 2px; animation: fadeIn 0.22s ease; } }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes fadeIn  { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .theme-italian .modal-viewer-wrap { width: 100%; height: 300px; background: linear-gradient(160deg, #120c05 0%, #1e1208 50%, #120c05 100%); position: relative; overflow: hidden; }
+    .theme-italian .modal-viewer-wrap::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(196,160,48,0.18); pointer-events: none; z-index: 3; }
+    .theme-italian #mv-wrapper { position: absolute; inset: 0; z-index: 2; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+    .theme-italian #mv-wrapper.mv-visible { opacity: 1; pointer-events: auto; }
+    .theme-italian model-viewer { display: block; width: 100%; height: 300px; background: transparent; --progress-bar-color: #b8860b; --progress-mask: transparent; touch-action: pan-y pinch-zoom; position: absolute; inset: 0; }
+    .theme-italian model-viewer > [slot="ar-button"] { display: none !important; }
+    .theme-italian .mv-ar-badge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%) translateY(-8px); background: rgba(20,12,4,0.92); border: 1px solid var(--gold); padding: 4px 14px; font-family: var(--font-display); font-size: 9px; letter-spacing: 2px; color: var(--gold-pale); text-transform: uppercase; opacity: 0; transition: opacity 0.4s, transform 0.4s; pointer-events: none; z-index: 4; white-space: nowrap; }
+    .theme-italian .mv-ar-badge.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .theme-italian .scale-info { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(20,12,4,0.85); border: 1px solid rgba(196,160,48,0.2); padding: 4px 14px; font-family: var(--font-sans); font-size: 9px; letter-spacing: 2px; color: rgba(245,237,224,0.45); text-transform: uppercase; white-space: nowrap; z-index: 4; pointer-events: none; }
+    .theme-italian .modal-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; background: rgba(10,6,2,0.6); border: 1px solid rgba(196,160,48,0.2); color: rgba(245,237,224,0.7); font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: background 0.15s, border-color 0.15s; font-family: serif; }
+    .theme-italian .modal-close:hover { background: var(--crimson); border-color: var(--crimson); color: var(--washi); }
+    .theme-italian .mv-loader { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(160deg, #120c05 0%, #1e1208 50%, #120c05 100%); transition: opacity 0.3s; }
+    .theme-italian .mv-loader.hidden { opacity: 0; pointer-events: none; }
+    .theme-italian .mv-loader-ring { width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(196,160,48,0.15); border-top-color: var(--gold); animation: spin 0.8s linear infinite; }
+    .theme-italian .mv-loader-text { font-family: var(--font-display); font-size: 10px; letter-spacing: 3px; color: var(--gold-pale); opacity: 0.6; }
+    .theme-italian .modal-body { padding: 1.5rem 1.6rem 2rem; }
+    .theme-italian .modal-name { font-family: var(--font-display); font-size: 26px; font-weight: 600; letter-spacing: 0.05em; color: var(--ink); margin-bottom: 2px; }
+    .theme-italian .modal-jp { font-family: var(--font-serif); font-size: 14px; font-weight: 300; color: var(--ink-faint); letter-spacing: 3px; margin-bottom: 12px; }
+    .theme-italian .modal-desc { font-size: 13.5px; color: var(--ink-light); line-height: 1.75; padding: 12px 16px; border-left: 3px solid var(--crimson); background: rgba(139,26,26,0.04); margin-bottom: 18px; font-family: var(--font-sans); }
+    .theme-italian .modal-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(139,26,26,0.15); }
+    .theme-italian .modal-price { font-family: var(--font-body); font-size: 32px; font-weight: 600; color: var(--ink); }
+    .theme-italian .mv-ar-btn-wrap { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 6; display: none; gap: 10px; align-items: center; }
+    .theme-italian .modal-ar-launch-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--crimson); color: var(--washi); border: none; padding: 11px 24px; font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 2px; cursor: pointer; white-space: nowrap; min-height: 44px; box-shadow: 0 4px 18px rgba(139,26,26,0.45); transition: opacity 0.15s; }
+    .theme-italian .modal-ar-launch-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .theme-italian .site-footer { text-align: center; padding: 1.8rem 1rem; font-size: 11px; letter-spacing: 2px; background: rgba(40, 10, 15, 0.6); color: #d8b98e; border-top: 1px solid rgba(139,26,26,0.15); line-height: 2; font-family: var(--font-serif); position: relative; }
+    .theme-italian .site-footer::before { content: '✿  ✿  ✿'; display: block; color: var(--crimson); opacity: 0.4; font-size: 14px; letter-spacing: 8px; margin-bottom: 8px; }
+    .theme-italian .menu-card.unavailable { opacity: 0.4; pointer-events: none; }
+    .theme-italian .funzone-btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--crimson), var(--gold)); color: var(--washi); text-decoration: none; padding: 8px 16px; font-family: var(--font-sans); font-size: 11px; font-weight: 500; letter-spacing: 1px; box-shadow: 0 4px 14px rgba(139,26,26,0.4); transition: opacity 0.15s; }
+    .theme-italian .funzone-btn:hover { opacity: 0.85; }
+    .theme-italian .ar-not-supported { display: none; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 6; background: rgba(20,12,4,0.92); border: 1px solid rgba(196,160,48,0.3); padding: 8px 18px; font-family: var(--font-sans); font-size: 11px; color: rgba(245,237,224,0.6); letter-spacing: 1px; white-space: nowrap; text-align: center; }
+
+    /* ════════════════════════════════════════════
+       COMING SOON THEMES — JAPANESE / KOREAN
+       ════════════════════════════════════════════ */
+    .soon-wrap {
+      position: relative; min-height: 78vh; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 4rem 1.4rem 5rem;
+    }
+    .theme-japanese { background: linear-gradient(180deg, #0c0e1a 0%, #161a2e 55%, #0c0e1a 100%); color: #f1e9e0; }
+    .theme-korean   { background: linear-gradient(180deg, #081511 0%, #11271f 55%, #081511 100%); color: #ecf3ee; }
+
+    .soon-eyebrow { font-family: var(--font-sans); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; opacity: 0.55; margin-bottom: 14px; z-index: 2; }
+    .soon-script { font-size: clamp(38px,9vw,64px); opacity: 0.16; margin-bottom: -18px; z-index: 2; }
+    .theme-japanese .soon-script { font-family: 'Noto Serif JP', serif; color: #e8b4bc; }
+    .theme-korean   .soon-script { font-family: 'Noto Serif KR', serif; color: #c9a227; }
+
+    .soon-title { font-weight: 600; font-size: clamp(28px,6vw,46px); letter-spacing: 0.03em; margin-bottom: 10px; z-index: 2; }
+    .theme-japanese .soon-title { font-family: 'Noto Serif JP', serif; }
+    .theme-korean   .soon-title { font-family: 'Noto Serif KR', serif; }
+
+    .soon-badge {
+      display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 6px 16px;
+      font-family: var(--font-sans); font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase;
+      margin: 6px 0 2rem; z-index: 2;
+    }
+    .theme-japanese .soon-badge { border: 1px solid rgba(232,180,188,0.35); color: #e8b4bc; background: rgba(232,180,188,0.06); }
+    .theme-korean   .soon-badge { border: 1px solid rgba(201,162,39,0.35); color: #c9a227; background: rgba(201,162,39,0.06); }
+    .soon-badge .dot { width:6px; height:6px; border-radius:50%; background: currentColor; animation: pulse 1.8s ease-in-out infinite; }
+
+    .soon-crest-wrap { width: 168px; height: 168px; margin-bottom: 2rem; z-index: 2; position: relative; }
+    .soon-desc { max-width: 420px; font-size: 14px; line-height: 1.85; font-weight: 300; opacity: 0.72; margin-bottom: 2.2rem; z-index: 2; font-family: var(--font-sans); }
+
+    .soon-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; z-index: 2; }
+    .soon-btn-primary, .soon-btn-secondary {
+      font-family: var(--font-sans); font-size: 12px; letter-spacing: 1px; padding: 11px 22px; border-radius: 4px;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .soon-btn-primary:hover, .soon-btn-secondary:hover { transform: translateY(-2px); }
+    .theme-japanese .soon-btn-primary { background: linear-gradient(135deg,#e8b4bc,#c0392b); color: #160c0d; font-weight: 600; }
+    .theme-korean   .soon-btn-primary { background: linear-gradient(135deg,#c9a227,#2e5944); color: #0a140f; font-weight: 600; }
+    .soon-btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: inherit; }
+
+    /* Japanese ambient: falling sakura petals */
+    .sakura-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .petal { position: absolute; top: -10%; width: 11px; height: 11px; opacity: 0; background: radial-gradient(circle at 30% 30%, #f6cdd3, #e8b4bc 70%); border-radius: 70% 0 70% 70%; animation: petalFall linear infinite; }
+    @keyframes petalFall { 0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity:0; } 8% { opacity:0.85; } 92% { opacity:0.6; } 100% { transform: translateY(95vh) translateX(60px) rotate(340deg); opacity:0; } }
+
+    /* Korean ambient: drifting mist clouds */
+    .mist-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .mist { position: absolute; border-radius: 50%; filter: blur(26px); opacity: 0.16; background: radial-gradient(circle, #c9a227 0%, transparent 70%); animation: mistDrift ease-in-out infinite; }
+    @keyframes mistDrift { 0%,100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(40px) translateY(-18px); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ BRAND TOPBAR ════════ -->
+<header class="brand-topbar">
+  <a href="https://livedish-ai.online/" class="brand-mark" target="_blank" rel="noopener">
+    <span class="brand-glyph"></span>
+    <span>
+      <span class="brand-name">live<span>Dish</span></span>
+      <span class="brand-tag">AI Menus · In AR</span>
+    </span>
+  </a>
+  <a href="https://livedish-ai.online/" class="brand-url" target="_blank" rel="noopener">livedish-ai.online</a>
+</header>
+
+<!-- ════════ CUISINE GATE ════════ -->
+<section class="cuisine-gate">
+  <p class="gate-eyebrow">Choose an experience</p>
+  <h1 class="gate-title">One Platform. Every Cuisine.</h1>
+  <p class="gate-sub">Tap a cuisine to preview the live AR menu experience liveDish builds for restaurants like yours.</p>
+
+  <div class="cuisine-cards" id="cuisine-cards">
+    <button class="cuisine-card active" data-cuisine="italian" aria-pressed="true">
+      <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <radialGradient id="g-wolf" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#e2949f"/><stop offset="60%" stop-color="#a32133"/><stop offset="100%" stop-color="#5c0f1a"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#c74456" stroke-width="1.2" opacity="0.45"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ddb777" stroke-width="0.7" opacity="0.5" stroke-dasharray="2 4"/>
+        <path d="M50 22 L30 36 Q22 50 28 64 Q34 76 50 80 Q66 76 72 64 Q78 50 70 36 Z" fill="url(#g-wolf)" opacity="0.92"/>
+        <path d="M33 36 L24 18 L38 32 Z" fill="url(#g-wolf)"/>
+        <path d="M67 36 L76 18 L62 32 Z" fill="url(#g-wolf)"/>
+        <path d="M50 46 L42 60 L50 56 L58 60 Z" fill="#2c0a10"/>
+        <circle cx="40" cy="44" r="2.4" fill="#1a0509"/>
+        <circle cx="60" cy="44" r="2.4" fill="#1a0509"/>
+        <path d="M44 68 Q50 73 56 68" stroke="#2c0a10" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="crest-name">Italian</span>
+      <span class="crest-status live">Live demo</span>
+    </button>
+
+    <button class="cuisine-card" data-cuisine="japanese" aria-pressed="false">
+      <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <radialGradient id="g-koi" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#fbdfe3"/><stop offset="55%" stop-color="#e8b4bc"/><stop offset="100%" stop-color="#9c5a63"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#e8b4bc" stroke-width="1.2" opacity="0.4"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
+        <path d="M28 50 Q30 34 50 32 Q70 30 76 44 Q66 42 60 46 Q70 50 66 58 Q60 54 54 56 Q62 64 50 68 Q34 70 28 50Z" fill="url(#g-koi)"/>
+        <path d="M76 44 L88 36 L86 50 L88 60 L76 52Z" fill="url(#g-koi)" opacity="0.85"/>
+        <circle cx="40" cy="44" r="2" fill="#3a1418"/>
+        <path d="M30 50 Q40 56 48 52" stroke="#9c5a63" stroke-width="1" fill="none" opacity="0.6"/>
+        <path d="M34 58 Q44 62 52 58" stroke="#9c5a63" stroke-width="1" fill="none" opacity="0.5"/>
+      </svg>
+      <span class="crest-name">Japanese</span>
+      <span class="crest-status soon">Coming soon</span>
+    </button>
+
+    <button class="cuisine-card" data-cuisine="korean" aria-pressed="false">
+      <svg class="crest" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <radialGradient id="g-tiger" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#f0d27e"/><stop offset="55%" stop-color="#c9a227"/><stop offset="100%" stop-color="#7a5a14"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#c9a227" stroke-width="1.2" opacity="0.4"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#b3293e" stroke-width="0.7" opacity="0.45" stroke-dasharray="2 4"/>
+        <path d="M50 24 Q30 26 27 44 Q25 62 38 72 Q50 80 62 72 Q75 62 73 44 Q70 26 50 24Z" fill="url(#g-tiger)"/>
+        <path d="M31 34 L20 22 L34 30Z" fill="url(#g-tiger)"/>
+        <path d="M69 34 L80 22 L66 30Z" fill="url(#g-tiger)"/>
+        <path d="M38 46 Q34 40 28 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M62 46 Q66 40 72 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="41" cy="48" r="2.2" fill="#241405"/>
+        <circle cx="59" cy="48" r="2.2" fill="#241405"/>
+        <path d="M50 52 L46 60 L54 60Z" fill="#241405"/>
+        <path d="M40 66 Q50 72 60 66" stroke="#241405" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M44 62 Q38 64 32 62" stroke="#7a1c2b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M56 62 Q62 64 68 62" stroke="#7a1c2b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="crest-name">Korean</span>
+      <span class="crest-status soon">Coming soon</span>
+    </button>
+  </div>
+</section>
+
+<!-- ════════ ITALIAN PANEL (live demo, original Pinocchio menu) ════════ -->
+<section id="panel-italian" class="cuisine-panel theme-italian">
+  <button class="panel-back" data-target="cuisine-cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Choose a different cuisine</button>
+
+  <header class="site-header">
+    <div class="menu-texture-bg"></div>
+    <div style="position:absolute;top:1rem;right:1rem;z-index:20;">
+      <a href="FunZone.html" class="funzone-btn">🎮 FunZone</a>
+    </div>
+    <div id="language-picker">
+      <select id="lang-select">
+        <option value="en">English</option>
+        <option value="it">Italiano</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="ta">தமிழ்</option>
+        <option value="ml">മലയാളം</option>
+        <option value="te">తెలుగు</option>
+      </select>
+    </div>
+    <div class="header-mon"></div>
+    <p class="header-brand">Italian Cuisine</p>
+    <h1 class="header-title">PINOCCHIO</h1>
+    <span class="header-title-sub">by Chef Giuseppe</span>
+    <div class="brush-divider"></div>
+    <p class="header-sub" id="ui-sub-tag">Authentic Italian Cuisine</p>
+    <span class="ar-badge">
+      <span class="ar-dot"></span>
+      <span id="ui-ar-badge">Interactive 3D &amp; AR Preview</span>
+    </span>
+  </header>
+
+  <nav class="tabs-wrap" aria-label="Menu categories">
+    <div class="tabs-inner" id="tabs-inner"></div>
+  </nav>
+
+  <main class="main">
+    <div id="items-container">
+      <div class="skeleton-grid" id="skeleton-ui" aria-hidden="true">
+        <div class="skeleton-card"><div class="sk-row"><div class="sk-thumb"></div><div class="sk-body"><div class="sk-line wide"></div><div class="sk-line full"></div><div class="sk-line full"></div><div class="sk-line short"></div></div></div></div>
+        <div class="skeleton-card"><div class="sk-row"><div class="sk-thumb"></div><div class="sk-body"><div class="sk-line mid"></div><div class="sk-line full"></div><div class="sk-line full"></div><div class="sk-line short"></div></div></div></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="Dish detail">
+    <div class="modal-card">
+      <div class="modal-viewer-wrap" id="modal-viewer-wrap">
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+        <div class="mv-loader" id="mv-loader">
+          <div class="mv-loader-ring"></div>
+          <div class="mv-loader-text">LOADING MODEL</div>
+        </div>
+        <div id="modal-photo" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:1;"></div>
+        <div id="mv-wrapper"></div>
+        <div class="mv-ar-badge" id="mv-ar-badge">✦ AR Ready</div>
+        <div class="scale-info"  id="scale-info">Actual portion size</div>
+        <div class="mv-ar-btn-wrap" id="mv-ar-btn-wrap">
+          <button class="modal-ar-launch-btn" id="modal-ar-launch-btn">✦ View On Table</button>
+        </div>
+        <div class="ar-not-supported" id="ar-not-supported">AR not supported on this device — rotate to view in 3D</div>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-name" id="modal-name"></h2>
+        <p  class="modal-jp"   id="modal-jp"></p>
+        <div class="tags-row"  id="modal-tags"></div>
+        <p  class="modal-desc" id="modal-desc"></p>
+        <div class="modal-footer">
+          <div class="modal-price" id="modal-price"></div>
+          <div class="tags-row"    id="modal-tags2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    Tap any dish to view in 3D &nbsp;·&nbsp; Prices in ₹ &nbsp;·&nbsp; 🌿 Vegetarian friendly<br>
+    <span style="opacity:0.5;font-size:10px;">AR requires a compatible mobile device · Model size reflects actual portion · Powered by liveDish AI</span>
+  </footer>
+</section>
+
+<!-- ════════ JAPANESE PANEL (coming soon) ════════ -->
+<section id="panel-japanese" class="cuisine-panel theme-japanese hidden">
+  <button class="panel-back" data-target="cuisine-cards" style="background:rgba(12,14,26,0.9);color:rgba(241,233,224,0.7);border-bottom:1px solid rgba(232,180,188,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Choose a different cuisine</button>
+
+  <div class="soon-wrap">
+    <div class="sakura-field" id="sakura-field"></div>
+    <p class="soon-script">和食</p>
+    <p class="soon-eyebrow">Japanese Cuisine</p>
+    <h2 class="soon-title">The AR menu is being crafted</h2>
+    <span class="soon-badge"><span class="dot"></span>Arriving soon on liveDish</span>
+
+    <div class="soon-crest-wrap">
+      <svg viewBox="0 0 100 100" style="width:100%;height:100%;">
+        <defs>
+          <radialGradient id="g-koi-big" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#fbdfe3"/><stop offset="55%" stop-color="#e8b4bc"/><stop offset="100%" stop-color="#9c5a63"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#e8b4bc" stroke-width="0.8" opacity="0.5">
+          <animate attributeName="r" values="46;48;46" dur="3.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#c9a227" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 4"/>
+        <g>
+          <path d="M28 50 Q30 34 50 32 Q70 30 76 44 Q66 42 60 46 Q70 50 66 58 Q60 54 54 56 Q62 64 50 68 Q34 70 28 50Z" fill="url(#g-koi-big)"/>
+          <path d="M76 44 L88 36 L86 50 L88 60 L76 52Z" fill="url(#g-koi-big)" opacity="0.85"/>
+          <circle cx="40" cy="44" r="2" fill="#3a1418"/>
+          <path d="M30 50 Q40 56 48 52" stroke="#9c5a63" stroke-width="1" fill="none" opacity="0.6"/>
+          <animateTransform attributeName="transform" type="translate" values="0 0; 0 -3; 0 0" dur="3.2s" repeatCount="indefinite"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="soon-desc">We're building immersive AR previews for sushi, ramen and izakaya plates — the same live, table-scale 3D experience you just explored for Italian cuisine.</p>
+
+    <div class="soon-actions">
+      <a class="soon-btn-primary" href="mailto:hello@livedish-ai.online?subject=Notify%20me%20%E2%80%94%20Japanese%20AR%20menu">✉ Notify me at launch</a>
+      <a class="soon-btn-secondary" href="https://livedish-ai.online/" target="_blank" rel="noopener">Visit livedish-ai.online</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ KOREAN PANEL (coming soon) ════════ -->
+<section id="panel-korean" class="cuisine-panel theme-korean hidden">
+  <button class="panel-back" data-target="cuisine-cards" style="background:rgba(8,21,17,0.9);color:rgba(236,243,238,0.7);border-bottom:1px solid rgba(201,162,39,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg> Choose a different cuisine</button>
+
+  <div class="soon-wrap">
+    <div class="mist-field" id="mist-field"></div>
+    <p class="soon-script">한식</p>
+    <p class="soon-eyebrow">Korean Cuisine</p>
+    <h2 class="soon-title">The AR menu is being crafted</h2>
+    <span class="soon-badge"><span class="dot"></span>Arriving soon on liveDish</span>
+
+    <div class="soon-crest-wrap">
+      <svg viewBox="0 0 100 100" style="width:100%;height:100%;">
+        <defs>
+          <radialGradient id="g-tiger-big" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#f0d27e"/><stop offset="55%" stop-color="#c9a227"/><stop offset="100%" stop-color="#7a5a14"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#c9a227" stroke-width="0.8" opacity="0.5">
+          <animate attributeName="r" values="46;48;46" dur="3.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#b3293e" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 4"/>
+        <g>
+          <path d="M50 24 Q30 26 27 44 Q25 62 38 72 Q50 80 62 72 Q75 62 73 44 Q70 26 50 24Z" fill="url(#g-tiger-big)"/>
+          <path d="M31 34 L20 22 L34 30Z" fill="url(#g-tiger-big)"/>
+          <path d="M69 34 L80 22 L66 30Z" fill="url(#g-tiger-big)"/>
+          <path d="M38 46 Q34 40 28 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M62 46 Q66 40 72 42" stroke="#7a1c2b" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="41" cy="48" r="2.2" fill="#241405"/>
+          <circle cx="59" cy="48" r="2.2" fill="#241405"/>
+          <path d="M50 52 L46 60 L54 60Z" fill="#241405"/>
+          <path d="M40 66 Q50 72 60 66" stroke="#241405" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="soon-desc">Bibimbap, BBQ platters and banchan spreads — coming to life in table-scale AR, with the same authentic detail as our Italian preview.</p>
+
+    <div class="soon-actions">
+      <a class="soon-btn-primary" href="mailto:hello@livedish-ai.online?subject=Notify%20me%20%E2%80%94%20Korean%20AR%20menu">✉ Notify me at launch</a>
+      <a class="soon-btn-secondary" href="https://livedish-ai.online/" target="_blank" rel="noopener">Visit livedish-ai.online</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─────────────────────────────────────────────
+   CUISINE SWITCHER
+───────────────────────────────────────────── */
+(function () {
+  const cards = document.querySelectorAll('.cuisine-card');
+  const panels = {
+    italian:  document.getElementById('panel-italian'),
+    japanese: document.getElementById('panel-japanese'),
+    korean:   document.getElementById('panel-korean')
+  };
+
+  function selectCuisine(key, scroll) {
+    cards.forEach(c => {
+      const active = c.dataset.cuisine === key;
+      c.classList.toggle('active', active);
+      c.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    Object.entries(panels).forEach(([k, el]) => el.classList.toggle('hidden', k !== key));
+    if (scroll) panels[key].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  cards.forEach(card => card.addEventListener('click', () => selectCuisine(card.dataset.cuisine, true)));
+
+  document.querySelectorAll('.panel-back').forEach(btn =>
+    btn.addEventListener('click', () => document.getElementById('cuisine-cards').scrollIntoView({ behavior:'smooth', block:'center' }))
+  );
+
+  selectCuisine('italian', false);
+
+  /* ambient particle generators */
+  const sakura = document.getElementById('sakura-field');
+  for (let i = 0; i < 16; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (7 + Math.random() * 6) + 's';
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.transform = `scale(${0.6 + Math.random() * 0.8})`;
+    sakura.appendChild(p);
+  }
+
+  const mist = document.getElementById('mist-field');
+  const mistSpots = [
+    { l:'10%', t:'15%', s:220 }, { l:'70%', t:'10%', s:260 },
+    { l:'25%', t:'70%', s:200 }, { l:'80%', t:'65%', s:240 }, { l:'50%', t:'40%', s:300 }
+  ];
+  mistSpots.forEach((m, i) => {
+    const d = document.createElement('span');
+    d.className = 'mist';
+    d.style.left = m.l; d.style.top = m.t; d.style.width = m.s + 'px'; d.style.height = m.s + 'px';
+    d.style.animationDuration = (10 + i * 2) + 's';
+    mist.appendChild(d);
+  });
+})();
+
+/* ─────────────────────────────────────────────────────────────────────
+   ITALIAN PANEL — original Pinocchio AR menu engine (unchanged logic)
+   ───────────────────────────────────────────────────────────────────── */
+const ASSETS_BASE = '3d-model';
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTEkmIGoRgD1rQNmDgmY3lvB7WBOg86iOHHrS0MJ6qQiReuDHsUyX3YV7KoWXxTbefyBUWPTHpvUOt3/pub?output=csv';
+
+const LOCAL_ASSETS = {
+  'pistachio-sauce-bigne-with-ricotta': { folder: 'Pistachio-Sauce-Bigne-with-Ricotta', file: 'Pistachio-Sauce-Bigne-with-Ricotta', scale: .54, orbit: '30deg 70deg 110%' },
+  'pinocchio-tiramisu': { folder: 'Pinocchio-Tiramisu', file: 'Pinocchio-Tiramisu', scale: .70, orbit: '20deg 65deg 110%' },
+  'cheesy-green-lasagne': { folder: 'Cheesy-Green-Lasagne', file: 'Cheesy-Green-Lasagne', scale:4, orbit: '0deg 55deg 105%' },
+  'fried-calamari': { folder: 'Fried-Calamari', file: 'Fried-Calamari', scale: 2, orbit: '15deg 65deg 105%' }
+};
+
+const EMOJI_MAP = {
+  'pistachio-sauce-bigne-with-ricotta': '🍮',
+  'pinocchio-tiramisu':                  '🍰',
+  'cheesy-green-lasagne':               '🧀',
+  'fried-calamari':                      '🦑'
+};
+
+const I18N = {
+  en: { sub:'Authentic Italian Cuisine',    badge:'Interactive 3D & AR Preview', veg:'veg',        loading:'Loading...',        all:'All', starter:'Starters', 'main-course':'Main Course', dessert:'Desserts' },
+  it: { sub:'Autentica Cucina Italiana',    badge:'Anteprima Interattiva 3D & AR', veg:'vegetariano', loading:'Caricamento...',      all:'Tutti', starter:'Antipasti', 'main-course':'Portata Principale', dessert:'Dolci' },
+  kn: { sub:'ಅಧಿಕೃತ ಇಟಾಲಿಯನ್ ಆಹಾರ',        badge:'3D ಮತ್ತು AR ಮುನ್ನೋಟ',           veg:'ಸಸ್ಯಾಹಾರಿ',   loading:'ಲೋಡ್ ಆಗುತ್ತಿದೆ...', all:'ಎಲ್ಲಾ', starter:'ಸ್ಟಾರ್ಟರ್', 'main-course':'ಮುಖ್ಯ ಕೋರ್ಸ್', dessert:'ಡೆಸರ್ಟ್' },
+  ta: { sub:'உண்மையான இத்தாலிய உணவு',      badge:'3D மற்றும் AR மாதிரிக்காட்சி', veg:'சைவம்',       loading:'ஏற்றப்படுகிறது...', all:'அனைத்தும்', starter:'தொடக்க', 'main-course':'முதன்மை', dessert:'இனிப்பு' },
+  ml: { sub:'ആധികാரിക ഇറ്റാലിയൻ വിഭവങ്ങൾ',badge:'3D & AR പ്രിവ്യൂ',               veg:'വെജ്',         loading:'ലോഡ് ചെയ്യുന്നു...', all:'എല്ലാം', starter:'സ്റ്റാർട്ടർ', 'main-course':'മെയിൻ കോഴ്സ്', dessert:'ഡെസേർട്ട്' },
+  te: { sub:'ప్రామాణిక ఇటాలియన్ వంటకాలు',  badge:'3D & AR ప్రివ్యూ',               veg:'శాఖాహారం',   loading:'లోడ్ అవుతోంది...',   all:'అన్నీ', starter:'స్టార్టర్', 'main-course':'మెయిన్ కోర్స్', dessert:'డెజర్ట్' }
+};
+
+const CACHE_KEY = 'menu_csv_v1';
+const CACHE_TTL = 15 * 60 * 1000;
+
+function getCachedCSV() {
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { ts, text } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) { sessionStorage.removeItem(CACHE_KEY); return null; }
+    return text;
+  } catch { return null; }
+}
+function setCachedCSV(text) {
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), text })); } catch {}
+}
+
+const csvPromise = (async () => {
+  const cached = getCachedCSV();
+  if (cached) return cached;
+  const res = await fetch(CSV_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  setCachedCSV(text);
+  return text;
+})();
+
+let mvModulePromise = null;
+let mvModuleReady = false;
+
+function ensureModelViewerLoaded() {
+  if (!mvModulePromise) {
+    mvModulePromise = import('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js')
+      .then(() => { mvModuleReady = true; });
+  }
+  return mvModulePromise;
+}
+
+const glbPrefetched = new Set();
+function prefetchGlb(glbPath) {
+  if (!glbPath || glbPrefetched.has(glbPath)) return;
+  glbPrefetched.add(glbPath);
+  const link = document.createElement('link');
+  link.rel = 'prefetch'; link.href = glbPath;
+  link.as = 'fetch'; link.crossOrigin = 'anonymous';
+  document.head.appendChild(link);
+}
+
+function preloadAboveFoldPosters(dishes, count = 4) {
+  const idle = window.requestIdleCallback || (cb => setTimeout(cb, 200));
+  idle(() => {
+    dishes.slice(0, count).forEach(d => {
+      if (!d.posterPath) return;
+      const link = document.createElement('link');
+      link.rel = 'preload'; link.as = 'image'; link.href = d.posterPath;
+      document.head.appendChild(link);
+    });
+  });
+}
+
+function normalizeKey(str) { return (str||'').toLowerCase().replace(/\s+/g,'-').trim(); }
+
+function getLocalAssets(dishName) {
+  const key = normalizeKey(dishName);
+  const entry = LOCAL_ASSETS[key];
+  if (!entry) return { posterPath:'', glbPath:'', usdzPath:'', scale:0.05, orbit:'0deg 75deg 105%' };
+  const base = `${ASSETS_BASE}/${entry.folder}/${entry.file}`;
+  return {
+    posterPath: `${base}.png`,
+    glbPath:    `${base}.glb`,
+    usdzPath:   `${base}.usdz`,
+    scale:      entry.scale,
+    orbit:      entry.orbit ?? '0deg 75deg 105%'
+  };
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = splitLine(lines[0]).map(h => h.trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    const vals = splitLine(line), obj = {};
+    headers.forEach((h, i) => { obj[h] = (vals[i]||'').trim(); });
+    return obj;
+  });
+}
+
+function splitLine(line) {
+  const result=[]; let cur='', inQ=false;
+  for (let i=0; i<line.length; i++) {
+    const ch=line[i];
+    if(ch==='"'&&!inQ){inQ=true;continue;}
+    if(ch==='"'&&inQ){if(line[i+1]==='"'){cur+='"';i++;}else{inQ=false;}continue;}
+    if(ch===','&&!inQ){result.push(cur);cur='';continue;}
+    cur+=ch;
+  }
+  result.push(cur); return result;
+}
+
+let allDishes=[], rawRows=[], activeCategory='all', currentLang='en';
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+              (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1);
+
+function rowToDish(row) {
+  const truthy = v => ['true','yes','1'].includes((v||'').toLowerCase());
+  const sfx = {it:'_it',kn:'_kn',ta:'_ta',ml:'_ml',te:'_te'}[currentLang]||'';
+  const desc = row[`description${sfx}`] || row['description'] || '';
+  const name = row[`name${sfx}`]        || row['name']        || '';
+  const local = getLocalAssets(row['name']);
+  return {
+    id: row['id']||'', name,
+    category: (row['category']||'other').toLowerCase(),
+    desc, price: parseInt(row['price']||'0',10),
+    veg: truthy(row['veg']), available: truthy(row['available']),
+    glbPath: local.glbPath, usdzPath: local.usdzPath,
+    posterPath: local.posterPath, scale: local.scale,
+    orbit: local.orbit,
+    emoji: EMOJI_MAP[normalizeKey(row['name'])]||'🍽️'
+  };
+}
+
+function tagHTML(d) {
+  const t = I18N[currentLang]||I18N.en;
+  return [
+    d.veg   ? `<span class="tag tag-veg">🌿 ${t.veg}</span>` : '',
+    d.isNew ? `<span class="tag tag-new">✨ nuovo</span>` : '',
+    d.dotd  ? `<span class="tag tag-dotd">★ chef's pick</span>` : ''
+  ].join('');
+}
+
+function catLabel(cat) {
+  const langPack = I18N[currentLang] || I18N.en;
+  return langPack[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
+}
+
+function renderTabs() {
+  const cats = ['all','starter','main-course','dessert'];
+  const wrap = document.getElementById('tabs-inner');
+  wrap.innerHTML = cats.map(c =>
+    `<button class="tab-btn${c===activeCategory?' active':''}" data-cat="${c}">${catLabel(c)}</button>`
+  ).join('');
+  wrap.querySelectorAll('.tab-btn').forEach(btn =>
+    btn.addEventListener('click', ()=>{ activeCategory=btn.dataset.cat; renderTabs(); renderItems(); })
+  );
+}
+
+const SVG_CUBE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+
+function cardHTML(d, isAboveFold) {
+  const imgLoading = isAboveFold ? 'eager' : 'lazy';
+  const fetchPriority = isAboveFold ? 'fetchpriority="high"' : '';
+  const thumb = d.posterPath
+    ? `<img src="${d.posterPath}" alt="${d.name}" loading="${imgLoading}" decoding="async" ${fetchPriority}
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+       <span style="display:none;font-size:32px;width:100%;height:100%;align-items:center;justify-content:center;">${d.emoji}</span>`
+    : `<span style="font-size:32px;">${d.emoji}</span>`;
+  return `
+    <div class="menu-card${d.available?'':' unavailable'}" data-id="${d.id}" role="button" tabindex="0" aria-label="View ${d.name}">
+      <div class="card-row">
+        <div class="card-thumb">
+          ${thumb}
+          ${d.glbPath?'<span class="ar-pill">AR</span>':''}
+        </div>
+        <div class="card-body">
+          <div class="name-row">
+            <span class="dish-name">${d.name}</span>
+          </div>
+          <div class="tags-row">${tagHTML(d)}</div>
+          <p class="dish-desc">${d.desc}</p>
+          <div class="card-footer">
+            <div class="dish-price"><span class="price-sym">₹</span>${d.price.toLocaleString('en-IN')}</div>
+            ${d.glbPath?`<button class="ar-btn" data-id="${d.id}">${SVG_CUBE} View in AR</button>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderItems() {
+  const filtered = activeCategory==='all' ? allDishes : allDishes.filter(d=>d.category===activeCategory);
+  const container = document.getElementById('items-container');
+
+  let html = '';
+  if (activeCategory==='all') {
+    const grouped={};
+    filtered.forEach(d=>{ (grouped[d.category]=grouped[d.category]||[]).push(d); });
+    let cardIndex = 0;
+    html = Object.entries(grouped).map(([cat,items])=>
+      `<div class="section-label"><span></span>${catLabel(cat)}<span></span></div>
+       <div class="items-grid">${items.map(d => cardHTML(d, cardIndex++ < 4)).join('')}</div>`
+    ).join('');
+  } else {
+    html = `<div class="items-grid">${filtered.map((d,i) => cardHTML(d, i < 4)).join('')}</div>`;
+  }
+
+  container.innerHTML = html;
+
+  requestAnimationFrame(() => {
+    container.querySelectorAll('.menu-card').forEach(card => {
+      const d = allDishes.find(x=>x.id===card.dataset.id);
+      if (!d) return;
+      const doPrefetch = () => { prefetchGlb(d.glbPath); ensureModelViewerLoaded(); };
+      card.addEventListener('mouseenter', doPrefetch, { once:true, passive:true });
+      card.addEventListener('touchstart',  doPrefetch, { once:true, passive:true });
+      card.addEventListener('click', ()=>openModal(card.dataset.id));
+      card.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') openModal(card.dataset.id); });
+    });
+    container.querySelectorAll('.ar-btn').forEach(btn =>
+      btn.addEventListener('click', e=>{ e.stopPropagation(); openModal(btn.dataset.id); })
+    );
+  });
+}
+
+const elMvWrapper    = document.getElementById('mv-wrapper');
+const elMvLoader      = document.getElementById('mv-loader');
+const elPhoto         = document.getElementById('modal-photo');
+const elArBadge       = document.getElementById('mv-ar-badge');
+const elScaleInfo     = document.getElementById('scale-info');
+const elArBtnWrap     = document.getElementById('mv-ar-btn-wrap');
+const elArLaunch      = document.getElementById('modal-ar-launch-btn');
+const elArNotSupported= document.getElementById('ar-not-supported');
+
+let currentDish = null;
+let elMV = null;
+
+function showLoader() { elMvLoader.classList.remove('hidden'); }
+function hideLoader() { elMvLoader.classList.add('hidden'); }
+function showMV()      { elMvWrapper.classList.add('mv-visible'); }
+function hideMV()      { elMvWrapper.classList.remove('mv-visible'); }
+
+function setPhoto(d) {
+  if (d.posterPath) {
+    elPhoto.innerHTML = `
+      <img src="${d.posterPath}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover;" loading="eager" decoding="async"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span style="display:none;font-size:80px;align-items:center;justify-content:center;width:100%;height:100%;">${d.emoji}</span>`;
+  } else {
+    elPhoto.innerHTML = `<span style="font-size:80px;">${d.emoji}</span>`;
+  }
+  elPhoto.style.display = 'flex';
+}
+
+function updateARButtonVisibility() {
+  if (!elMV) return;
+  const canAR = elMV.canActivateAR;
+  elArBtnWrap.style.display      = canAR ? 'flex' : 'none';
+  elArNotSupported.style.display = canAR ? 'none' : 'block';
+}
+
+function openModal(id) {
+  const d = allDishes.find(x=>x.id===id);
+  if (!d) return;
+  currentDish = d;
+
+  document.getElementById('modal-name').textContent = d.name;
+  document.getElementById('modal-desc').textContent = d.desc;
+  document.getElementById('modal-price').innerHTML  = `<span style="font-family:var(--font-sans);font-size:14px;color:var(--ink-faint)">₹</span>${d.price.toLocaleString('en-IN')}`;
+  document.getElementById('modal-tags').innerHTML   = tagHTML(d);
+  document.getElementById('modal-tags2').innerHTML  = tagHTML(d);
+
+  hideMV();
+  elArBadge.classList.remove('visible');
+  elScaleInfo.textContent = '';
+  elArBtnWrap.style.display = 'none';
+  elArNotSupported.style.display = 'none';
+  elArLaunch.disabled = false;
+  elArLaunch.textContent = '✦ View On Table';
+
+  setPhoto(d);
+  showLoader();
+  elMvWrapper.innerHTML = '';
+
+  if (d.glbPath) {
+    prefetchGlb(d.glbPath);
+
+    ensureModelViewerLoaded().then(() => {
+      if (currentDish?.id !== d.id) return;
+
+      const s = (d.scale ?? 1).toFixed(6);
+      const scaleString = `${s} ${s} ${s}`;
+
+      elMV = document.createElement('model-viewer');
+      elMV.id = 'main-mv';
+      elMV.setAttribute('ar', '');
+      elMV.setAttribute('ar-modes', 'webxr');
+      elMV.setAttribute('ar-placement', 'floor');
+      elMV.setAttribute('ar-scale', 'fixed');
+      elMV.setAttribute('xr-environment', '');
+      elMV.setAttribute('camera-controls', '');
+      elMV.setAttribute('touch-action', 'pan-y');
+      elMV.setAttribute('shadow-intensity', '1');
+      elMV.setAttribute('shadow-softness', '0.8');
+      elMV.setAttribute('environment-image', 'neutral');
+      elMV.setAttribute('exposure', '1');
+      elMV.setAttribute('min-camera-orbit', 'auto auto 60%');
+      elMV.setAttribute('max-camera-orbit', 'auto auto 140%');
+      elMV.setAttribute('interaction-prompt', 'none');
+      elMV.setAttribute('loading', 'eager');
+      elMV.setAttribute('reveal', 'manual');
+      elMV.setAttribute('scale', scaleString);
+      elMV.style.setProperty('--ar-scale', s);
+      elMV.setAttribute('camera-orbit', d.orbit ?? '0deg 75deg 105%');
+
+      if (isIOS && d.usdzPath) { elMV.setAttribute('ios-src', d.usdzPath); }
+
+      const slotBtn = document.createElement('button');
+      slotBtn.setAttribute('slot', 'ar-button');
+      slotBtn.id = 'mv-ar-slot-btn';
+      slotBtn.setAttribute('aria-hidden', 'true');
+      slotBtn.style.display = 'none';
+      elMV.appendChild(slotBtn);
+
+      elMV.addEventListener('load', () => { if (currentDish?.id === d.id) onMVLoaded(d); });
+      elMV.addEventListener('error', () => {
+        hideLoader();
+        if (currentDish) setPhoto(currentDish);
+        elArLaunch.disabled = false;
+        elArLaunch.textContent = '⚠ Retry';
+      });
+
+      elMV.addEventListener('ar-status', e => {
+        const status = e.detail.status;
+        if (status === 'failed' || status === 'not-presenting') {
+          elArLaunch.disabled = false;
+          elArLaunch.textContent = '✶ View in AR';
+        }
+        if (status === 'session-started') {
+          elArLaunch.disabled = false;
+          elArLaunch.textContent = '✦ AR Active';
+        }
+      });
+
+      elMvWrapper.appendChild(elMV);
+      elMV.setAttribute('src', d.glbPath);
+    });
+  } else {
+    hideLoader();
+  }
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function onMVLoaded(d) {
+  if (currentDish?.id !== d.id || !elMV) return;
+  const s = (d.scale ?? 1).toFixed(6);
+  elMV.setAttribute('scale', `${s} ${s} ${s}`);
+  elMV.style.setProperty('--ar-scale', s);
+  elMV.dismissPoster();
+  hideLoader();
+  elPhoto.style.display = 'none';
+  showMV();
+  elArBadge.classList.add('visible');
+  elScaleInfo.textContent = 'Actual portion size';
+  updateARButtonVisibility();
+}
+
+elArLaunch.addEventListener('click', () => {
+  if (elArLaunch.disabled || !currentDish || !elMV) return;
+  const d = currentDish;
+
+  ensureModelViewerLoaded().then(() => {
+    if (currentDish?.id !== d.id) return;
+    if (!elMV.canActivateAR) {
+      elArNotSupported.style.display = 'block';
+      elArBtnWrap.style.display = 'none';
+      return;
+    }
+    const launch = () => {
+      if (currentDish?.id !== d.id) return;
+      try { elMV.activateAR(); } catch(e) { console.warn('activateAR:', e); }
+    };
+
+    if (elMvWrapper.classList.contains('mv-visible')) {
+      launch();
+    } else {
+      elArLaunch.disabled = true;
+      elArLaunch.textContent = '⏳ Loading…';
+      elMV.addEventListener('load', () => {
+        elArLaunch.disabled = false;
+        elArLaunch.textContent = '✦ View On Table';
+        launch();
+      }, { once: true });
+    }
+  });
+});
+
+function safePause() { if (mvModuleReady && elMV && typeof elMV.pause === 'function') elMV.pause(); }
+function safePlay()  { if (mvModuleReady && elMV && typeof elMV.play  === 'function') elMV.play();  }
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentDish = null;
+  safePause();
+  if (elMvWrapper) elMvWrapper.innerHTML = '';
+  elMV = null;
+}
+
+document.getElementById('modal-overlay').addEventListener('transitionend', () => {
+  if (document.getElementById('modal-overlay').classList.contains('open')) safePlay();
+});
+
+document.addEventListener('visibilitychange', () => { document.hidden ? safePause() : safePlay(); });
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
+
+document.getElementById('lang-select').addEventListener('change', e => {
+  currentLang = e.target.value;
+  const t = I18N[currentLang]||I18N.en;
+  document.getElementById('ui-sub-tag').textContent  = t.sub;
+  document.getElementById('ui-ar-badge').textContent = t.badge;
+  allDishes = rawRows.map(rowToDish).filter(d=>d.name);
+  renderTabs(); renderItems();
+});
+
+async function init() {
+  const container = document.getElementById('items-container');
+  try {
+    const text = await csvPromise;
+    rawRows    = parseCSV(text);
+    allDishes  = rawRows.map(rowToDish).filter(d=>d.name);
+    if (!allDishes.length) throw new Error('No dishes found.');
+
+    preloadAboveFoldPosters(allDishes);
+    renderTabs();
+    renderItems();
+  } catch(err) {
+    console.error('Menu load error:', err);
+    container.innerHTML = `
+      <div class="state-box">
+        <p style="color:var(--crimson);font-family:var(--font-display);letter-spacing:2px;margin-bottom:10px">Could not load menu</p>
+        <p style="font-size:13px;line-height:1.8;color:var(--ink-light)">
+          Make sure your sheet is published:<br>
+          <strong>File → Share → Publish to web → CSV</strong><br><br>
+          Google Sheet Connection Error
+        </p>
+      </div>`;
+  }
+}
+
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.onkeydown = function(e) {
+  if (e.keyCode === 123) return false; // F12
+  if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67 || e.keyCode === 75)) return false;
+  if (e.ctrlKey && e.keyCode === 85) return false; // Ctrl+U
+};
+
+init();
+</script>
+</body>
+</html>
