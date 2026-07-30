@@ -7,6 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Clean, highly readable single font family -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet" />
 
   <!-- Google <model-viewer> Library for 3D & WebAR -->
@@ -27,7 +28,7 @@
     /* ══════════════════════════════════════
        GLOBAL TYPOGRAPHY OVERRIDE
     ══════════════════════════════════════ */
-    h1, h2, h3, h4, h5, h6, p, span, button, a, div, input {
+    h1, h2, h3, h4, h5, h6, p, span, button, a, div, input, button {
       font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
@@ -112,7 +113,7 @@
     .panel-back svg { width: 14px; height: 14px; }
 
     /* ══════════════════════════════════════
-       ITALIAN PANEL
+       ITALIAN — Cleaned Typography
     ══════════════════════════════════════ */
     .panel-italian {
       background:
@@ -128,42 +129,108 @@
     }
     .panel-italian .panel-back:hover { color: #c9a227; }
 
-    .it-header { position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden; }
+    .it-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
     .it-header::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-      background: repeating-linear-gradient(90deg, #009246 0px, #009246 33.33%, #f4f5f0 33.33%, #f4f5f0 66.66%, #ce2b37 66.66%, #ce2b37 100%);
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background: repeating-linear-gradient(90deg,
+        #009246 0px, #009246 33.33%,
+        #f4f5f0 33.33%, #f4f5f0 66.66%,
+        #ce2b37 66.66%, #ce2b37 100%
+      );
     }
 
-    .it-ghost { font-size: clamp(38px, 9vw, 64px); font-weight: 800; color: rgba(196,68,86,0.12); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -10px; display: block; }
-    .it-eyebrow { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #c9a227; margin-bottom: 12px; text-transform: uppercase; }
-    .it-stemma { width: 76px; height: 76px; margin: 0 auto 1.2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .it-title { font-size: clamp(26px, 6vw, 42px); font-weight: 700; letter-spacing: -0.01em; color: #f5e8d0; text-shadow: 0 1px 10px rgba(44,10,12,0.5); margin-bottom: 6px; }
-    .it-subtitle { font-size: 13px; font-weight: 400; color: rgba(245,232,208,0.6); letter-spacing: 1px; margin-bottom: 1.8rem; display: block; }
-    .it-divider { display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem; }
-    .it-divider::before, .it-divider::after { content: ''; flex: 1; max-width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4)); }
+    .it-ghost {
+      font-size: clamp(38px, 9vw, 64px); font-weight: 800;
+      color: rgba(196,68,86,0.12); letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: -10px; display: block;
+    }
+    .it-eyebrow {
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: #c9a227; margin-bottom: 12px; text-transform: uppercase;
+    }
+
+    .it-stemma {
+      width: 76px; height: 76px; margin: 0 auto 1.2rem;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+
+    .it-title {
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: -0.01em; color: #f5e8d0;
+      text-shadow: 0 1px 10px rgba(44,10,12,0.5); margin-bottom: 6px;
+    }
+    .it-subtitle {
+      font-size: 13px; font-weight: 400;
+      color: rgba(245,232,208,0.6); letter-spacing: 1px; margin-bottom: 1.8rem; display: block;
+    }
+    .it-divider {
+      display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .it-divider::before, .it-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4));
+    }
     .it-divider::after { transform: scaleX(-1); }
     .it-divider-glyph { color: #c9a227; font-size: 10px; letter-spacing: 3px; }
 
-    .it-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,232,208,0.65); }
+    .it-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(245,232,208,0.65);
+    }
     .it-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #8d1d2d; animation: pdot 1.8s ease-in-out infinite; }
     @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.65)} }
 
-    .it-tabs { background: rgba(243,232,208,0.97); border-bottom: 1px solid rgba(139,26,26,0.15); padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80; }
-    .it-tabs-inner { max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
+    .it-tabs {
+      background: rgba(243,232,208,0.97); border-bottom: 1px solid rgba(139,26,26,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
+    }
+    .it-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
     .it-tabs-inner::-webkit-scrollbar { display: none; }
-    .it-tab { flex-shrink: 0; padding: 7px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(139,26,26,0.15); color: rgba(44,18,15,0.6); cursor: pointer; background: transparent; transition: all .2s; border-radius: 999px; }
+    .it-tab {
+      flex-shrink: 0; padding: 7px 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      border: 1px solid rgba(139,26,26,0.15); color: rgba(44,18,15,0.6); cursor: pointer;
+      background: transparent; transition: all .2s; border-radius: 999px;
+    }
     .it-tab:hover { border-color: #8d1d2d; color: #8d1d2d; }
     .it-tab.active { background: #8d1d2d; color: #f5e8d0; border-color: #8d1d2d; }
 
     .it-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
-    .it-section-head { display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #c9a227; }
+    .it-section-head {
+      display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: #c9a227;
+    }
     .it-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,26,26,0.25), transparent); }
 
-    .it-card { display: flex; gap: 16px; background: rgba(243,232,208,0.96); border: 1px solid rgba(139,26,26,0.1); border-left: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem; margin-bottom: 12px; cursor: pointer; transition: border-left-color .2s, transform .2s, box-shadow .2s; }
+    .it-card {
+      display: flex; gap: 16px;
+      background: rgba(243,232,208,0.96); border: 1px solid rgba(139,26,26,0.1);
+      border-left: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer;
+      transition: border-left-color .2s, transform .2s, box-shadow .2s;
+    }
     .it-card:hover { border-left-color: #8d1d2d; transform: translateX(3px); box-shadow: -4px 0 0 #8d1d2d, 4px 4px 18px rgba(44,10,12,0.15); }
-    .it-thumb { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; background: linear-gradient(135deg, #f0e4cc 0%, #e2d1b0 100%); border: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
+    .it-thumb {
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg, #f0e4cc 0%, #e2d1b0 100%);
+      border: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
     .it-thumb img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-    .it-ar-pill { position: absolute; bottom: 2px; right: 2px; background: #8d1d2d; color: #f5e8d0; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px; border-radius: 999px; }
+    .it-ar-pill {
+      position: absolute; bottom: 2px; right: 2px;
+      background: #8d1d2d; color: #f5e8d0; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
+      border-radius: 999px;
+    }
     .it-body { flex: 1; min-width: 0; }
     .it-name { font-size: 17px; font-weight: 700; color: #2c120f; margin-bottom: 2px; line-height: 1.3; }
     .it-name-it { font-size: 12px; font-style: italic; font-weight: 500; color: rgba(44,18,15,0.55); letter-spacing: 0.5px; margin-bottom: 6px; }
@@ -171,11 +238,21 @@
     .it-footer { display: flex; align-items: center; justify-content: space-between; }
     .it-price { font-size: 18px; font-weight: 800; color: #2c120f; }
     .it-price-sym { font-size: 12px; font-weight: 600; color: rgba(44,18,15,0.5); margin-right: 2px; }
-    .it-ar-btn { display: inline-flex; align-items: center; gap: 6px; background: #2c120f; color: #f5e8d0; border: none; padding: 8px 16px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px; }
+    .it-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #2c120f; color: #f5e8d0; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
+    }
     .it-ar-btn:hover { background: #8d1d2d; }
     .it-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(74,103,65,0.12); color: #3b5a2f; border: 1px solid rgba(74,103,65,0.25); border-radius: 999px; }
 
-    .it-footer-bar { text-align: center; padding: 1.5rem 1rem; background: rgba(40,10,12,0.7); border-top: 1px solid rgba(139,26,26,0.15); font-size: 12px; font-weight: 400; color: rgba(201,162,39,0.7); letter-spacing: 0.5px; line-height: 2; }
+    .it-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(40,10,12,0.7); border-top: 1px solid rgba(139,26,26,0.15);
+      font-size: 12px; font-weight: 400;
+      color: rgba(201,162,39,0.7); letter-spacing: 0.5px; line-height: 2;
+    }
 
     /* ══════════════════════════════════════
        JAPANESE PANEL
@@ -193,45 +270,115 @@
     }
     .panel-japanese .panel-back:hover { color: #e8b4bc; }
 
-    .jp-header { position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden; }
+    .jp-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
     .jp-header::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: repeating-linear-gradient(90deg, #bc002d 0px, #bc002d 6px, #f5f1ea 6px, #f5f1ea 7px, transparent 7px, transparent 18px);
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg,
+        #bc002d 0px, #bc002d 6px,
+        #f5f1ea 6px, #f5f1ea 7px,
+        transparent 7px, transparent 18px);
     }
 
-    .jp-kanji { font-size: clamp(38px, 9vw, 68px); font-weight: 800; color: rgba(232,180,188,0.12); letter-spacing: -0.02em; line-height: 1; margin-bottom: -10px; display: block; }
-    .jp-eyebrow { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: rgba(232,180,188,0.75); margin-bottom: 10px; text-transform: uppercase; }
-    .jp-title { font-size: clamp(26px, 6vw, 42px); font-weight: 700; letter-spacing: 0.02em; color: #f0e8dc; margin-bottom: 6px; text-shadow: 0 1px 10px rgba(12,16,30,0.5); }
-    .jp-subtitle { font-size: 13px; font-weight: 400; color: rgba(240,232,220,0.6); letter-spacing: 2px; margin-bottom: 1.8rem; display: block; }
+    .jp-kanji {
+      font-size: clamp(38px, 9vw, 68px); font-weight: 800;
+      color: rgba(232,180,188,0.12); letter-spacing: -0.02em; line-height: 1;
+      margin-bottom: -10px; display: block;
+    }
+    .jp-eyebrow {
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: rgba(232,180,188,0.75); margin-bottom: 10px; text-transform: uppercase;
+    }
+    .jp-title {
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: 0.02em;
+      color: #f0e8dc; margin-bottom: 6px;
+      text-shadow: 0 1px 10px rgba(12,16,30,0.5);
+    }
+    .jp-subtitle {
+      font-size: 13px; font-weight: 400;
+      color: rgba(240,232,220,0.6); letter-spacing: 2px; margin-bottom: 1.8rem;
+    }
 
-    .jp-mon { width: 70px; height: 70px; border-radius: 50%; border: 1.5px solid rgba(232,180,188,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.4rem; position: relative; }
-    .jp-mon::before { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1px solid rgba(232,180,188,0.2); }
+    .jp-mon {
+      width: 70px; height: 70px; border-radius: 50%;
+      border: 1.5px solid rgba(232,180,188,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.4rem; position: relative;
+    }
+    .jp-mon::before {
+      content: ''; position: absolute; inset: 8px; border-radius: 50%;
+      border: 1px solid rgba(232,180,188,0.2);
+    }
     .jp-mon-koi { font-size: 24px; color: #e8b4bc; }
 
-    .jp-divider { display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem; }
-    .jp-divider::before, .jp-divider::after { content: ''; flex: 1; max-width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,180,188,0.4)); }
+    .jp-divider {
+      display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .jp-divider::before, .jp-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,180,188,0.4));
+    }
     .jp-divider::after { transform: scaleX(-1); }
     .jp-divider-mark { color: #bc002d; font-size: 10px; letter-spacing: 3px; }
 
-    .jp-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(232,180,188,0.22); padding: 6px 18px; border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(240,232,220,0.65); }
+    .jp-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(232,180,188,0.22); padding: 6px 18px; border-radius: 999px;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(240,232,220,0.65);
+    }
     .jp-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #bc002d; animation: pdot 1.8s ease-in-out infinite; }
 
-    .jp-tabs { background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(25,32,56,0.15); padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80; }
-    .jp-tabs-inner { max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
+    .jp-tabs {
+      background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(25,32,56,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
+    }
+    .jp-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
     .jp-tabs-inner::-webkit-scrollbar { display: none; }
-    .jp-tab { flex-shrink: 0; padding: 7px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(25,32,56,0.12); color: rgba(25,32,56,0.6); cursor: pointer; background: transparent; transition: all .2s; border-radius: 999px; }
+    .jp-tab {
+      flex-shrink: 0; padding: 7px 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      border: 1px solid rgba(25,32,56,0.12); color: rgba(25,32,56,0.6); cursor: pointer;
+      background: transparent; transition: all .2s;
+      border-radius: 999px;
+    }
     .jp-tab:hover { border-color: #192038; color: #192038; }
     .jp-tab.active { background: #192038; color: #f0e8dc; border-color: #192038; }
 
     .jp-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
-    .jp-section-head { display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #e8b4bc; }
+    .jp-section-head {
+      display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: #e8b4bc;
+    }
     .jp-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,180,188,0.25), transparent); }
 
-    .jp-card { display: flex; gap: 16px; background: rgba(245,241,234,0.96); border: 1px solid rgba(25,32,56,0.1); border-right: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem; margin-bottom: 12px; cursor: pointer; transition: border-right-color .2s, transform .2s, box-shadow .2s; }
+    .jp-card {
+      display: flex; gap: 16px;
+      background: rgba(245,241,234,0.96); border: 1px solid rgba(25,32,56,0.1);
+      border-right: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer;
+      transition: border-right-color .2s, transform .2s, box-shadow .2s;
+    }
     .jp-card:hover { border-right-color: #bc002d; transform: translateX(-3px); box-shadow: 4px 0 0 #bc002d, -3px 4px 18px rgba(12,16,30,0.15); }
-    .jp-thumb { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; background: linear-gradient(135deg, #f0e8dc 0%, #e0d4c0 100%); border: 1px solid rgba(25,32,56,0.12); display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
-    .jp-thumb img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-    .jp-ar-pill { position: absolute; bottom: 2px; right: 2px; background: #bc002d; color: #f5f1ea; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px; border-radius: 999px; }
+    .jp-thumb {
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg, #f0e8dc 0%, #e0d4c0 100%);
+      border: 1px solid rgba(25,32,56,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
+    .jp-thumb img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .jp-ar-pill {
+      position: absolute; bottom: 2px; right: 2px;
+      background: #bc002d; color: #f5f1ea; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
+      border-radius: 999px;
+    }
     .jp-body { flex: 1; min-width: 0; }
     .jp-name { font-size: 17px; font-weight: 700; color: #192038; margin-bottom: 2px; line-height: 1.3; }
     .jp-name-jp { font-size: 12px; font-weight: 500; color: rgba(25,32,56,0.55); letter-spacing: 1px; margin-bottom: 6px; }
@@ -239,11 +386,21 @@
     .jp-footer { display: flex; align-items: center; justify-content: space-between; }
     .jp-price { font-size: 18px; font-weight: 800; color: #192038; }
     .jp-price-sym { font-size: 12px; font-weight: 600; color: rgba(25,32,56,0.5); margin-right: 2px; }
-    .jp-ar-btn { display: inline-flex; align-items: center; gap: 6px; background: #192038; color: #f0e8dc; border: none; padding: 8px 16px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px; }
+    .jp-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #192038; color: #f0e8dc; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
+    }
     .jp-ar-btn:hover { background: #bc002d; }
     .jp-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(25,93,56,0.1); color: #124d2e; border: 1px solid rgba(25,93,56,0.22); border-radius: 999px; }
 
-    .jp-footer-bar { text-align: center; padding: 1.5rem 1rem; background: rgba(12,16,30,0.7); border-top: 1px solid rgba(232,180,188,0.1); font-size: 12px; font-weight: 400; color: rgba(232,180,188,0.7); letter-spacing: 1px; line-height: 2; }
+    .jp-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(12,16,30,0.7); border-top: 1px solid rgba(232,180,188,0.1);
+      font-size: 12px; font-weight: 400;
+      color: rgba(232,180,188,0.7); letter-spacing: 1px; line-height: 2;
+    }
 
     /* ══════════════════════════════════════
        KOREAN PANEL
@@ -255,53 +412,142 @@
         linear-gradient(180deg, #081511 0%, #102319 45%, #081511 100%);
       color: #ecf3ee;
     }
-    .panel-korean .panel-back { background: rgba(8,21,17,0.93); color: rgba(236,243,238,0.7); border-bottom: 1px solid rgba(201,162,39,0.15); }
+    .panel-korean .panel-back {
+      background: rgba(8,21,17,0.93);
+      color: rgba(236,243,238,0.7);
+      border-bottom: 1px solid rgba(201,162,39,0.15);
+    }
     .panel-korean .panel-back:hover { color: #c9a227; }
 
-    .kr-header { position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden; }
+    .kr-header {
+      position: relative; padding: 3.5rem 1.5rem 3rem; text-align: center; overflow: hidden;
+    }
     .kr-header::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
-      background: repeating-linear-gradient(90deg, #cd2e3a 0px, #cd2e3a 10px, #2e5944 10px, #2e5944 20px, #c9a227 20px, #c9a227 26px, #2e5944 26px, #2e5944 36px, #0047a0 36px, #0047a0 46px, #2e5944 46px, #2e5944 56px, #c9a227 56px, #c9a227 62px, #2e5944 62px, #2e5944 72px, #cd2e3a 72px, #cd2e3a 82px);
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(90deg,
+        #cd2e3a 0px, #cd2e3a 10px,
+        #2e5944 10px, #2e5944 20px,
+        #c9a227 20px, #c9a227 26px,
+        #2e5944 26px, #2e5944 36px,
+        #0047a0 36px, #0047a0 46px,
+        #2e5944 46px, #2e5944 56px,
+        #c9a227 56px, #c9a227 62px,
+        #2e5944 62px, #2e5944 72px,
+        #cd2e3a 72px, #cd2e3a 82px
+      );
     }
 
-    .kr-hangul { font-size: clamp(38px, 9vw, 68px); font-weight: 800; color: rgba(201,162,39,0.12); letter-spacing: 0.1em; line-height: 1; margin-bottom: -10px; display: block; }
-    .kr-eyebrow { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: rgba(201,162,39,0.75); margin-bottom: 12px; text-transform: uppercase; }
+    .kr-hangul {
+      font-size: clamp(38px, 9vw, 68px); font-weight: 800;
+      color: rgba(201,162,39,0.12); letter-spacing: 0.1em; line-height: 1;
+      margin-bottom: -10px; display: block;
+    }
+    .kr-eyebrow {
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: rgba(201,162,39,0.75); margin-bottom: 12px; text-transform: uppercase;
+    }
 
-    .kr-emblem { width: 76px; height: 76px; margin: 0 auto 1.2rem; border-radius: 50%; border: 2px solid rgba(201,162,39,0.3); position: relative; display: flex; align-items: center; justify-content: center; }
-    .kr-emblem::before { content: ''; position: absolute; inset: 6px; border-radius: 50%; border: 1px solid rgba(201,162,39,0.15); }
-    .kr-emblem::after { content: ''; position: absolute; inset: 12px; border-radius: 50%; background: conic-gradient(#cd2e3a 0deg 120deg, #0047a0 120deg 240deg, transparent 240deg 360deg); opacity: 0.7; }
-    .kr-emblem-inner { position: relative; z-index: 2; font-size: 22px; color: #ecf3ee; }
+    .kr-emblem {
+      width: 76px; height: 76px; margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      border: 2px solid rgba(201,162,39,0.3);
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .kr-emblem::before {
+      content: ''; position: absolute; inset: 6px; border-radius: 50%;
+      border: 1px solid rgba(201,162,39,0.15);
+    }
+    .kr-emblem::after {
+      content: ''; position: absolute; inset: 12px; border-radius: 50%;
+      background:
+        conic-gradient(#cd2e3a 0deg 120deg, #0047a0 120deg 240deg, transparent 240deg 360deg);
+      opacity: 0.7;
+    }
+    .kr-emblem-inner {
+      position: relative; z-index: 2; font-size: 22px; color: #ecf3ee;
+    }
 
-    .kr-title { font-size: clamp(26px, 6vw, 42px); font-weight: 700; letter-spacing: 0.02em; color: #ecf3ee; text-shadow: 0 1px 10px rgba(8,21,17,0.5); margin-bottom: 6px; }
-    .kr-subtitle { font-size: 13px; font-weight: 400; color: rgba(236,243,238,0.6); letter-spacing: 2px; margin-bottom: 1.8rem; }
+    .kr-title {
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: 0.02em; color: #ecf3ee;
+      text-shadow: 0 1px 10px rgba(8,21,17,0.5); margin-bottom: 6px;
+    }
+    .kr-subtitle {
+      font-size: 13px; font-weight: 400;
+      color: rgba(236,243,238,0.6); letter-spacing: 2px; margin-bottom: 1.8rem;
+    }
 
-    .kr-divider { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 1.2rem; }
-    .kr-divider::before, .kr-divider::after { content: ''; flex: 1; max-width: 70px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4)); }
+    .kr-divider {
+      display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 1.2rem;
+    }
+    .kr-divider::before, .kr-divider::after {
+      content: ''; flex: 1; max-width: 70px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4));
+    }
     .kr-divider::after { transform: scaleX(-1); }
     .kr-divider-mark { color: #c9a227; font-size: 8px; letter-spacing: 4px; }
 
-    .kr-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(236,243,238,0.65); }
+    .kr-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(236,243,238,0.65);
+    }
     .kr-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9a227; animation: pdot 1.8s ease-in-out infinite; }
 
-    .kr-tabs { background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(46,89,68,0.15); padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80; }
-    .kr-tabs-inner { max-width: 740px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
+    .kr-tabs {
+      background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(46,89,68,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
+    }
+    .kr-tabs-inner {
+      max-width: 740px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto;
+      scrollbar-width: none; padding: 10px 0;
+    }
     .kr-tabs-inner::-webkit-scrollbar { display: none; }
-    .kr-tab { flex-shrink: 0; padding: 7px 18px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border: 1px solid rgba(46,89,68,0.2); color: rgba(46,89,68,0.6); cursor: pointer; background: transparent; transition: all .2s; border-radius: 4px; }
+    .kr-tab {
+      flex-shrink: 0; padding: 7px 18px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      border: 1px solid rgba(46,89,68,0.2); color: rgba(46,89,68,0.6); cursor: pointer;
+      background: transparent; transition: all .2s;
+      border-radius: 4px;
+    }
     .kr-tab:hover { border-color: #2e5944; color: #2e5944; background: rgba(46,89,68,0.06); }
     .kr-tab.active { background: #2e5944; color: #ecf3ee; border-color: #2e5944; }
 
     .kr-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
-    .kr-section-head { display: flex; align-items: center; gap: 12px; margin: 2rem 0 1rem; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c9a227; }
+    .kr-section-head {
+      display: flex; align-items: center; gap: 12px; margin: 2rem 0 1rem;
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c9a227;
+    }
     .kr-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.25), transparent); }
     .kr-section-head::before { content: '◈'; color: #c9a227; font-size: 10px; flex-shrink: 0; }
 
-    .kr-card { display: flex; gap: 16px; background: rgba(245,241,234,0.96); border-top: 2px solid transparent; border: 1px solid rgba(46,89,68,0.1); border-radius: 6px; padding: 1.2rem 1.4rem; margin-bottom: 12px; cursor: pointer; position: relative; overflow: hidden; transition: border-color .2s, transform .2s, box-shadow .2s; }
-    .kr-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #cd2e3a, #2e5944, #c9a227, #0047a0); opacity: 0; transition: opacity .2s; }
+    .kr-card {
+      display: flex; gap: 16px;
+      background: rgba(245,241,234,0.96); border-top: 2px solid transparent; border: 1px solid rgba(46,89,68,0.1);
+      border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer; position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+    }
+    .kr-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #cd2e3a, #2e5944, #c9a227, #0047a0);
+      opacity: 0; transition: opacity .2s;
+    }
     .kr-card:hover::before { opacity: 1; }
     .kr-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8,21,17,0.2); }
-    .kr-thumb { width: 72px; height: 72px; flex-shrink: 0; border-radius: 6px; background: linear-gradient(135deg, #e8f0ec 0%, #dce9d8 100%); border: 1px solid rgba(46,89,68,0.12); display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
+    .kr-thumb {
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 6px;
+      background: linear-gradient(135deg, #e8f0ec 0%, #dce9d8 100%);
+      border: 1px solid rgba(46,89,68,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
+    }
     .kr-thumb img { width:100%; height:100%; object-fit:cover; border-radius:6px; }
-    .kr-ar-pill { position: absolute; bottom: 2px; right: 2px; background: #c9a227; color: #081511; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px; border-radius: 2px; }
+    .kr-ar-pill {
+      position: absolute; bottom: 2px; right: 2px;
+      background: #c9a227; color: #081511; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
+      border-radius: 2px;
+    }
     .kr-body { flex: 1; min-width: 0; }
     .kr-name { font-size: 17px; font-weight: 700; color: #102319; margin-bottom: 2px; line-height: 1.3; }
     .kr-name-kr { font-size: 12px; font-weight: 500; color: rgba(16,35,25,0.55); letter-spacing: 1px; margin-bottom: 6px; }
@@ -309,11 +555,21 @@
     .kr-footer { display: flex; align-items: center; justify-content: space-between; }
     .kr-price { font-size: 18px; font-weight: 800; color: #102319; }
     .kr-price-sym { font-size: 12px; font-weight: 600; color: rgba(16,35,25,0.5); margin-right: 2px; }
-    .kr-ar-btn { display: inline-flex; align-items: center; gap: 6px; background: #2e5944; color: #ecf3ee; border: none; padding: 8px 16px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; transition: background .18s; border-radius: 4px; min-height: 36px; }
+    .kr-ar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #2e5944; color: #ecf3ee; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 4px; min-height: 36px;
+    }
     .kr-ar-btn:hover { background: #cd2e3a; }
     .kr-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(46,89,68,0.12); color: #2e5944; border: 1px solid rgba(46,89,68,0.25); border-radius: 4px; }
 
-    .kr-footer-bar { text-align: center; padding: 1.5rem 1rem; background: rgba(8,21,17,0.8); border-top: 1px solid rgba(201,162,39,0.12); font-size: 12px; font-weight: 400; color: rgba(201,162,39,0.7); letter-spacing: 1px; line-height: 2; }
+    .kr-footer-bar {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(8,21,17,0.8); border-top: 1px solid rgba(201,162,39,0.12);
+      font-size: 12px; font-weight: 400;
+      color: rgba(201,162,39,0.7); letter-spacing: 1px; line-height: 2;
+    }
     .kr-footer-bar::before { content: '— '; }
     .kr-footer-bar::after { content: ' —'; }
 
@@ -462,7 +718,7 @@
         </g>
       </svg>
       <span class="tab-name">Japanese</span>
-      <span class="tab-status live">Live demo</span>
+      <span class="tab-status soon">Coming soon</span>
     </button>
     <button class="cuisine-tab" data-cuisine="korean">
       <svg class="tab-flag" viewBox="0 0 100 100" aria-hidden="true">
@@ -583,15 +839,78 @@
 
   <nav class="jp-tabs">
     <div class="jp-tabs-inner" id="jp-tabs">
-      <button class="jp-tab active" data-category="all">All · All Dishes</button>
-      <button class="jp-tab" data-category="starters">Starters · Appetizers</button>
-      <button class="jp-tab" data-category="mains">Mains · Entrees</button>
-      <button class="jp-tab" data-category="dessert">Dessert · Sweet</button>
+      <button class="jp-tab active">All · All Dishes</button>
+      <button class="jp-tab">Starters · Appetizers</button>
+      <button class="jp-tab">Mains · Entrees</button>
+      <button class="jp-tab">Dessert · Sweet</button>
     </div>
   </nav>
 
-  <main class="jp-main" id="jp-main">
-    <!-- Dynamic Japanese dishes rendered here -->
+  <main class="jp-main">
+    <div class="jp-section-head"><span></span>Starters<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🐟<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Bluefin Sashimi</div>
+        <div class="jp-name-jp">Hon Maguro Sashimi</div>
+        <p class="jp-desc">Five cuts of premium maguro, served on shiso leaf with ponzu and freshly grated wasabi.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>1,480</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍢</div>
+      <div class="jp-body">
+        <div class="jp-name">Agedashi Tofu</div>
+        <div class="jp-name-jp">Agedashi Tofu</div>
+        <p class="jp-desc">Silken tofu lightly dusted in potato starch, deep fried and served in dashi broth with grated daikon.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>560</div>
+          <span class="jp-veg">🌿 veg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="jp-section-head"><span></span>Mains<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍜<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Tonkotsu Ramen</div>
+        <div class="jp-name-jp">Tonkotsu Ramen</div>
+        <p class="jp-desc">18-hour pork bone broth, hand-pulled noodles, chashu pork, soft-boiled marinated egg and nori.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>980</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍱</div>
+      <div class="jp-body">
+        <div class="jp-name">Bento Kaiseki</div>
+        <div class="jp-name-jp">Kaiseki Bento</div>
+        <p class="jp-desc">Seasonal chef's selection — rice, seasonal pickles, grilled fish, tempura and miso.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>1,750</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="jp-section-head"><span></span>Desserts<span></span></div>
+    <div class="jp-card">
+      <div class="jp-thumb">🍡<span class="jp-ar-pill">AR</span></div>
+      <div class="jp-body">
+        <div class="jp-name">Matcha Parfait</div>
+        <div class="jp-name-jp">Matcha Parfait</div>
+        <p class="jp-desc">Ceremonial-grade matcha ice cream, azuki red bean, shiratama mochi and kuromitsu.</p>
+        <div class="jp-footer">
+          <div class="jp-price"><span class="jp-price-sym">₹</span>620</div>
+          <button class="jp-ar-btn">View in AR</button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="jp-footer-bar">
@@ -745,7 +1064,7 @@
 /* ════ GOOGLE SHEETS LIVE CONFIG ════ */
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv';
 
-const knownItalianFolders = {
+const knownFolders = {
   'fried calamari': 'Fried-Calamari',
   'cheesy green lasagne': 'Cheesy-Green-Lasagne',
   'pinocchio tiramisù': 'Pinocchio-Tiramisu',
@@ -754,18 +1073,11 @@ const knownItalianFolders = {
   'pistachio bigne with ricotta': 'Pistachio-Sauce-Bigne-with-Ricotta'
 };
 
-const knownJapaneseFolders = {
-  'karamiso ramen': 'KaramisoRamen',
-  'shio ramen': 'ShioRamen',
-  'shoyu ramen': 'ShoyuRamen',
-  'tantanmen': 'Tantanmen'
-};
-
 const defaultItalianDishes = [
   {
     category: 'Starters',
     name: 'Fried Calamari',
-    localName: 'Calamari Fritti',
+    italianName: 'Calamari Fritti',
     description: 'Crispy golden rings of fresh squid, lightly seasoned with sea salt and lemon zest, served with aioli.',
     price: '680',
     availability: 'yes',
@@ -775,7 +1087,7 @@ const defaultItalianDishes = [
   {
     category: 'Mains',
     name: 'Cheesy Green Lasagne',
-    localName: 'Lasagne Verdi al Forno',
+    italianName: 'Lasagne Verdi al Forno',
     description: 'Handmade spinach pasta layered with béchamel, ricotta, and aged Parmigiano-Reggiano.',
     price: '1180',
     availability: 'yes',
@@ -785,7 +1097,7 @@ const defaultItalianDishes = [
   {
     category: 'Dessert',
     name: 'Pinocchio Tiramisù',
-    localName: 'Specialità della Casa',
+    italianName: 'Specialità della Casa',
     description: 'House signature: espresso-soaked ladyfingers, mascarpone, and dusted with Valrhona cocoa.',
     price: '560',
     availability: 'yes',
@@ -795,7 +1107,7 @@ const defaultItalianDishes = [
   {
     category: 'Dessert',
     name: 'Pistachio Bignè with Ricotta',
-    localName: 'Bignè al Pistacchio di Sicilia',
+    italianName: 'Bignè al Pistacchio di Sicilia',
     description: 'Cream puffs filled with Sicilian pistachio cream and fresh ricotta, glazed in dark chocolate.',
     price: '480',
     availability: 'yes',
@@ -804,59 +1116,14 @@ const defaultItalianDishes = [
   }
 ];
 
-const defaultJapaneseDishes = [
-  {
-    category: 'Mains',
-    name: 'Karamiso Ramen',
-    localName: '辛味噌ラーメン',
-    description: 'Rich spicy miso broth with handmade ramen noodles, tender chashu pork, and fresh scallions.',
-    price: '890',
-    availability: 'yes',
-    vegNonveg: 'nonveg',
-    folder: 'KaramisoRamen'
-  },
-  {
-    category: 'Mains',
-    name: 'Shio Ramen',
-    localName: '塩ラーメン',
-    description: 'Clear, light salt-based broth with delicate noodles, bamboo shoots, and soft-boiled egg.',
-    price: '820',
-    availability: 'yes',
-    vegNonveg: 'nonveg',
-    folder: 'ShioRamen'
-  },
-  {
-    category: 'Mains',
-    name: 'Shoyu Ramen',
-    localName: '醤油ラーメン',
-    description: 'Classic soy sauce broth layered with savory umami depth, nori seaweed, and sliced pork.',
-    price: '850',
-    availability: 'yes',
-    vegNonveg: 'nonveg',
-    folder: 'ShoyuRamen'
-  },
-  {
-    category: 'Mains',
-    name: 'Tantanmen',
-    localName: '担々麺',
-    description: 'Sichuan-inspired Japanese spicy sesame ramen with ground pork and chili oil.',
-    price: '920',
-    availability: 'yes',
-    vegNonveg: 'nonveg',
-    folder: 'Tantanmen'
-  }
-];
-
 let allItalianDishes = [];
-let allJapaneseDishes = [];
 
-function getFolderName(name, mapObj) {
+function getFolderName(name) {
   const normalized = name.toLowerCase().trim();
-  if (mapObj && mapObj[normalized]) return mapObj[normalized];
-  return name.replace(/[^a-zA-Z0-9]/g, '');
+  if (knownFolders[normalized]) return knownFolders[normalized];
+  return name.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
 }
 
-/* ════ RENDER ITALIAN DISHES ════ */
 function renderItalianDishes(filterCategory = 'all') {
   const container = document.getElementById('it-main');
   if (!container) return;
@@ -870,7 +1137,9 @@ function renderItalianDishes(filterCategory = 'all') {
     const dishesInCategory = allItalianDishes.filter(d => {
       const isCorrectCategory = d.category.toLowerCase().trim() === cat.toLowerCase();
       const avail = d.availability ? d.availability.toLowerCase().trim() : 'yes';
-      return isCorrectCategory && (avail === 'yes' || avail === 'true');
+      const isAvailable = avail === 'yes' || avail === 'true';
+
+      return isCorrectCategory && isAvailable;
     });
 
     if (dishesInCategory.length === 0) return;
@@ -887,13 +1156,17 @@ function renderItalianDishes(filterCategory = 'all') {
     container.appendChild(sectionHead);
 
     dishesInCategory.forEach(dish => {
-      const folderName = dish.folder || getFolderName(dish.name, knownItalianFolders);
+      const folderName = dish.folder || getFolderName(dish.name);
       const glbPath = `3dmodel/Italian/${folderName}/${folderName}.glb`;
       const usdzPath = `3dmodel/Italian/${folderName}/${folderName}.usdz`;
-      const imgPath = `3dmodel/Italian/${folderName}/${folderName.toLowerCase()}.png`;
+      const imgPath = `3dmodel/Italian/${folderName}/${folderName}.png`;
 
       const card = document.createElement('div');
       card.className = 'it-card';
+      card.setAttribute('data-glb', glbPath);
+      card.setAttribute('data-usdz', usdzPath);
+      card.setAttribute('data-title', dish.name);
+
       const isVeg = dish.vegNonveg.toLowerCase().trim().includes('veg') && !dish.vegNonveg.toLowerCase().trim().includes('non');
 
       card.innerHTML = `
@@ -903,78 +1176,12 @@ function renderItalianDishes(filterCategory = 'all') {
         </div>
         <div class="it-body">
           <div class="it-name">${dish.name}</div>
-          <div class="it-name-it">${dish.localName || ''}</div>
+          <div class="it-name-it">${dish.italianName || ''}</div>
           <p class="it-desc">${dish.description || ''}</p>
           <div class="it-footer">
             <div class="it-price"><span class="it-price-sym">₹</span>${dish.price}</div>
             ${isVeg ? '<span class="it-veg">🌿 veg</span>' : ''}
             <button class="it-ar-btn">View in AR</button>
-          </div>
-        </div>
-      `;
-
-      card.addEventListener('click', () => {
-        openARModal(glbPath, usdzPath, dish.name);
-      });
-
-      container.appendChild(card);
-    });
-  });
-}
-
-/* ════ RENDER JAPANESE DISHES ════ */
-function renderJapaneseDishes(filterCategory = 'all') {
-  const container = document.getElementById('jp-main');
-  if (!container) return;
-  container.innerHTML = '';
-
-  const categories = ['Starters', 'Mains', 'Dessert'];
-
-  categories.forEach(cat => {
-    if (filterCategory !== 'all' && filterCategory.toLowerCase() !== cat.toLowerCase()) return;
-
-    const dishesInCategory = allJapaneseDishes.filter(d => {
-      const isCorrectCategory = d.category.toLowerCase().trim() === cat.toLowerCase();
-      const avail = d.availability ? d.availability.toLowerCase().trim() : 'yes';
-      return isCorrectCategory && (avail === 'yes' || avail === 'true');
-    });
-
-    if (dishesInCategory.length === 0) return;
-
-    const catTitleMap = {
-      'Starters': 'Starters · Appetizers',
-      'Mains': 'Mains · Entrees',
-      'Dessert': 'Dessert · Sweets'
-    };
-
-    const sectionHead = document.createElement('div');
-    sectionHead.className = 'jp-section-head';
-    sectionHead.innerHTML = `<span></span>${catTitleMap[cat] || cat}<span></span>`;
-    container.appendChild(sectionHead);
-
-    dishesInCategory.forEach(dish => {
-      const folderName = dish.folder || getFolderName(dish.name, knownJapaneseFolders);
-      const glbPath = `3dmodel/Japanese/${folderName}/${folderName}.glb`;
-      const usdzPath = `3dmodel/Japanese/${folderName}/${folderName}.usdz`;
-      const imgPath = `3dmodel/Japanese/${folderName}/${folderName.toLowerCase()}.png`;
-
-      const card = document.createElement('div');
-      card.className = 'jp-card';
-      const isVeg = dish.vegNonveg.toLowerCase().trim().includes('veg') && !dish.vegNonveg.toLowerCase().trim().includes('non');
-
-      card.innerHTML = `
-        <div class="jp-thumb">
-          <img src="${imgPath}" alt="${dish.name}" onerror="this.onerror=null; this.parentElement.innerHTML='🍜<span class=\\'jp-ar-pill\\'>AR</span>';" />
-          <span class="jp-ar-pill">AR</span>
-        </div>
-        <div class="jp-body">
-          <div class="jp-name">${dish.name}</div>
-          <div class="jp-name-jp">${dish.localName || ''}</div>
-          <p class="jp-desc">${dish.description || ''}</p>
-          <div class="jp-footer">
-            <div class="jp-price"><span class="jp-price-sym">₹</span>${dish.price}</div>
-            ${isVeg ? '<span class="jp-veg">🌿 veg</span>' : ''}
-            <button class="jp-ar-btn">View in AR</button>
           </div>
         </div>
       `;
@@ -1014,10 +1221,9 @@ function parseCSV(text) {
 
     if (dish.name) {
       dishes.push({
-        cuisine: dish.cuisine ? dish.cuisine.toLowerCase().trim() : 'italian',
         category: dish.category || 'Mains',
         name: dish.name,
-        localName: dish.italianname || dish.japanesename || dish.localname || '',
+        italianName: dish.italianname || dish.italian_name || '',
         description: dish.description || '',
         price: dish.price || '0',
         availability: dish.availability || 'yes',
@@ -1038,23 +1244,16 @@ async function loadGoogleSheetData() {
     const fetchedDishes = parseCSV(csvText);
 
     if (fetchedDishes.length > 0) {
-      const itFetched = fetchedDishes.filter(d => d.cuisine === 'italian');
-      const jpFetched = fetchedDishes.filter(d => d.cuisine === 'japanese');
-
-      allItalianDishes = itFetched.length > 0 ? itFetched : defaultItalianDishes;
-      allJapaneseDishes = jpFetched.length > 0 ? jpFetched : defaultJapaneseDishes;
+      allItalianDishes = fetchedDishes;
     } else {
       allItalianDishes = defaultItalianDishes;
-      allJapaneseDishes = defaultJapaneseDishes;
     }
   } catch (err) {
-    console.warn('Unable to load Google Sheet CSV, using defaults:', err);
+    console.warn('Unable to load Google Sheet CSV, using default Italian list:', err);
     allItalianDishes = defaultItalianDishes;
-    allJapaneseDishes = defaultJapaneseDishes;
   }
 
   renderItalianDishes();
-  renderJapaneseDishes();
 }
 
 /* ════ NAVIGATION & GATE ════ */
@@ -1089,20 +1288,12 @@ function backToGate() {
   document.getElementById('gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-/* Tab Filter Event Listeners */
 document.querySelectorAll('#it-tabs button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#it-tabs button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderItalianDishes(btn.dataset.category || 'all');
-  });
-});
-
-document.querySelectorAll('#jp-tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#jp-tabs button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderJapaneseDishes(btn.dataset.category || 'all');
+    const category = btn.dataset.category || 'all';
+    renderItalianDishes(category);
   });
 });
 
