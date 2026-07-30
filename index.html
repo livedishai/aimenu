@@ -9,9 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Shippori+Mincho:wght@400;600;700&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Serif+JP:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Google Model-Viewer for 3D & AR Rendering -->
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -106,6 +103,8 @@
 
     /* ══════════════════════════════════════
        ITALIAN — Florentine Renaissance
+       Tricolore stripe, crimson + gold
+       Font: IM Fell English + Cinzel Decorative
     ══════════════════════════════════════ */
     .panel-italian {
       background:
@@ -211,23 +210,17 @@
       transition: border-left-color .2s, transform .2s, box-shadow .2s;
     }
     .it-card:hover { border-left-color: #8d1d2d; transform: translateX(3px); box-shadow: -4px 0 0 #8d1d2d, 4px 4px 18px rgba(44,10,12,0.15); }
-    
     .it-thumb {
       width: 68px; height: 68px; flex-shrink: 0; border-radius: 50%;
       background: linear-gradient(135deg, #f0e4cc 0%, #e2d1b0 100%);
       border: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center;
-      justify-content: center; position: relative; overflow: hidden;
+      justify-content: center; font-size: 28px; position: relative; overflow: hidden;
     }
-    /* Model Viewer styling inside cards */
-    model-viewer {
-      width: 100%; height: 100%;
-      --poster-color: transparent;
-    }
-    
+    .it-thumb img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
     .it-ar-pill {
       position: absolute; bottom: 1px; right: 1px;
       background: #8d1d2d; color: #f5e8d0; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
-      border-radius: 999px; pointer-events: none; z-index: 2;
+      border-radius: 999px;
     }
     .it-body { flex: 1; min-width: 0; }
     .it-name { font-family: 'IM Fell English', serif; font-size: 18px; color: #2c120f; margin-bottom: 2px; }
@@ -236,13 +229,11 @@
     .it-footer { display: flex; align-items: center; justify-content: space-between; }
     .it-price { font-family: 'IM Fell English', serif; font-size: 20px; color: #2c120f; }
     .it-price-sym { font-size: 11px; color: rgba(44,18,15,0.4); margin-right: 2px; }
-    
     .it-ar-btn {
       display: inline-flex; align-items: center; gap: 6px;
       background: #2c120f; color: #f5e8d0; border: none; padding: 7px 14px;
       font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
       cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
-      text-decoration: none;
     }
     .it-ar-btn:hover { background: #8d1d2d; }
     .it-veg { font-size: 9px; padding: 2px 10px; background: rgba(74,103,65,0.1); color: #567a47; border: 1px solid rgba(74,103,65,0.22); border-radius: 999px; font-family: 'Inter', sans-serif; }
@@ -736,18 +727,9 @@
 
   <main class="it-main" id="it-main">
     <div class="it-section-head"><span></span>Antipasti · Starters<span></span></div>
-    
-    <!-- Dish 1: Fried Calamari -->
     <div class="it-card">
       <div class="it-thumb">
-        <model-viewer 
-          id="mv-calamari"
-          src="3dmodel/Italian/Fried-Calamari/Fried-Calamari.glb" 
-          ios-src="3dmodel/Italian/Fried-Calamari/Fried-Calamari.usdz" 
-          poster="3dmodel/Italian/Fried-Calamari/Fried-Calamari.png"
-          alt="Fried Calamari 3D Model"
-          auto-rotate camera-controls disable-zoom ar ar-modes="webxr scene-viewer quick-look">
-        </model-viewer>
+        <img src="3dmodel/Italian/Fried-Calamari/Fried-Calamari.png" alt="Fried Calamari" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
       </div>
       <div class="it-body">
@@ -756,38 +738,15 @@
         <p class="it-desc">Crispy golden rings of fresh squid, lightly seasoned with sea salt and lemon zest, served with aioli.</p>
         <div class="it-footer">
           <div class="it-price"><span class="it-price-sym">₹</span>680</div>
-          <button class="it-ar-btn" onclick="triggerAR('mv-calamari')">View in AR</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dish 2: Bruschetta al Pomodoro -->
-    <div class="it-card">
-      <div class="it-thumb">🍅</div>
-      <div class="it-body">
-        <div class="it-name">Bruschetta al Pomodoro</div>
-        <div class="it-name-it">Pane Abbrustolito</div>
-        <p class="it-desc">Grilled sourdough topped with vine tomatoes, fresh basil, and aged balsamic glaze.</p>
-        <div class="it-footer">
-          <div class="it-price"><span class="it-price-sym">₹</span>420</div>
-          <span class="it-veg">🌿 veg</span>
+          <button class="it-ar-btn">View in AR</button>
         </div>
       </div>
     </div>
 
     <div class="it-section-head"><span></span>Secondi · Mains<span></span></div>
-    
-    <!-- Dish 3: Cheesy Green Lasagne -->
     <div class="it-card">
       <div class="it-thumb">
-        <model-viewer 
-          id="mv-lasagne"
-          src="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.glb" 
-          ios-src="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.usdz" 
-          poster="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.png"
-          alt="Cheesy Green Lasagne 3D Model"
-          auto-rotate camera-controls disable-zoom ar ar-modes="webxr scene-viewer quick-look">
-        </model-viewer>
+        <img src="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.png" alt="Cheesy Green Lasagne" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
       </div>
       <div class="it-body">
@@ -796,37 +755,15 @@
         <p class="it-desc">Handmade spinach pasta layered with béchamel, ricotta, and aged Parmigiano-Reggiano.</p>
         <div class="it-footer">
           <div class="it-price"><span class="it-price-sym">₹</span>1,180</div>
-          <button class="it-ar-btn" onclick="triggerAR('mv-lasagne')">View in AR</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dish 4: Spaghetti alla Carbonara -->
-    <div class="it-card">
-      <div class="it-thumb">🍝</div>
-      <div class="it-body">
-        <div class="it-name">Spaghetti alla Carbonara</div>
-        <div class="it-name-it">Ricetta Romana Classica</div>
-        <p class="it-desc">Roman classic: guanciale, Pecorino Romano, egg yolk and coarsely ground black pepper.</p>
-        <div class="it-footer">
-          <div class="it-price"><span class="it-price-sym">₹</span>1,050</div>
+          <button class="it-ar-btn">View in AR</button>
         </div>
       </div>
     </div>
 
     <div class="it-section-head"><span></span>Dolci · Desserts<span></span></div>
-    
-    <!-- Dish 5: Pinocchio Tiramisù -->
     <div class="it-card">
       <div class="it-thumb">
-        <model-viewer 
-          id="mv-tiramisu"
-          src="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.glb" 
-          ios-src="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.usdz" 
-          poster="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.png"
-          alt="Pinocchio Tiramisù 3D Model"
-          auto-rotate camera-controls disable-zoom ar ar-modes="webxr scene-viewer quick-look">
-        </model-viewer>
+        <img src="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.png" alt="Pinocchio Tiramisù" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
       </div>
       <div class="it-body">
@@ -835,22 +772,13 @@
         <p class="it-desc">House signature: espresso-soaked ladyfingers, mascarpone, and dusted with Valrhona cocoa.</p>
         <div class="it-footer">
           <div class="it-price"><span class="it-price-sym">₹</span>560</div>
-          <button class="it-ar-btn" onclick="triggerAR('mv-tiramisu')">View in AR</button>
+          <button class="it-ar-btn">View in AR</button>
         </div>
       </div>
     </div>
-
-    <!-- Dish 6: Pistachio Bignè with Ricotta -->
     <div class="it-card">
       <div class="it-thumb">
-        <model-viewer 
-          id="mv-bigne"
-          src="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.glb" 
-          ios-src="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.usdz" 
-          poster="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.png"
-          alt="Pistachio Bignè 3D Model"
-          auto-rotate camera-controls disable-zoom ar ar-modes="webxr scene-viewer quick-look">
-        </model-viewer>
+        <img src="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.png" alt="Pistachio Bignè with Ricotta" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
       </div>
       <div class="it-body">
@@ -859,7 +787,7 @@
         <p class="it-desc">Cream puffs filled with Sicilian pistachio cream and fresh ricotta, glazed in dark chocolate.</p>
         <div class="it-footer">
           <div class="it-price"><span class="it-price-sym">₹</span>480</div>
-          <button class="it-ar-btn" onclick="triggerAR('mv-bigne')">View in AR</button>
+          <button class="it-ar-btn">View in AR</button>
         </div>
       </div>
     </div>
@@ -870,7 +798,6 @@
     <span style="font-size:10px;opacity:.6">AR requires a compatible mobile device · Powered by liveDish AI</span>
   </footer>
 </section>
-
 
 <!-- ════════════════════════════════
      JAPANESE PANEL
@@ -976,7 +903,6 @@
     <span style="font-size:10px;opacity:.7">AR requires a compatible mobile device · Powered by liveDish AI · liveDishが提供</span>
   </footer>
 </section>
-
 
 <!-- ════════════════════════════════
      KOREAN PANEL
@@ -1138,14 +1064,6 @@ function backToGate() {
     });
   });
 });
-
-/* Helper function to trigger AR directly on button click */
-function triggerAR(id) {
-  const mv = document.getElementById(id);
-  if (mv && typeof mv.activateAR === 'function') {
-    mv.activateAR();
-  }
-}
 </script>
 </body>
 </html>
