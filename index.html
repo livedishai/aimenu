@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Shippori+Mincho:wght@400;600;700&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Serif+JP:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
 
+  <!-- Google <model-viewer> Library for 3D & WebAR -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -103,8 +106,6 @@
 
     /* ══════════════════════════════════════
        ITALIAN — Florentine Renaissance
-       Tricolore stripe, crimson + gold
-       Font: IM Fell English + Cinzel Decorative
     ══════════════════════════════════════ */
     .panel-italian {
       background:
@@ -567,6 +568,77 @@
     .kr-footer-bar::after { content: ' —'; }
 
     /* ══════════════════════════════════════
+       3D / AR MODAL STYLES
+    ══════════════════════════════════════ */
+    .ar-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 12, 0.92);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .ar-modal.active { display: flex; }
+    .ar-modal-card {
+      background: #151518;
+      border: 1px solid rgba(201,162,39,0.3);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .ar-modal-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .ar-modal-title { font-size: 16px; font-weight: 600; color: #f0e8d8; }
+    .ar-close-btn {
+      background: transparent;
+      border: none;
+      color: rgba(240,232,216,0.6);
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .ar-close-btn:hover { color: #f0e8d8; }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+    }
+    .custom-ar-button {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c9a227;
+      color: #0c0c0e;
+      border: none;
+      padding: 12px 24px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(201,162,39,0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
     @media (max-width: 520px) {
@@ -727,7 +799,10 @@
 
   <main class="it-main" id="it-main">
     <div class="it-section-head"><span></span>Antipasti · Starters<span></span></div>
-    <div class="it-card">
+    <div class="it-card" 
+         data-glb="3dmodel/Italian/Fried-Calamari/Fried-Calamari.glb" 
+         data-usdz="3dmodel/Italian/Fried-Calamari/Fried-Calamari.usdz" 
+         data-title="Fried Calamari">
       <div class="it-thumb">
         <img src="3dmodel/Italian/Fried-Calamari/Fried-Calamari.png" alt="Fried Calamari" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
@@ -744,7 +819,10 @@
     </div>
 
     <div class="it-section-head"><span></span>Secondi · Mains<span></span></div>
-    <div class="it-card">
+    <div class="it-card" 
+         data-glb="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.glb" 
+         data-usdz="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.usdz" 
+         data-title="Cheesy Green Lasagne">
       <div class="it-thumb">
         <img src="3dmodel/Italian/Cheesy-Green-Lasagne/Cheesy-Green-Lasagne.png" alt="Cheesy Green Lasagne" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
@@ -761,7 +839,10 @@
     </div>
 
     <div class="it-section-head"><span></span>Dolci · Desserts<span></span></div>
-    <div class="it-card">
+    <div class="it-card" 
+         data-glb="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.glb" 
+         data-usdz="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.usdz" 
+         data-title="Pinocchio Tiramisù">
       <div class="it-thumb">
         <img src="3dmodel/Italian/Pinocchio-Tiramisu/Pinocchio-Tiramisu.png" alt="Pinocchio Tiramisù" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
@@ -776,7 +857,10 @@
         </div>
       </div>
     </div>
-    <div class="it-card">
+    <div class="it-card" 
+         data-glb="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.glb" 
+         data-usdz="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.usdz" 
+         data-title="Pistachio Bignè with Ricotta">
       <div class="it-thumb">
         <img src="3dmodel/Italian/Pistachio-Sauce-Bigne-with-Ricotta/Pistachio-Sauce-Bigne-with-Ricotta.png" alt="Pistachio Bignè with Ricotta" onerror="this.remove();" />
         <span class="it-ar-pill">AR</span>
@@ -1021,6 +1105,30 @@
   </footer>
 </section>
 
+<!-- ════ 3D / AR MODAL OVERLAY ════ -->
+<div class="ar-modal" id="ar-modal">
+  <div class="ar-modal-card">
+    <div class="ar-modal-header">
+      <span class="ar-modal-title" id="ar-modal-title">Interactive 3D Dish</span>
+      <button class="ar-close-btn" onclick="closeARModal()">&times;</button>
+    </div>
+    <model-viewer
+      id="viewer"
+      src=""
+      ios-src=""
+      alt="3D dish viewer"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1">
+      <button slot="ar-button" class="custom-ar-button">
+        📱 View in your space
+      </button>
+    </model-viewer>
+  </div>
+</div>
+
 <script>
 const cuisineCards = document.querySelectorAll('.cuisine-tab');
 const panels = {
@@ -1062,6 +1170,46 @@ function backToGate() {
       container.querySelectorAll('button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     });
+  });
+});
+
+/* ════ AR / 3D MODAL CONTROLLER ════ */
+const modal = document.getElementById('ar-modal');
+const viewer = document.getElementById('viewer');
+const modalTitle = document.getElementById('ar-modal-title');
+
+function openARModal(glbPath, usdzPath, title) {
+  modalTitle.textContent = title || 'Interactive 3D Dish';
+  viewer.setAttribute('src', glbPath);
+  if (usdzPath) {
+    viewer.setAttribute('ios-src', usdzPath);
+  } else {
+    viewer.removeAttribute('ios-src');
+  }
+  modal.classList.add('active');
+}
+
+function closeARModal() {
+  modal.classList.remove('active');
+  viewer.removeAttribute('src');
+  viewer.removeAttribute('ios-src');
+}
+
+// Close modal when clicking dark overlay
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeARModal();
+});
+
+// Bind click handlers to cards with 3D models
+document.querySelectorAll('.it-card, .jp-card, .kr-card').forEach(card => {
+  card.addEventListener('click', (e) => {
+    const glb = card.dataset.glb;
+    const usdz = card.dataset.usdz;
+    const title = card.dataset.title;
+
+    if (glb) {
+      openARModal(glb, usdz, title);
+    }
   });
 });
 </script>
