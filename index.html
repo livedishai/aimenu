@@ -7,7 +7,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Cinzel+Decorative:wght@400;700&family=Shippori+Mincho:wght@400;600;700&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Serif+JP:wght@300;400;600&family=Inter:wght@400;500;600;700&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Clean, highly readable single font family -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet" />
 
   <!-- Google <model-viewer> Library for 3D & WebAR -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
@@ -20,8 +21,15 @@
       background: #0c0c0e;
       color: #f0e8d8;
       min-height: 100vh;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       GLOBAL TYPOGRAPHY OVERRIDE
+    ══════════════════════════════════════ */
+    h1, h2, h3, h4, h5, h6, p, span, button, a, div, input, button {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     /* ══════════════════════════════════════
@@ -46,9 +54,9 @@
       animation: pulse 3s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:.6;transform:scale(.85)} 50%{opacity:1;transform:scale(1)} }
-    .brand-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 18px; color: #f0e8d8; }
+    .brand-name { font-weight: 700; font-size: 18px; color: #f0e8d8; }
     .brand-name em { color: #c9a227; font-style: normal; }
-    .brand-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(240,232,216,0.4); display: block; margin-top: 2px; }
+    .brand-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(240,232,216,0.4); display: block; margin-top: 2px; }
 
     /* ══════════════════════════════════════
        CUISINE SELECTOR GATE
@@ -58,10 +66,10 @@
       text-align: center;
       background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,162,39,0.08) 0%, transparent 65%);
     }
-    .gate-eyebrow { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: #c9a227; margin-bottom: 10px; }
-    .gate-title { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(26px,5vw,40px); color: #f0e8d8; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .gate-title strong { font-weight: 600; }
-    .gate-desc { font-size: 13px; color: rgba(240,232,216,0.5); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .gate-eyebrow { font-size: 11px; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; color: #c9a227; margin-bottom: 10px; }
+    .gate-title { font-weight: 300; font-size: clamp(26px,5vw,40px); color: #f0e8d8; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .gate-title strong { font-weight: 700; }
+    .gate-desc { font-size: 13px; color: rgba(240,232,216,0.6); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.6; }
 
     .cuisine-tabs {
       display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
@@ -87,7 +95,7 @@
 
     .tab-flag { width: 56px; height: 56px; display: block; flex-shrink: 0; }
     .tab-name { font-size: 13px; font-weight: 600; letter-spacing: .05em; color: #f0e8d8; }
-    .tab-status { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; }
+    .tab-status { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
     .tab-status.live { color: #c9a227; }
     .tab-status.soon { color: rgba(240,232,216,0.35); }
 
@@ -99,13 +107,13 @@
 
     .panel-back {
       display: flex; align-items: center; gap: 7px;
-      padding: 10px 1.4rem; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 12px 1.4rem; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
       cursor: pointer; border: none; width: 100%; text-align: left; position: sticky; top: 57px; z-index: 90;
     }
-    .panel-back svg { width: 13px; height: 13px; }
+    .panel-back svg { width: 14px; height: 14px; }
 
     /* ══════════════════════════════════════
-       ITALIAN — Florentine Renaissance (HIGH VISIBILITY FONTS)
+       ITALIAN — Cleaned Typography
     ══════════════════════════════════════ */
     .panel-italian {
       background:
@@ -116,7 +124,7 @@
     }
     .panel-italian .panel-back {
       background: rgba(44,10,12,0.92);
-      color: rgba(245,232,208,0.8);
+      color: rgba(245,232,208,0.7);
       border-bottom: 1px solid rgba(201,162,39,0.2);
     }
     .panel-italian .panel-back:hover { color: #c9a227; }
@@ -135,13 +143,13 @@
     }
 
     .it-ghost {
-      font-family: 'Cinzel Decorative', serif; font-size: clamp(38px, 9vw, 68px);
-      color: rgba(196,68,86,0.15); letter-spacing: 0.08em; line-height: 1;
-      margin-bottom: -8px; display: block;
+      font-size: clamp(38px, 9vw, 64px); font-weight: 800;
+      color: rgba(196,68,86,0.12); letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: -10px; display: block;
     }
     .it-eyebrow {
-      font-family: 'Playfair Display', serif; font-size: 11px; letter-spacing: 4px;
-      color: #e8c764; margin-bottom: 12px; font-style: italic; font-weight: 600;
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: #c9a227; margin-bottom: 12px; text-transform: uppercase;
     }
 
     .it-stemma {
@@ -150,36 +158,36 @@
     }
 
     .it-title {
-      font-family: 'Cinzel Decorative', serif; font-size: clamp(26px, 6vw, 48px);
-      font-weight: 700; letter-spacing: 0.06em; color: #ffffff;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.7); margin-bottom: 6px;
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: -0.01em; color: #f5e8d0;
+      text-shadow: 0 1px 10px rgba(44,10,12,0.5); margin-bottom: 6px;
     }
     .it-subtitle {
-      font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic;
-      color: #f0e8d8; letter-spacing: 2px; margin-bottom: 1.8rem; display: block;
+      font-size: 13px; font-weight: 400;
+      color: rgba(245,232,208,0.6); letter-spacing: 1px; margin-bottom: 1.8rem; display: block;
     }
     .it-divider {
       display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
     }
     .it-divider::before, .it-divider::after {
       content: ''; flex: 1; max-width: 80px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(232,199,100,0.6));
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4));
     }
     .it-divider::after { transform: scaleX(-1); }
-    .it-divider-glyph { color: #e8c764; font-size: 10px; letter-spacing: 3px; }
+    .it-divider-glyph { color: #c9a227; font-size: 10px; letter-spacing: 3px; }
 
     .it-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid rgba(232,199,100,0.35); padding: 6px 18px; border-radius: 999px;
-      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
-      color: #f5e8d0; background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(245,232,208,0.65);
     }
-    .it-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8c764; animation: pdot 1.8s ease-in-out infinite; }
+    .it-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #8d1d2d; animation: pdot 1.8s ease-in-out infinite; }
     @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.65)} }
 
     .it-tabs {
-      background: #fdfbf7; border-bottom: 1px solid rgba(139,26,26,0.2);
-      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+      background: rgba(243,232,208,0.97); border-bottom: 1px solid rgba(139,26,26,0.15);
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
     }
     .it-tabs-inner {
       max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto;
@@ -187,70 +195,67 @@
     }
     .it-tabs-inner::-webkit-scrollbar { display: none; }
     .it-tab {
-      flex-shrink: 0; padding: 7px 20px; font-family: 'Inter', sans-serif;
-      font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-      border: 1px solid rgba(139,26,26,0.25); color: #3b0d0f; cursor: pointer;
+      flex-shrink: 0; padding: 7px 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      border: 1px solid rgba(139,26,26,0.15); color: rgba(44,18,15,0.6); cursor: pointer;
       background: transparent; transition: all .2s; border-radius: 999px;
     }
-    .it-tab:hover { border-color: #8d1d2d; color: #8d1d2d; background: rgba(141,35,35,0.06); }
-    .it-tab.active { background: #8d1d2d; color: #ffffff; border-color: #8d1d2d; box-shadow: 0 4px 12px rgba(141,35,35,0.3); }
+    .it-tab:hover { border-color: #8d1d2d; color: #8d1d2d; }
+    .it-tab.active { background: #8d1d2d; color: #f5e8d0; border-color: #8d1d2d; }
 
     .it-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
-    
-    /* Highly Visible Section Titles */
     .it-section-head {
-      display: flex; align-items: center; gap: 12px; margin: 2.5rem 0 1.2rem;
-      font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; font-weight: 700;
-      letter-spacing: 2px; color: #e8c764; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+      display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: #c9a227;
     }
-    .it-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,199,100,0.4), transparent); }
+    .it-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,26,26,0.25), transparent); }
 
-    /* Dish Cards with Crisp Readable Typography */
     .it-card {
       display: flex; gap: 16px;
-      background: #fdfbf7; border: 1px solid rgba(139,26,26,0.12);
-      border-left: 4px solid #8d1d2d; border-radius: 8px; padding: 1.2rem 1.4rem;
-      margin-bottom: 14px; cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      background: rgba(243,232,208,0.96); border: 1px solid rgba(139,26,26,0.1);
+      border-left: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer;
+      transition: border-left-color .2s, transform .2s, box-shadow .2s;
     }
-    .it-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+    .it-card:hover { border-left-color: #8d1d2d; transform: translateX(3px); box-shadow: -4px 0 0 #8d1d2d, 4px 4px 18px rgba(44,10,12,0.15); }
     .it-thumb {
       width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%;
-      background: #eee3d5; border: 2px solid rgba(139,26,26,0.15); display: flex; align-items: center;
+      background: linear-gradient(135deg, #f0e4cc 0%, #e2d1b0 100%);
+      border: 1px solid rgba(139,26,26,0.12); display: flex; align-items: center;
       justify-content: center; font-size: 28px; position: relative; overflow: hidden;
     }
     .it-thumb img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
     .it-ar-pill {
       position: absolute; bottom: 2px; right: 2px;
-      background: #8d1d2d; color: #ffffff; font-size: 7.5px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
-      border-radius: 999px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      background: #8d1d2d; color: #f5e8d0; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
+      border-radius: 999px;
     }
     .it-body { flex: 1; min-width: 0; }
-    .it-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 19px; color: #1f080a; margin-bottom: 2px; line-height: 1.2; }
-    .it-name-it { font-family: 'Playfair Display', serif; font-size: 12.5px; font-style: italic; font-weight: 600; color: #6b211a; letter-spacing: 1px; margin-bottom: 6px; }
-    .it-desc { font-size: 13px; color: rgba(31,8,10,0.85); line-height: 1.55; margin-bottom: 12px; font-family: 'Inter', sans-serif; font-weight: 400; }
+    .it-name { font-size: 17px; font-weight: 700; color: #2c120f; margin-bottom: 2px; line-height: 1.3; }
+    .it-name-it { font-size: 12px; font-style: italic; font-weight: 500; color: rgba(44,18,15,0.55); letter-spacing: 0.5px; margin-bottom: 6px; }
+    .it-desc { font-size: 13px; font-weight: 400; color: rgba(44,18,15,0.7); line-height: 1.5; margin-bottom: 12px; }
     .it-footer { display: flex; align-items: center; justify-content: space-between; }
-    .it-price { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 18px; color: #1f080a; }
-    .it-price-sym { font-size: 12px; color: rgba(31,8,10,0.6); margin-right: 2px; font-weight: 500; }
+    .it-price { font-size: 18px; font-weight: 800; color: #2c120f; }
+    .it-price-sym { font-size: 12px; font-weight: 600; color: rgba(44,18,15,0.5); margin-right: 2px; }
     .it-ar-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      background: #1f080a; color: #f5e8d0; border: none; padding: 8px 16px;
-      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      cursor: pointer; transition: background .18s, transform .15s; border-radius: 999px; min-height: 36px;
+      background: #2c120f; color: #f5e8d0; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
     }
-    .it-ar-btn:hover { background: #8d1d2d; color: #ffffff; transform: scale(1.02); }
-    .it-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(74,103,65,0.12); color: #2e5420; border: 1px solid rgba(74,103,65,0.3); border-radius: 999px; font-family: 'Inter', sans-serif; }
+    .it-ar-btn:hover { background: #8d1d2d; }
+    .it-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(74,103,65,0.12); color: #3b5a2f; border: 1px solid rgba(74,103,65,0.25); border-radius: 999px; }
 
     .it-footer-bar {
-      text-align: center; padding: 1.8rem 1rem;
-      background: rgba(20,4,5,0.85); border-top: 1px solid rgba(201,162,39,0.2);
-      font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px;
-      color: #e8c764; letter-spacing: 1px; line-height: 2.2;
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(40,10,12,0.7); border-top: 1px solid rgba(139,26,26,0.15);
+      font-size: 12px; font-weight: 400;
+      color: rgba(201,162,39,0.7); letter-spacing: 0.5px; line-height: 2;
     }
 
     /* ══════════════════════════════════════
-       JAPANESE — Ukiyo-e Woodblock Print
+       JAPANESE PANEL
     ══════════════════════════════════════ */
     .panel-japanese {
       background:
@@ -260,7 +265,7 @@
     }
     .panel-japanese .panel-back {
       background: rgba(12,16,30,0.92);
-      color: rgba(240,232,220,0.6);
+      color: rgba(240,232,220,0.7);
       border-bottom: 1px solid rgba(232,180,188,0.15);
     }
     .panel-japanese .panel-back:hover { color: #e8b4bc; }
@@ -278,23 +283,23 @@
     }
 
     .jp-kanji {
-      font-family: 'Noto Serif JP', serif; font-size: clamp(42px, 9vw, 72px);
+      font-size: clamp(38px, 9vw, 68px); font-weight: 800;
       color: rgba(232,180,188,0.12); letter-spacing: -0.02em; line-height: 1;
-      margin-bottom: -12px; display: block;
+      margin-bottom: -10px; display: block;
     }
     .jp-eyebrow {
-      font-family: 'Noto Serif JP', serif; font-size: 10px; letter-spacing: 4px;
-      color: rgba(232,180,188,0.55); margin-bottom: 10px;
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: rgba(232,180,188,0.75); margin-bottom: 10px; text-transform: uppercase;
     }
     .jp-title {
-      font-family: 'Shippori Mincho', serif; font-size: clamp(26px, 6vw, 48px);
-      font-weight: 600; letter-spacing: 0.04em;
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: 0.02em;
       color: #f0e8dc; margin-bottom: 6px;
       text-shadow: 0 1px 10px rgba(12,16,30,0.5);
     }
     .jp-subtitle {
-      font-family: 'Noto Serif JP', serif; font-size: 13px; font-weight: 300;
-      color: rgba(240,232,220,0.45); letter-spacing: 3px; margin-bottom: 1.8rem;
+      font-size: 13px; font-weight: 400;
+      color: rgba(240,232,220,0.6); letter-spacing: 2px; margin-bottom: 1.8rem;
     }
 
     .jp-mon {
@@ -307,7 +312,7 @@
       content: ''; position: absolute; inset: 8px; border-radius: 50%;
       border: 1px solid rgba(232,180,188,0.2);
     }
-    .jp-mon-koi { font-family: 'Noto Serif JP', serif; font-size: 26px; color: #e8b4bc; }
+    .jp-mon-koi { font-size: 24px; color: #e8b4bc; }
 
     .jp-divider {
       display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 1.2rem;
@@ -322,24 +327,24 @@
     .jp-badge {
       display: inline-flex; align-items: center; gap: 8px;
       border: 1px solid rgba(232,180,188,0.22); padding: 6px 18px; border-radius: 999px;
-      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px;
-      color: rgba(240,232,220,0.5);
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(240,232,220,0.65);
     }
     .jp-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #bc002d; animation: pdot 1.8s ease-in-out infinite; }
 
     .jp-tabs {
       background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(25,32,56,0.15);
-      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
     }
     .jp-tabs-inner {
-      max-width: 740px; margin: 0 auto; display: flex; gap: 2px; overflow-x: auto;
+      max-width: 740px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto;
       scrollbar-width: none; padding: 10px 0;
     }
     .jp-tabs-inner::-webkit-scrollbar { display: none; }
     .jp-tab {
-      flex-shrink: 0; padding: 6px 20px; font-family: 'Inter', sans-serif;
-      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-      border: 1px solid rgba(25,32,56,0.12); color: rgba(25,32,56,0.45); cursor: pointer;
+      flex-shrink: 0; padding: 7px 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      border: 1px solid rgba(25,32,56,0.12); color: rgba(25,32,56,0.6); cursor: pointer;
       background: transparent; transition: all .2s;
       border-radius: 999px;
     }
@@ -349,56 +354,56 @@
     .jp-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
     .jp-section-head {
       display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem;
-      font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 3px;
-      color: rgba(232,180,188,0.6);
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: #e8b4bc;
     }
-    .jp-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,180,188,0.18), transparent); }
+    .jp-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(232,180,188,0.25), transparent); }
 
     .jp-card {
-      display: flex; gap: 14px;
+      display: flex; gap: 16px;
       background: rgba(245,241,234,0.96); border: 1px solid rgba(25,32,56,0.1);
-      border-right: 3px solid transparent; border-radius: 2px; padding: 1.1rem 1.3rem;
-      margin-bottom: 10px; cursor: pointer;
+      border-right: 4px solid transparent; border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer;
       transition: border-right-color .2s, transform .2s, box-shadow .2s;
     }
     .jp-card:hover { border-right-color: #bc002d; transform: translateX(-3px); box-shadow: 4px 0 0 #bc002d, -3px 4px 18px rgba(12,16,30,0.15); }
     .jp-thumb {
-      width: 68px; height: 68px; flex-shrink: 0; border-radius: 50%;
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%;
       background: linear-gradient(135deg, #f0e8dc 0%, #e0d4c0 100%);
       border: 1px solid rgba(25,32,56,0.12); display: flex; align-items: center;
       justify-content: center; font-size: 28px; position: relative; overflow: hidden;
     }
     .jp-thumb img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
     .jp-ar-pill {
-      position: absolute; bottom: 1px; right: 1px;
-      background: #bc002d; color: #f5f1ea; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
+      position: absolute; bottom: 2px; right: 2px;
+      background: #bc002d; color: #f5f1ea; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
       border-radius: 999px;
     }
     .jp-body { flex: 1; min-width: 0; }
-    .jp-name { font-family: 'Shippori Mincho', serif; font-size: 18px; font-weight: 600; color: #192038; margin-bottom: 2px; }
-    .jp-name-jp { font-family: 'Noto Serif JP', serif; font-size: 11px; font-weight: 300; color: rgba(25,32,56,0.4); letter-spacing: 2px; margin-bottom: 5px; }
-    .jp-desc { font-size: 12px; color: rgba(25,32,56,0.55); line-height: 1.7; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .jp-name { font-size: 17px; font-weight: 700; color: #192038; margin-bottom: 2px; line-height: 1.3; }
+    .jp-name-jp { font-size: 12px; font-weight: 500; color: rgba(25,32,56,0.55); letter-spacing: 1px; margin-bottom: 6px; }
+    .jp-desc { font-size: 13px; font-weight: 400; color: rgba(25,32,56,0.7); line-height: 1.5; margin-bottom: 12px; }
     .jp-footer { display: flex; align-items: center; justify-content: space-between; }
-    .jp-price { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #192038; }
-    .jp-price-sym { font-size: 11px; color: rgba(25,32,56,0.4); margin-right: 2px; }
+    .jp-price { font-size: 18px; font-weight: 800; color: #192038; }
+    .jp-price-sym { font-size: 12px; font-weight: 600; color: rgba(25,32,56,0.5); margin-right: 2px; }
     .jp-ar-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      background: #192038; color: #f0e8dc; border: none; padding: 7px 14px;
-      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      background: #192038; color: #f0e8dc; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       cursor: pointer; transition: background .18s; border-radius: 999px; min-height: 36px;
     }
     .jp-ar-btn:hover { background: #bc002d; }
-    .jp-veg { font-size: 9px; padding: 2px 10px; background: rgba(25,93,56,0.08); color: #1d5937; border: 1px solid rgba(25,93,56,0.2); border-radius: 999px; font-family: 'Inter', sans-serif; }
+    .jp-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(25,93,56,0.1); color: #124d2e; border: 1px solid rgba(25,93,56,0.22); border-radius: 999px; }
 
     .jp-footer-bar {
       text-align: center; padding: 1.5rem 1rem;
       background: rgba(12,16,30,0.7); border-top: 1px solid rgba(232,180,188,0.1);
-      font-family: 'Noto Serif JP', serif; font-size: 12px; font-weight: 300;
-      color: rgba(232,180,188,0.45); letter-spacing: 2px; line-height: 2.2;
+      font-size: 12px; font-weight: 400;
+      color: rgba(232,180,188,0.7); letter-spacing: 1px; line-height: 2;
     }
 
     /* ══════════════════════════════════════
-       KOREAN — Joseon Court Ceremonial
+       KOREAN PANEL
     ══════════════════════════════════════ */
     .panel-korean {
       background:
@@ -409,7 +414,7 @@
     }
     .panel-korean .panel-back {
       background: rgba(8,21,17,0.93);
-      color: rgba(236,243,238,0.6);
+      color: rgba(236,243,238,0.7);
       border-bottom: 1px solid rgba(201,162,39,0.15);
     }
     .panel-korean .panel-back:hover { color: #c9a227; }
@@ -434,13 +439,13 @@
     }
 
     .kr-hangul {
-      font-family: 'Noto Serif KR', serif; font-size: clamp(38px, 9vw, 68px);
-      color: rgba(201,162,39,0.1); letter-spacing: 0.1em; line-height: 1;
-      margin-bottom: -8px; display: block;
+      font-size: clamp(38px, 9vw, 68px); font-weight: 800;
+      color: rgba(201,162,39,0.12); letter-spacing: 0.1em; line-height: 1;
+      margin-bottom: -10px; display: block;
     }
     .kr-eyebrow {
-      font-family: 'Noto Serif KR', serif; font-size: 10px; letter-spacing: 4px;
-      color: rgba(201,162,39,0.55); margin-bottom: 12px;
+      font-size: 11px; letter-spacing: 3px; font-weight: 600;
+      color: rgba(201,162,39,0.75); margin-bottom: 12px; text-transform: uppercase;
     }
 
     .kr-emblem {
@@ -460,18 +465,17 @@
       opacity: 0.7;
     }
     .kr-emblem-inner {
-      position: relative; z-index: 2; font-family: 'Noto Serif KR', serif;
-      font-size: 22px; color: #ecf3ee;
+      position: relative; z-index: 2; font-size: 22px; color: #ecf3ee;
     }
 
     .kr-title {
-      font-family: 'Nanum Myeongjo', serif; font-size: clamp(26px, 6vw, 48px);
-      font-weight: 700; letter-spacing: 0.05em; color: #ecf3ee;
+      font-size: clamp(26px, 6vw, 42px);
+      font-weight: 700; letter-spacing: 0.02em; color: #ecf3ee;
       text-shadow: 0 1px 10px rgba(8,21,17,0.5); margin-bottom: 6px;
     }
     .kr-subtitle {
-      font-family: 'Noto Serif KR', serif; font-size: 13px; font-weight: 300;
-      color: rgba(236,243,238,0.42); letter-spacing: 3px; margin-bottom: 1.8rem;
+      font-size: 13px; font-weight: 400;
+      color: rgba(236,243,238,0.6); letter-spacing: 2px; margin-bottom: 1.8rem;
     }
 
     .kr-divider {
@@ -487,13 +491,13 @@
     .kr-badge {
       display: inline-flex; align-items: center; gap: 8px;
       border: 1px solid rgba(201,162,39,0.22); padding: 6px 18px; border-radius: 999px;
-      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px; color: rgba(236,243,238,0.48);
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(236,243,238,0.65);
     }
     .kr-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9a227; animation: pdot 1.8s ease-in-out infinite; }
 
     .kr-tabs {
       background: rgba(245,241,234,0.97); border-bottom: 1px solid rgba(46,89,68,0.15);
-      padding: 0 1.2rem; position: sticky; top: calc(57px + 41px); z-index: 80;
+      padding: 0 1.2rem; position: sticky; top: calc(57px + 45px); z-index: 80;
     }
     .kr-tabs-inner {
       max-width: 740px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto;
@@ -501,29 +505,28 @@
     }
     .kr-tabs-inner::-webkit-scrollbar { display: none; }
     .kr-tab {
-      flex-shrink: 0; padding: 6px 18px; font-family: 'Inter', sans-serif;
-      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      border: 1px solid rgba(46,89,68,0.2); color: rgba(46,89,68,0.5); cursor: pointer;
+      flex-shrink: 0; padding: 7px 18px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      border: 1px solid rgba(46,89,68,0.2); color: rgba(46,89,68,0.6); cursor: pointer;
       background: transparent; transition: all .2s;
       border-radius: 4px;
     }
     .kr-tab:hover { border-color: #2e5944; color: #2e5944; background: rgba(46,89,68,0.06); }
     .kr-tab.active { background: #2e5944; color: #ecf3ee; border-color: #2e5944; }
-    .kr-tab.active.red { background: #cd2e3a; border-color: #cd2e3a; }
 
     .kr-main { max-width: 740px; margin: 0 auto; padding: 1.8rem 1rem 5rem; }
     .kr-section-head {
       display: flex; align-items: center; gap: 12px; margin: 2rem 0 1rem;
-      font-family: 'Noto Serif KR', serif; font-size: 11px; letter-spacing: 4px; color: rgba(201,162,39,0.6);
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c9a227;
     }
-    .kr-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.2), transparent); }
+    .kr-section-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,39,0.25), transparent); }
     .kr-section-head::before { content: '◈'; color: #c9a227; font-size: 10px; flex-shrink: 0; }
 
     .kr-card {
-      display: flex; gap: 14px;
+      display: flex; gap: 16px;
       background: rgba(245,241,234,0.96); border-top: 2px solid transparent; border: 1px solid rgba(46,89,68,0.1);
-      border-radius: 4px; padding: 1.1rem 1.3rem;
-      margin-bottom: 10px; cursor: pointer; position: relative; overflow: hidden;
+      border-radius: 6px; padding: 1.2rem 1.4rem;
+      margin-bottom: 12px; cursor: pointer; position: relative; overflow: hidden;
       transition: border-color .2s, transform .2s, box-shadow .2s;
     }
     .kr-card::before {
@@ -534,38 +537,38 @@
     .kr-card:hover::before { opacity: 1; }
     .kr-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8,21,17,0.2); }
     .kr-thumb {
-      width: 68px; height: 68px; flex-shrink: 0; border-radius: 4px;
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 6px;
       background: linear-gradient(135deg, #e8f0ec 0%, #dce9d8 100%);
       border: 1px solid rgba(46,89,68,0.12); display: flex; align-items: center;
       justify-content: center; font-size: 28px; position: relative; overflow: hidden;
     }
-    .kr-thumb img { width:100%; height:100%; object-fit:cover; border-radius:4px; }
+    .kr-thumb img { width:100%; height:100%; object-fit:cover; border-radius:6px; }
     .kr-ar-pill {
       position: absolute; bottom: 2px; right: 2px;
-      background: #c9a227; color: #081511; font-size: 7px; letter-spacing: 1px; padding: 2px 5px;
-      border-radius: 2px; font-weight: 600;
+      background: #c9a227; color: #081511; font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 2px 6px;
+      border-radius: 2px;
     }
     .kr-body { flex: 1; min-width: 0; }
-    .kr-name { font-family: 'Nanum Myeongjo', serif; font-size: 18px; font-weight: 700; color: #102319; margin-bottom: 2px; }
-    .kr-name-kr { font-family: 'Noto Serif KR', serif; font-size: 11px; font-weight: 300; color: rgba(16,35,25,0.4); letter-spacing: 2px; margin-bottom: 5px; }
-    .kr-desc { font-size: 12px; color: rgba(16,35,25,0.55); line-height: 1.7; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 300; }
+    .kr-name { font-size: 17px; font-weight: 700; color: #102319; margin-bottom: 2px; line-height: 1.3; }
+    .kr-name-kr { font-size: 12px; font-weight: 500; color: rgba(16,35,25,0.55); letter-spacing: 1px; margin-bottom: 6px; }
+    .kr-desc { font-size: 13px; font-weight: 400; color: rgba(16,35,25,0.7); line-height: 1.5; margin-bottom: 12px; }
     .kr-footer { display: flex; align-items: center; justify-content: space-between; }
-    .kr-price { font-family: 'Nanum Myeongjo', serif; font-size: 20px; font-weight: 700; color: #102319; }
-    .kr-price-sym { font-size: 11px; color: rgba(16,35,25,0.4); margin-right: 2px; }
+    .kr-price { font-size: 18px; font-weight: 800; color: #102319; }
+    .kr-price-sym { font-size: 12px; font-weight: 600; color: rgba(16,35,25,0.5); margin-right: 2px; }
     .kr-ar-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      background: #2e5944; color: #ecf3ee; border: none; padding: 7px 14px;
-      font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      background: #2e5944; color: #ecf3ee; border: none; padding: 8px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       cursor: pointer; transition: background .18s; border-radius: 4px; min-height: 36px;
     }
     .kr-ar-btn:hover { background: #cd2e3a; }
-    .kr-veg { font-size: 9px; padding: 2px 10px; background: rgba(46,89,68,0.1); color: #2e5944; border: 1px solid rgba(46,89,68,0.25); border-radius: 4px; font-family: 'Inter', sans-serif; }
+    .kr-veg { font-size: 10px; font-weight: 600; padding: 3px 10px; background: rgba(46,89,68,0.12); color: #2e5944; border: 1px solid rgba(46,89,68,0.25); border-radius: 4px; }
 
     .kr-footer-bar {
       text-align: center; padding: 1.5rem 1rem;
       background: rgba(8,21,17,0.8); border-top: 1px solid rgba(201,162,39,0.12);
-      font-family: 'Noto Serif KR', serif; font-size: 11px; font-weight: 300;
-      color: rgba(201,162,39,0.45); letter-spacing: 2px; line-height: 2.2;
+      font-size: 12px; font-weight: 400;
+      color: rgba(201,162,39,0.7); letter-spacing: 1px; line-height: 2;
     }
     .kr-footer-bar::before { content: '— '; }
     .kr-footer-bar::after { content: ' —'; }
@@ -605,7 +608,7 @@
       justify-content: space-between;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .ar-modal-title { font-size: 16px; font-weight: 600; color: #f0e8d8; }
+    .ar-modal-title { font-size: 16px; font-weight: 700; color: #f0e8d8; }
     .ar-close-btn {
       background: transparent;
       border: none;
@@ -648,7 +651,8 @@
       .cuisine-tabs { gap: 8px; }
       .cuisine-tab { min-width: 100px; padding: 1.1rem 1rem; }
       .it-card, .jp-card, .kr-card { flex-direction: column; }
-      .it-thumb, .jp-thumb, .kr-thumb { width: 100%; height: 140px; }
+      .it-thumb, .jp-thumb, .kr-thumb { width: 100%; height: 140px; border-radius: 8px; }
+      .it-thumb img, .jp-thumb img, .kr-thumb img { border-radius: 8px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -667,7 +671,7 @@
       <span class="brand-sub">AI Menus · In AR</span>
     </div>
   </a>
-  <span style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(240,232,216,0.35);">Theme Preview</span>
+  <span style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(240,232,216,0.35);">Theme Preview</span>
 </header>
 
 <!-- ════ GATE ════ -->
@@ -783,7 +787,7 @@
     </div>
 
     <h1 class="it-title">Italian cuisine</h1>
-    <span class="it-subtitle">recipes, and cooking techniques developed in Italy</span>
+    <span class="it-subtitle">Recipes and traditional cooking techniques developed in Italy</span>
     <div class="it-divider"><span class="it-divider-glyph">✦ ✦ ✦</span></div>
     <span class="it-badge">
       <span class="it-badge-dot"></span>
@@ -806,7 +810,7 @@
 
   <footer class="it-footer-bar">
     Tap any dish to view in 3D · Prices in ₹ · 🌿 Vegetarian friendly<br>
-    <span style="font-size:10px;opacity:.8">AR requires a compatible mobile device · Powered by liveDish AI</span>
+    <span style="font-size:11px; opacity:.7;">AR requires a compatible mobile device · Powered by liveDish AI</span>
   </footer>
 </section>
 
@@ -821,34 +825,34 @@
   </button>
 
   <header class="jp-header">
-    <span class="jp-kanji">和食</span>
-    <p class="jp-eyebrow">Washoku · 和食</p>
+    <span class="jp-kanji">Washoku</span>
+    <p class="jp-eyebrow">Washoku · Japanese Cuisine</p>
     <div class="jp-mon"><span class="jp-mon-koi">⊕</span></div>
     <h1 class="jp-title">Sakura Kaiseki</h1>
-    <span class="jp-subtitle">Chef Tanaka · 田中料理長</span>
+    <span class="jp-subtitle">Chef Tanaka · Executive Chef</span>
     <div class="jp-divider"><span class="jp-divider-mark">— — —</span></div>
     <span class="jp-badge">
       <span class="jp-badge-dot"></span>
-      Interactive 3D &amp; AR Preview · AR体験
+      Interactive 3D &amp; AR Preview
     </span>
   </header>
 
   <nav class="jp-tabs">
     <div class="jp-tabs-inner" id="jp-tabs">
-      <button class="jp-tab active">All · 全て</button>
-      <button class="jp-tab">Starters · 前菜</button>
-      <button class="jp-tab">Mains · 主菜</button>
-      <button class="jp-tab">Dessert · 甘味</button>
+      <button class="jp-tab active">All · All Dishes</button>
+      <button class="jp-tab">Starters · Appetizers</button>
+      <button class="jp-tab">Mains · Entrees</button>
+      <button class="jp-tab">Dessert · Sweet</button>
     </div>
   </nav>
 
   <main class="jp-main">
-    <div class="jp-section-head"><span></span>前菜 · Starters<span></span></div>
+    <div class="jp-section-head"><span></span>Starters<span></span></div>
     <div class="jp-card">
       <div class="jp-thumb">🐟<span class="jp-ar-pill">AR</span></div>
       <div class="jp-body">
         <div class="jp-name">Bluefin Sashimi</div>
-        <div class="jp-name-jp">本鮪の刺身</div>
+        <div class="jp-name-jp">Hon Maguro Sashimi</div>
         <p class="jp-desc">Five cuts of premium maguro, served on shiso leaf with ponzu and freshly grated wasabi.</p>
         <div class="jp-footer">
           <div class="jp-price"><span class="jp-price-sym">₹</span>1,480</div>
@@ -860,7 +864,7 @@
       <div class="jp-thumb">🍢</div>
       <div class="jp-body">
         <div class="jp-name">Agedashi Tofu</div>
-        <div class="jp-name-jp">揚げ出し豆腐</div>
+        <div class="jp-name-jp">Agedashi Tofu</div>
         <p class="jp-desc">Silken tofu lightly dusted in potato starch, deep fried and served in dashi broth with grated daikon.</p>
         <div class="jp-footer">
           <div class="jp-price"><span class="jp-price-sym">₹</span>560</div>
@@ -869,12 +873,12 @@
       </div>
     </div>
 
-    <div class="jp-section-head"><span></span>主菜 · Mains<span></span></div>
+    <div class="jp-section-head"><span></span>Mains<span></span></div>
     <div class="jp-card">
       <div class="jp-thumb">🍜<span class="jp-ar-pill">AR</span></div>
       <div class="jp-body">
         <div class="jp-name">Tonkotsu Ramen</div>
-        <div class="jp-name-jp">豚骨ラーメン</div>
+        <div class="jp-name-jp">Tonkotsu Ramen</div>
         <p class="jp-desc">18-hour pork bone broth, hand-pulled noodles, chashu pork, soft-boiled marinated egg and nori.</p>
         <div class="jp-footer">
           <div class="jp-price"><span class="jp-price-sym">₹</span>980</div>
@@ -886,7 +890,7 @@
       <div class="jp-thumb">🍱</div>
       <div class="jp-body">
         <div class="jp-name">Bento Kaiseki</div>
-        <div class="jp-name-jp">会席弁当</div>
+        <div class="jp-name-jp">Kaiseki Bento</div>
         <p class="jp-desc">Seasonal chef's selection — rice, seasonal pickles, grilled fish, tempura and miso.</p>
         <div class="jp-footer">
           <div class="jp-price"><span class="jp-price-sym">₹</span>1,750</div>
@@ -894,12 +898,12 @@
       </div>
     </div>
 
-    <div class="jp-section-head"><span></span>甘味 · Desserts<span></span></div>
+    <div class="jp-section-head"><span></span>Desserts<span></span></div>
     <div class="jp-card">
       <div class="jp-thumb">🍡<span class="jp-ar-pill">AR</span></div>
       <div class="jp-body">
         <div class="jp-name">Matcha Parfait</div>
-        <div class="jp-name-jp">抹茶パフェ</div>
+        <div class="jp-name-jp">Matcha Parfait</div>
         <p class="jp-desc">Ceremonial-grade matcha ice cream, azuki red bean, shiratama mochi and kuromitsu.</p>
         <div class="jp-footer">
           <div class="jp-price"><span class="jp-price-sym">₹</span>620</div>
@@ -911,7 +915,7 @@
 
   <footer class="jp-footer-bar">
     Tap any dish to view in 3D · Prices in ₹<br>
-    <span style="font-size:10px;opacity:.7">AR requires a compatible mobile device · Powered by liveDish AI · liveDishが提供</span>
+    <span style="font-size:11px; opacity:.7;">AR requires a compatible mobile device · Powered by liveDish AI</span>
   </footer>
 </section>
 
@@ -926,35 +930,35 @@
   </button>
 
   <header class="kr-header">
-    <span class="kr-hangul">한식</span>
-    <p class="kr-eyebrow">Hansik · 한식</p>
+    <span class="kr-hangul">Hansik</span>
+    <p class="kr-eyebrow">Hansik · Korean Cuisine</p>
     <div class="kr-emblem"><span class="kr-emblem-inner">⊙</span></div>
     <h1 class="kr-title">Jeonju Royal</h1>
-    <span class="kr-subtitle">Chef Park · 박 셰프</span>
+    <span class="kr-subtitle">Chef Park · Executive Chef</span>
     <div class="kr-divider"><span class="kr-divider-mark">◈ ◈ ◈</span></div>
     <span class="kr-badge">
       <span class="kr-badge-dot"></span>
-      Interactive 3D &amp; AR Preview · AR체험
+      Interactive 3D &amp; AR Preview
     </span>
   </header>
 
   <nav class="kr-tabs">
     <div class="kr-tabs-inner" id="kr-tabs">
-      <button class="kr-tab active">All · 전체</button>
-      <button class="kr-tab">Starters · 전채</button>
+      <button class="kr-tab active">All · All Dishes</button>
+      <button class="kr-tab">Starters · Appetizers</button>
       <button class="kr-tab active red" style="display:none"></button>
-      <button class="kr-tab">Mains · 주요리</button>
-      <button class="kr-tab">Dessert · 후식</button>
+      <button class="kr-tab">Mains · Entrees</button>
+      <button class="kr-tab">Dessert · Sweets</button>
     </div>
   </nav>
 
   <main class="kr-main">
-    <div class="kr-section-head"><span></span>전채 · Starters<span></span></div>
+    <div class="kr-section-head"><span></span>Starters<span></span></div>
     <div class="kr-card">
       <div class="kr-thumb">🥬<span class="kr-ar-pill">AR</span></div>
       <div class="kr-body">
         <div class="kr-name">Kimchi Jeon</div>
-        <div class="kr-name-kr">김치전</div>
+        <div class="kr-name-kr">Kimchi Pancake</div>
         <p class="kr-desc">Crispy fermented kimchi pancake, pan-fried golden, served with sesame soy dipping sauce.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>480</div>
@@ -966,7 +970,7 @@
       <div class="kr-thumb">🥚</div>
       <div class="kr-body">
         <div class="kr-name">Gyeran Jjim</div>
-        <div class="kr-name-kr">계란찜</div>
+        <div class="kr-name-kr">Steamed Egg Custard</div>
         <p class="kr-desc">Silky steamed egg custard, light and souffle-like, finished with sesame oil and green onion.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>320</div>
@@ -975,12 +979,12 @@
       </div>
     </div>
 
-    <div class="kr-section-head"><span></span>주요리 · Mains<span></span></div>
+    <div class="kr-section-head"><span></span>Mains<span></span></div>
     <div class="kr-card">
       <div class="kr-thumb">🍲<span class="kr-ar-pill">AR</span></div>
       <div class="kr-body">
         <div class="kr-name">Royal Bibimbap</div>
-        <div class="kr-name-kr">궁중 비빔밥</div>
+        <div class="kr-name-kr">Royal Rice Bowl</div>
         <p class="kr-desc">Jeonju-style: warm rice, nine seasonal vegetables, beef tartare, fried egg and gochujang sauce in stone bowl.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>1,080</div>
@@ -992,7 +996,7 @@
       <div class="kr-thumb">🔥</div>
       <div class="kr-body">
         <div class="kr-name">Samgyeopsal BBQ</div>
-        <div class="kr-name-kr">삼겹살</div>
+        <div class="kr-name-kr">Grilled Pork Belly</div>
         <p class="kr-desc">Tableside grilled pork belly, with ssamjang, perilla leaves, garlic, and kimchi accompaniments.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>1,480</div>
@@ -1003,7 +1007,7 @@
       <div class="kr-thumb">🍵</div>
       <div class="kr-body">
         <div class="kr-name">Sundubu Jjigae</div>
-        <div class="kr-name-kr">순두부찌개</div>
+        <div class="kr-name-kr">Soft Tofu Stew</div>
         <p class="kr-desc">Spicy soft tofu stew with seafood, mushrooms, and egg in an earthen pot — arrives bubbling.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>780</div>
@@ -1011,12 +1015,12 @@
       </div>
     </div>
 
-    <div class="kr-section-head"><span></span>후식 · Desserts<span></span></div>
+    <div class="kr-section-head"><span></span>Desserts<span></span></div>
     <div class="kr-card">
       <div class="kr-thumb">🍡<span class="kr-ar-pill">AR</span></div>
       <div class="kr-body">
         <div class="kr-name">Bingsu</div>
-        <div class="kr-name-kr">팥빙수</div>
+        <div class="kr-name-kr">Shaved Milk Ice</div>
         <p class="kr-desc">Shaved milk ice with sweetened azuki red beans, mochi, condensed milk and seasonal fruit.</p>
         <div class="kr-footer">
           <div class="kr-price"><span class="kr-price-sym">₹</span>520</div>
@@ -1027,8 +1031,8 @@
   </main>
 
   <footer class="kr-footer-bar">
-    Tap any dish to view in 3D · Prices in ₹ · 궁중 전통 요리<br>
-    <span style="font-size:10px;opacity:.7">AR requires a compatible mobile device · Powered by liveDish AI</span>
+    Tap any dish to view in 3D · Prices in ₹<br>
+    <span style="font-size:11px; opacity:.7;">AR requires a compatible mobile device · Powered by liveDish AI</span>
   </footer>
 </section>
 
@@ -1060,7 +1064,6 @@
 /* ════ GOOGLE SHEETS LIVE CONFIG ════ */
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv';
 
-// Directory mappings
 const knownFolders = {
   'fried calamari': 'Fried-Calamari',
   'cheesy green lasagne': 'Cheesy-Green-Lasagne',
@@ -1070,7 +1073,6 @@ const knownFolders = {
   'pistachio bigne with ricotta': 'Pistachio-Sauce-Bigne-with-Ricotta'
 };
 
-// Fallback local list
 const defaultItalianDishes = [
   {
     category: 'Starters',
@@ -1132,7 +1134,6 @@ function renderItalianDishes(filterCategory = 'all') {
   categories.forEach(cat => {
     if (filterCategory !== 'all' && filterCategory.toLowerCase() !== cat.toLowerCase()) return;
 
-    // Filter out items where Availability is 'no' or 'false'
     const dishesInCategory = allItalianDishes.filter(d => {
       const isCorrectCategory = d.category.toLowerCase().trim() === cat.toLowerCase();
       const avail = d.availability ? d.availability.toLowerCase().trim() : 'yes';
@@ -1170,7 +1171,7 @@ function renderItalianDishes(filterCategory = 'all') {
 
       card.innerHTML = `
         <div class="it-thumb">
-          <img src="${imgPath}" alt="${dish.name}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'68\\' height=\\'68\\'><text x=\\'50%\\' y=\\'50%\\' font-size=\\'24\\' text-anchor=\\'middle\\' dominant-baseline=\\'central\\'>🍽️</text></svg>';" />
+          <img src="${imgPath}" alt="${dish.name}" onerror="this.onerror=null; this.parentElement.innerHTML='🍽️<span class=\\'it-ar-pill\\'>AR</span>';" />
           <span class="it-ar-pill">AR</span>
         </div>
         <div class="it-body">
@@ -1255,7 +1256,7 @@ async function loadGoogleSheetData() {
   renderItalianDishes();
 }
 
-/* ════ NAVIGATION ════ */
+/* ════ NAVIGATION & GATE ════ */
 const cuisineCards = document.querySelectorAll('.cuisine-tab');
 const panels = {
   italian:  document.getElementById('panel-italian'),
@@ -1287,7 +1288,6 @@ function backToGate() {
   document.getElementById('gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-/* Category Filter Tabs */
 document.querySelectorAll('#it-tabs button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#it-tabs button').forEach(b => b.classList.remove('active'));
