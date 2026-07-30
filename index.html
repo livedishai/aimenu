@@ -1055,11 +1055,10 @@
 
 <script>
 /* ════ GOOGLE SHEETS INTEGRATION CONFIG ════ */
-// Replace with your Google Sheet ID once published to the web
-const SHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; 
-const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+// Your published Google Sheet CSV endpoint
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv';
 
-// Local fallback dishes
+// Local fallback dishes in case of network issues
 const defaultItalianDishes = [
   {
     category: 'Starters',
@@ -1105,7 +1104,7 @@ const defaultItalianDishes = [
 
 let allItalianDishes = [];
 
-// Helper to convert dish name to folder format if needed
+// Helper to sanitize dish name into 3D asset folder name
 function getFolderName(name) {
   return name.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
 }
@@ -1113,6 +1112,7 @@ function getFolderName(name) {
 // Render dishes dynamically into the Italian main panel
 function renderItalianDishes(filterCategory = 'all') {
   const container = document.getElementById('it-main');
+  if (!container) return;
   container.innerHTML = '';
 
   const categories = ['Starters', 'Mains', 'Dessert'];
@@ -1122,7 +1122,7 @@ function renderItalianDishes(filterCategory = 'all') {
 
     const dishesInCategory = allItalianDishes.filter(d => 
       d.category.toLowerCase() === cat.toLowerCase() && 
-      d.availability.toLowerCase().trim() === 'yes'
+      (d.availability.toLowerCase().trim() === 'yes' || d.availability.toLowerCase().trim() === 'true')
     );
 
     if (dishesInCategory.length === 0) return;
@@ -1178,19 +1178,26 @@ function renderItalianDishes(filterCategory = 'all') {
   });
 }
 
-// Parse Google Sheet CSV output
+// Robust CSV parser capable of handling quoted strings with commas
 function parseCSV(text) {
-  const lines = text.split('\n').filter(line => line.trim() !== '');
+  const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
   if (lines.length < 2) return [];
 
-  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+  const parseRow = (row) => {
+    const pattern = /(?!\s*$)\s*(?:'([^']*)'|"([^"]*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
+    const values = [];
+    let match;
+    while ((match = pattern.exec(row))) {
+      values.push(match[1] || match[2] || match[3] || '');
+    }
+    return values;
+  };
+
+  const headers = parseRow(lines[0]).map(h => h.trim().toLowerCase());
   const dishes = [];
 
   for (let i = 1; i < lines.length; i++) {
-    // Regex matches CSV values properly handling commas inside quotes
-    const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
-    const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
-
+    const cleanValues = parseRow(lines[i]);
     const dish = {};
     headers.forEach((h, index) => {
       dish[h] = cleanValues[index] || '';
@@ -1212,16 +1219,12 @@ function parseCSV(text) {
   return dishes;
 }
 
-// Fetch data from Google Sheet
+// Fetch live sheet data directly from CSV URL
 async function loadGoogleSheetData() {
-  if (SHEET_ID === 'YOUR_SPREADSHEET_ID_HERE') {
-    allItalianDishes = defaultItalianDishes;
-    renderItalianDishes();
-    return;
-  }
-
   try {
     const response = await fetch(SHEET_CSV_URL);
+    if (!response.ok) throw new Error('Sheet network response was not ok');
+    
     const csvText = await response.text();
     const fetchedDishes = parseCSV(csvText);
 
@@ -1231,7 +1234,7 @@ async function loadGoogleSheetData() {
       allItalianDishes = defaultItalianDishes;
     }
   } catch (err) {
-    console.warn('Falling back to local Italian dishes:', err);
+    console.warn('Unable to load live sheet data, loading defaults:', err);
     allItalianDishes = defaultItalianDishes;
   }
 
@@ -1254,9 +1257,9 @@ function showCuisine(key) {
     }
   });
   Object.entries(panels).forEach(([k,el]) => {
-    el.classList.toggle('visible', k === key);
+    if (el) el.classList.toggle('visible', k === key);
   });
-  if (key !== 'gate') {
+  if (key !== 'gate' && panels[key]) {
     panels[key].scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
@@ -1266,7 +1269,7 @@ cuisineCards.forEach(card => {
 });
 
 function backToGate() {
-  Object.values(panels).forEach(el => el.classList.remove('visible'));
+  Object.values(panels).forEach(el => { if (el) el.classList.remove('visible'); });
   document.getElementById('gate-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
@@ -1286,6 +1289,7 @@ const viewer = document.getElementById('viewer');
 const modalTitle = document.getElementById('ar-modal-title');
 
 function openARModal(glbPath, usdzPath, title) {
+  if (!modal || !viewer) return;
   modalTitle.textContent = title || 'Interactive 3D Dish';
   viewer.setAttribute('src', glbPath);
   if (usdzPath) {
@@ -1297,14 +1301,17 @@ function openARModal(glbPath, usdzPath, title) {
 }
 
 function closeARModal() {
+  if (!modal || !viewer) return;
   modal.classList.remove('active');
   viewer.removeAttribute('src');
   viewer.removeAttribute('ios-src');
 }
 
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeARModal();
-});
+if (modal) {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeARModal();
+  });
+}
 
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
