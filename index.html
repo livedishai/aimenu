@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>liveDish — Country-Themed AR Menus</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -622,6 +622,7 @@
       width: 100%;
       height: 100%;
       --poster-color: transparent;
+      touch-action: none; /* stop native pinch/scroll gestures from reaching the viewer */
     }
     .custom-ar-button {
       position: absolute;
@@ -1250,11 +1251,20 @@ function openARModal(glbPath, usdzPath, title, scale) {
   const s = parseScale(scale);
   viewer.setAttribute('scale', `${s} ${s} ${s}`);
 
-  // Lock the viewer so pinch/scroll zoom can never change the apparent
-  // size of the model — only rotation is allowed. The model always
-  // renders at exactly the size defined by the sheet's "scale" column.
+  // Lock the viewer so pinch/scroll/wheel zoom can never change the
+  // apparent size of the model — only rotation is allowed. The model
+  // always renders at exactly the size defined by the sheet's "scale" column.
   viewer.setAttribute('disable-zoom', '');
-  viewer.setAttribute('interaction-policy', 'allow-when-focused');
+
+  // Belt-and-suspenders: disable-zoom alone can be bypassed by touch
+  // gestures on some mobile browsers, so we also hard-clamp the camera
+  // distance itself. Setting min-camera-orbit and max-camera-orbit to the
+  // SAME radius makes zooming mathematically impossible, regardless of
+  // which gesture or input tries to trigger it.
+  const fixedOrbit = 'auto auto 105%';
+  viewer.setAttribute('camera-orbit', '0deg 75deg 105%');
+  viewer.setAttribute('min-camera-orbit', fixedOrbit);
+  viewer.setAttribute('max-camera-orbit', fixedOrbit);
 
   modal.classList.add('active');
 }
@@ -1265,6 +1275,9 @@ function closeARModal() {
   viewer.removeAttribute('src');
   viewer.removeAttribute('ios-src');
   viewer.setAttribute('scale', '1 1 1');
+  viewer.removeAttribute('camera-orbit');
+  viewer.removeAttribute('min-camera-orbit');
+  viewer.removeAttribute('max-camera-orbit');
 }
 
 if (modal) {
