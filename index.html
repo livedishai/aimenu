@@ -999,7 +999,7 @@
 
 <script>
 /* ════ GOOGLE SHEETS LIVE CONFIG ════ */
-const SHEET_CSV_URL_ITALIAN = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv';
+const SHEET_CSV_URL_ITALIAN = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=0&single=true&output=csv';
 const SHEET_CSV_URL_JAPANESE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=28659468&single=true&output=csv';
 
 const knownFoldersItalian = {
@@ -1058,6 +1058,16 @@ const cuisineConfig = {
 
 const allDishes = { italian: [], japanese: [] };
 
+function prettifyName(name) {
+  // Turns folder-style raw names (e.g. "Fried-Calamari", "KaramisoRamen")
+  // into readable display names ("Fried Calamari", "Karamiso Ramen").
+  return name
+    .replace(/[-_]+/g, ' ')            // hyphens/underscores -> spaces
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2') // camel/PascalCase -> spaced
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function getFolderName(name, cuisine) {
   const normalized = name.toLowerCase().trim();
   const map = cuisineConfig[cuisine].knownFolders;
@@ -1112,7 +1122,7 @@ function renderDishes(cuisine, filterCategory = 'all') {
           <span class="${cls.arPill}">AR</span>
         </div>
         <div class="${cls.body}">
-          <div class="${cls.name}">${dish.name}</div>
+          <div class="${cls.name}">${prettifyName(dish.name)}</div>
           <div class="${cls.localName}">${dish.localName || ''}</div>
           <p class="${cls.desc}">${dish.description || ''}</p>
           <div class="${cls.footer}">
@@ -1124,7 +1134,7 @@ function renderDishes(cuisine, filterCategory = 'all') {
       `;
 
       card.addEventListener('click', () => {
-        openARModal(glbPath, usdzPath, dish.name);
+        openARModal(glbPath, usdzPath, prettifyName(dish.name));
       });
 
       container.appendChild(card);
