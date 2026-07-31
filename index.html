@@ -424,8 +424,8 @@
 
 <script>
 /* ════ GOOGLE SHEETS LIVE CONFIG ════ */
-const SHEET1_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv';
-const SHEET2_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=28659468&single=true&output=csv';
+const SHEET1_CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent('https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?output=csv');
+const SHEET2_CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent('https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=28659468&single=true&output=csv');
 
 const knownFolders = {
   'fried calamari': 'Fried-Calamari',
@@ -438,6 +438,21 @@ const knownFolders = {
   'shoyu ramen': 'ShoyuRamen',
   'tantanmen': 'Tantanmen'
 };
+
+/* Default Backup Data if network/CORS fails */
+const defaultItalianDishes = [
+  { category: 'Starters', name: 'Fried Calamari', italianName: 'Calamari Fritti', description: 'Crispy golden rings of fresh squid, lightly seasoned with sea salt and lemon zest.', price: '680', availability: 'yes', vegNonveg: 'nonveg' },
+  { category: 'Mains', name: 'Cheesy Green Lasagne', italianName: 'Lasagne Verdi al Forno', description: 'Handmade spinach pasta layered with béchamel, ricotta, and aged Parmigiano.', price: '1180', availability: 'yes', vegNonveg: 'veg' },
+  { category: 'Dessert', name: 'Pinocchio Tiramisù', italianName: 'Specialità della Casa', description: 'Espresso-soaked ladyfingers, mascarpone, dusted with cocoa.', price: '560', availability: 'yes', vegNonveg: 'veg' },
+  { category: 'Dessert', name: 'Pistachio Bignè with Ricotta', italianName: 'Bignè al Pistacchio', description: 'Cream puffs filled with Sicilian pistachio cream and fresh ricotta.', price: '480', availability: 'yes', vegNonveg: 'veg' }
+];
+
+const defaultJapaneseDishes = [
+  { category: 'Mains', name: 'Karamiso Ramen', italianName: 'Karamiso Ramen', description: 'Rich spicy miso broth with handmade ramen noodles and tender pork.', price: '850', availability: 'yes', vegNonveg: 'nonveg' },
+  { category: 'Mains', name: 'Shio Ramen', italianName: 'Shio Ramen', description: 'Light sea salt broth topped with chashu, bamboo shoots, and green onion.', price: '780', availability: 'yes', vegNonveg: 'nonveg' },
+  { category: 'Mains', name: 'Shoyu Ramen', italianName: 'Shoyu Ramen', description: 'Classic soy sauce broth with springy noodles and soft-boiled egg.', price: '820', availability: 'yes', vegNonveg: 'nonveg' },
+  { category: 'Mains', name: 'Tantanmen', italianName: 'Tantanmen', description: 'Spicy sesame broth with seasoned minced meat and bok choy.', price: '890', availability: 'yes', vegNonveg: 'nonveg' }
+];
 
 let allItalianDishes = [];
 let allJapaneseDishes = [];
@@ -603,25 +618,35 @@ function renderJapaneseDishes(filterCategory = 'all') {
 }
 
 async function loadGoogleSheetData() {
+  /* Load Italian (Sheet 1) */
   try {
     const res1 = await fetch(SHEET1_CSV_URL);
     if (res1.ok) {
       const text1 = await res1.text();
-      allItalianDishes = parseCSV(text1);
+      const fetched = parseCSV(text1);
+      allItalianDishes = fetched.length > 0 ? fetched : defaultItalianDishes;
+    } else {
+      allItalianDishes = defaultItalianDishes;
     }
   } catch (err) {
-    console.warn('Error loading Italian sheet:', err);
+    console.warn('Using default Italian dishes fallback:', err);
+    allItalianDishes = defaultItalianDishes;
   }
   renderItalianDishes();
 
+  /* Load Japanese (Sheet 2) */
   try {
     const res2 = await fetch(SHEET2_CSV_URL);
     if (res2.ok) {
       const text2 = await res2.text();
-      allJapaneseDishes = parseCSV(text2);
+      const fetched = parseCSV(text2);
+      allJapaneseDishes = fetched.length > 0 ? fetched : defaultJapaneseDishes;
+    } else {
+      allJapaneseDishes = defaultJapaneseDishes;
     }
   } catch (err) {
-    console.warn('Error loading Japanese sheet:', err);
+    console.warn('Using default Japanese dishes fallback:', err);
+    allJapaneseDishes = defaultJapaneseDishes;
   }
   renderJapaneseDishes();
 }
