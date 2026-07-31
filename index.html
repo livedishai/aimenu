@@ -750,7 +750,7 @@
         </g>
       </svg>
       <span class="tab-name">Korean</span>
-      <span class="tab-status soon">Coming soon</span>
+      <span class="tab-status live">Live demo</span>
     </button>
   </div>
 </section>
@@ -881,90 +881,15 @@
 
   <nav class="kr-tabs">
     <div class="kr-tabs-inner" id="kr-tabs">
-      <button class="kr-tab active">All · All Dishes</button>
-      <button class="kr-tab">Starters · Appetizers</button>
-      <button class="kr-tab active red" style="display:none"></button>
-      <button class="kr-tab">Mains · Entrees</button>
-      <button class="kr-tab">Dessert · Sweets</button>
+      <button class="kr-tab active" data-category="all">All · All Dishes</button>
+      <button class="kr-tab" data-category="starters">Starters · Appetizers</button>
+      <button class="kr-tab" data-category="mains">Mains · Entrees</button>
+      <button class="kr-tab" data-category="dessert">Dessert · Sweets</button>
     </div>
   </nav>
 
-  <main class="kr-main">
-    <div class="kr-section-head"><span></span>Starters<span></span></div>
-    <div class="kr-card">
-      <div class="kr-thumb">🥬<span class="kr-ar-pill">AR</span></div>
-      <div class="kr-body">
-        <div class="kr-name">Kimchi Jeon</div>
-        <div class="kr-name-kr">Kimchi Pancake</div>
-        <p class="kr-desc">Crispy fermented kimchi pancake, pan-fried golden, served with sesame soy dipping sauce.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>480</div>
-          <button class="kr-ar-btn">View in AR</button>
-        </div>
-      </div>
-    </div>
-    <div class="kr-card">
-      <div class="kr-thumb">🥚</div>
-      <div class="kr-body">
-        <div class="kr-name">Gyeran Jjim</div>
-        <div class="kr-name-kr">Steamed Egg Custard</div>
-        <p class="kr-desc">Silky steamed egg custard, light and souffle-like, finished with sesame oil and green onion.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>320</div>
-          <span class="kr-veg">🌿 veg</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-section-head"><span></span>Mains<span></span></div>
-    <div class="kr-card">
-      <div class="kr-thumb">🍲<span class="kr-ar-pill">AR</span></div>
-      <div class="kr-body">
-        <div class="kr-name">Royal Bibimbap</div>
-        <div class="kr-name-kr">Royal Rice Bowl</div>
-        <p class="kr-desc">Jeonju-style: warm rice, nine seasonal vegetables, beef tartare, fried egg and gochujang sauce in stone bowl.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>1,080</div>
-          <button class="kr-ar-btn">View in AR</button>
-        </div>
-      </div>
-    </div>
-    <div class="kr-card">
-      <div class="kr-thumb">🔥</div>
-      <div class="kr-body">
-        <div class="kr-name">Samgyeopsal BBQ</div>
-        <div class="kr-name-kr">Grilled Pork Belly</div>
-        <p class="kr-desc">Tableside grilled pork belly, with ssamjang, perilla leaves, garlic, and kimchi accompaniments.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>1,480</div>
-        </div>
-      </div>
-    </div>
-    <div class="kr-card">
-      <div class="kr-thumb">🍵</div>
-      <div class="kr-body">
-        <div class="kr-name">Sundubu Jjigae</div>
-        <div class="kr-name-kr">Soft Tofu Stew</div>
-        <p class="kr-desc">Spicy soft tofu stew with seafood, mushrooms, and egg in an earthen pot — arrives bubbling.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>780</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-section-head"><span></span>Desserts<span></span></div>
-    <div class="kr-card">
-      <div class="kr-thumb">🍡<span class="kr-ar-pill">AR</span></div>
-      <div class="kr-body">
-        <div class="kr-name">Bingsu</div>
-        <div class="kr-name-kr">Shaved Milk Ice</div>
-        <p class="kr-desc">Shaved milk ice with sweetened azuki red beans, mochi, condensed milk and seasonal fruit.</p>
-        <div class="kr-footer">
-          <div class="kr-price"><span class="kr-price-sym">₹</span>520</div>
-          <span class="kr-veg">🌿 veg</span>
-        </div>
-      </div>
-    </div>
+  <main class="kr-main" id="kr-main">
+    <!-- Dynamic Korean dishes rendered here -->
   </main>
 
   <footer class="kr-footer-bar">
@@ -999,10 +924,12 @@
 
 <script>
 /* ════ GOOGLE SHEETS LIVE CONFIG ════ */
-/* Sheet 1 (gid=0)         -> Italian dishes */
-/* Sheet 2 (gid=28659468)  -> Japanese dishes */
+/* Sheet 1 (gid=0)          -> Italian dishes */
+/* Sheet 2 (gid=28659468)   -> Japanese dishes */
+/* Sheet 3 (gid=1203632959) -> Korean dishes */
 const SHEET_CSV_URL_ITALIAN = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=0&single=true&output=csv';
 const SHEET_CSV_URL_JAPANESE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=28659468&single=true&output=csv';
+const SHEET_CSV_URL_KOREAN  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTG3g9rCnUEa7D1xsKMyo7qneJHxvMw8-4vAWeM8twhy_0iMrK8uDqrltS3Wz6GSjLrEFNF9hK1Z0fe/pub?gid=1203632959&single=true&output=csv';
 
 const knownFoldersItalian = {
   'fried calamari': 'Fried-Calamari',
@@ -1018,6 +945,15 @@ const knownFoldersJapanese = {
   'shio ramen': 'ShioRamen',
   'shoyu ramen': 'ShoyuRamen',
   'tantanmen': 'Tantanmen'
+};
+
+const knownFoldersKorean = {
+  'cheesy quiche': 'Cheesy_quiche',
+  'cheesy_quiche': 'Cheesy_quiche',
+  'crispy vegetable': 'Crispy_vegetable',
+  'crispy_vegetable': 'Crispy_vegetable',
+  'almond crusted crispy': 'almondcrustedcrispy',
+  'almondcrustedcrispy': 'almondcrustedcrispy'
 };
 
 const cuisineConfig = {
@@ -1055,10 +991,31 @@ const cuisineConfig = {
       arBtn: 'jp-ar-btn', arPill: 'jp-ar-pill', sectionHead: 'jp-section-head'
     },
     defaults: []
+  },
+  korean: {
+    folder: 'Korean',
+    mainId: 'kr-main',
+    tabsId: 'kr-tabs',
+    knownFolders: knownFoldersKorean,
+    sheetUrl: SHEET_CSV_URL_KOREAN,
+    catTitleMap: { Starters: 'Starters · Appetizers', Mains: 'Mains · Entrees', Dessert: 'Dessert · Sweets' },
+    classes: {
+      card: 'kr-card', thumb: 'kr-thumb', body: 'kr-body', name: 'kr-name',
+      localName: 'kr-name-kr', desc: 'kr-desc', footer: 'kr-footer',
+      price: 'kr-price', priceSym: 'kr-price-sym', veg: 'kr-veg',
+      arBtn: 'kr-ar-btn', arPill: 'kr-ar-pill', sectionHead: 'kr-section-head'
+    },
+    /* Fallback defaults, matching Sheet3 as it stood at the time of this update.
+       These are only used if the sheet fails to load. */
+    defaults: [
+      { category: 'Starters', name: 'Cheesy_quiche', localName: '지즈 키슈', description: 'Savory baked quiche with a cheesy, golden crust.', price: '1200', availability: 'yes', vegNonveg: 'nonveg', folder: 'Cheesy_quiche' },
+      { category: 'Mains', name: 'Crispy_vegetable', localName: '야채 튀김', description: 'Lightly battered seasonal vegetables, fried until crisp.', price: '680', availability: 'yes', vegNonveg: 'nonveg', folder: 'Crispy_vegetable' },
+      { category: 'Dessert', name: 'almondcrustedcrispy', localName: '아몬드 크리스피', description: 'Crunchy fried sweet with a toasted almond crust.', price: '899', availability: 'yes', vegNonveg: 'veg', folder: 'almondcrustedcrispy' }
+    ]
   }
 };
 
-const allDishes = { italian: [], japanese: [] };
+const allDishes = { italian: [], japanese: [], korean: [] };
 
 function prettifyName(name) {
   // Turns folder-style raw names (e.g. "Fried-Calamari", "KaramisoRamen")
@@ -1172,7 +1129,7 @@ function parseCSV(text) {
       dishes.push({
         category: dish.category || 'Mains',
         name: dish.name,
-        localName: dish.italianname || dish.italian_name || dish.japanesename || dish.japanese_name || dish.localname || '',
+        localName: dish.italianname || dish.italian_name || dish.japanesename || dish.japanese_name || dish.koreanname || dish.korean_name || dish.localname || '',
         description: dish.description || '',
         price: dish.price || '0',
         availability: dish.availability || 'yes',
@@ -1252,6 +1209,15 @@ document.querySelectorAll('#jp-tabs button').forEach(btn => {
   });
 });
 
+document.querySelectorAll('#kr-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#kr-tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const category = btn.dataset.category || 'all';
+    renderDishes('korean', category);
+  });
+});
+
 /* ════ AR / 3D MODAL ════ */
 const modal = document.getElementById('ar-modal');
 const viewer = document.getElementById('viewer');
@@ -1285,6 +1251,7 @@ if (modal) {
 window.addEventListener('DOMContentLoaded', () => {
   loadCuisineSheet('italian');
   loadCuisineSheet('japanese');
+  loadCuisineSheet('korean');
 });
 </script>
 </body>
